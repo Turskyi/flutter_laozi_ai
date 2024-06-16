@@ -1,6 +1,8 @@
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner-direct-single.svg)](https://stand-with-ukraine.pp.ua)
 [![style: flutter lints](https://img.shields.io/badge/style-flutter__lints-blue)](https://pub.dev/packages/flutter_lints)
 [![codecov](https://codecov.io/gh/Turskyi/flutter_laozi_ai/graph/badge.svg?token=JEURBJLKTI)](https://codecov.io/gh/Turskyi/flutter_laozi_ai)
+[![Code Quality](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/code_quality_tests.yml/badge.svg)](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/code_quality_tests.yml)
+[![Upload Android build to App Tester.](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/flutter_android_ci.yml/badge.svg?branch=master)](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/flutter_android_ci.yml)
 <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/Turskyi/flutter_laozi_ai">
 
 # Daoism - Laozi AI Chatbot (Flutter Version)
