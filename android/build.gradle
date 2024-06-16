@@ -1,6 +1,21 @@
 buildscript {
     ext {
         application_id = 'com.turskyi.laozi_ai'
+
+        getSigningProperty = { key ->
+            def value = System.getenv(key) ?: project.findProperty("production.$key") ?: project.findProperty("dev.$key")
+            return value
+        }
+
+        SIGNING_KEY_DEBUG_PATH = getSigningProperty("SIGNING_KEY_DEBUG_PATH")
+        SIGNING_KEY_DEBUG_PASSWORD = getSigningProperty("SIGNING_KEY_DEBUG_PASSWORD")
+        SIGNING_KEY_DEBUG_KEY = getSigningProperty("SIGNING_KEY_DEBUG_KEY")
+        SIGNING_KEY_DEBUG_KEY_PASSWORD = getSigningProperty("SIGNING_KEY_DEBUG_KEY_PASSWORD")
+
+        SIGNING_KEY_RELEASE_PATH = getSigningProperty("SIGNING_KEY_RELEASE_PATH")
+        SIGNING_KEY_RELEASE_PASSWORD = getSigningProperty("SIGNING_KEY_RELEASE_PASSWORD")
+        SIGNING_KEY_RELEASE_KEY = getSigningProperty("SIGNING_KEY_RELEASE_KEY")
+        SIGNING_KEY_RELEASE_KEY_PASSWORD = getSigningProperty("SIGNING_KEY_RELEASE_KEY_PASSWORD")
     }
 }
 

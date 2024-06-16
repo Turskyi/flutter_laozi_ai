@@ -28,19 +28,20 @@ if (flutterVersionName == null) {
 def keyProperties = new Properties()
 def keyPropertiesFile = rootProject.file('key.properties')
 if (keyPropertiesFile.exists()) {
-    keyPropertiesFile.withReader('UTF-8') { reader -> keyProperties.load(reader)
+    keyPropertiesFile.withReader('UTF-8') { reader ->
+        keyProperties.load(reader)
     }
 }
-
-//noinspection GroovyLocalVariableNamingConvention
-def SIGNING_KEY_DEBUG_PATH = keyProperties.getProperty('SIGNING_KEY_DEBUG_PATH')
-def SIGNING_KEY_DEBUG_PASSWORD = keyProperties.getProperty('SIGNING_KEY_DEBUG_PASSWORD')
-def SIGNING_KEY_DEBUG_KEY = keyProperties.getProperty('SIGNING_KEY_DEBUG_KEY')
-def SIGNING_KEY_DEBUG_KEY_PASSWORD = keyProperties.getProperty('SIGNING_KEY_DEBUG_KEY_PASSWORD')
-def SIGNING_KEY_RELEASE_PATH = keyProperties.getProperty('SIGNING_KEY_RELEASE_PATH')
-def SIGNING_KEY_RELEASE_PASSWORD = keyProperties.getProperty('SIGNING_KEY_RELEASE_PASSWORD')
-def SIGNING_KEY_RELEASE_KEY = keyProperties.getProperty('SIGNING_KEY_RELEASE_KEY')
-def SIGNING_KEY_RELEASE_KEY_PASSWORD = keyProperties.getProperty('SIGNING_KEY_RELEASE_KEY_PASSWORD')
+// Debug environment variables.
+def signing_key_debug_path = keyProperties.getProperty('production.SIGNING_KEY_DEBUG_PATH') ?: rootProject.SIGNING_KEY_DEBUG_PATH
+def signing_key_debug_password = keyProperties.getProperty('production.SIGNING_KEY_DEBUG_PASSWORD') ?: rootProject.SIGNING_KEY_DEBUG_PASSWORD
+def signing_key_debug_key = keyProperties.getProperty('production.SIGNING_KEY_DEBUG_KEY') ?: rootProject.SIGNING_KEY_DEBUG_KEY
+def signing_key_debug_key_password = keyProperties.getProperty('production.SIGNING_KEY_DEBUG_KEY_PASSWORD') ?: rootProject.SIGNING_KEY_DEBUG_KEY_PASSWORD
+// Release environment variables.
+def signing_key_release_path = keyProperties.getProperty('production.SIGNING_KEY_RELEASE_PATH') ?: rootProject.SIGNING_KEY_RELEASE_PATH
+def signing_key_release_password = keyProperties.getProperty('production.SIGNING_KEY_RELEASE_PASSWORD') ?: rootProject.SIGNING_KEY_RELEASE_PASSWORD
+def signing_key_release_key = keyProperties.getProperty('production.SIGNING_KEY_RELEASE_KEY') ?: rootProject.SIGNING_KEY_RELEASE_KEY
+def signing_key_release_key_password = keyProperties.getProperty('production.SIGNING_KEY_RELEASE_KEY_PASSWORD') ?: rootProject.SIGNING_KEY_RELEASE_KEY_PASSWORD
 
 android {
     namespace = rootProject.application_id
@@ -72,10 +73,10 @@ android {
                 keyAlias System.getenv()["CM_KEY_ALIAS"]
                 keyPassword System.getenv()["CM_KEY_PASSWORD"]
             } else {
-                storeFile file(SIGNING_KEY_RELEASE_PATH)
-                storePassword SIGNING_KEY_RELEASE_PASSWORD
-                keyAlias SIGNING_KEY_RELEASE_KEY
-                keyPassword SIGNING_KEY_RELEASE_KEY_PASSWORD
+                storeFile file(signing_key_release_path)
+                storePassword signing_key_release_password
+                keyAlias signing_key_release_key
+                keyPassword signing_key_release_key_password
             }
         }
         dev {
@@ -86,10 +87,10 @@ android {
                 keyAlias System.getenv()["CM_KEY_ALIAS"]
                 keyPassword System.getenv()["CM_KEY_PASSWORD"]
             } else {
-                storeFile file(SIGNING_KEY_DEBUG_PATH)
-                storePassword SIGNING_KEY_DEBUG_PASSWORD
-                keyAlias SIGNING_KEY_DEBUG_KEY
-                keyPassword SIGNING_KEY_DEBUG_KEY_PASSWORD
+                storeFile file(signing_key_debug_path)
+                storePassword signing_key_debug_password
+                keyAlias signing_key_debug_key
+                keyPassword signing_key_debug_key_password
             }
         }
     }
