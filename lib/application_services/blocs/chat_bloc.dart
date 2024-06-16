@@ -39,7 +39,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             .sendChat(Chat(messages: state.messages, language: state.language))
             .listen((String line) => add(UpdateAiMessageEvent(line)));
       } on WebServiceException catch (error) {
-        emit(ChatError(errorMessage: error.message, messages: state.messages));
+        emit(
+          ChatError(
+            errorMessage: error.message,
+            messages: state.messages,
+            language: state.language,
+          ),
+        );
       }
     });
     on<UpdateAiMessageEvent>((
@@ -48,7 +54,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ) {
       if (state.messages.isNotEmpty && state.messages.last.isAi) {
         state.messages.last.content.write(event.pieceOfMessage);
-        emit(AiMessageUpdated(messages: state.messages));
+        emit(
+          AiMessageUpdated(messages: state.messages, language: state.language),
+        );
       } else {
         final List<Message> updatedMessages = List<Message>.from(state.messages)
           ..add(
@@ -57,7 +65,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               content: StringBuffer(event.pieceOfMessage),
             ),
           );
-        emit(AiMessageUpdated(messages: updatedMessages));
+        emit(
+          AiMessageUpdated(messages: updatedMessages, language: state.language),
+        );
       }
     });
   }

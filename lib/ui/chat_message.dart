@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laozi_ai/entities/message.dart';
+import 'package:laozi_ai/res/constants.dart' as constants;
 
 class ChatMessage extends StatelessWidget {
   const ChatMessage({super.key, required this.message});
@@ -8,22 +9,28 @@ class ChatMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double laoziAvatarSize = 52.0;
+    // Accessing the color scheme from the theme.
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Row(
       mainAxisAlignment:
           message.isAi ? MainAxisAlignment.start : MainAxisAlignment.end,
       children: <Widget>[
         if (message.isAi)
-          const Padding(
-            padding: EdgeInsets.only(left: 8.0),
-            //TODO: replace with Laozi icon.
-            child: Icon(Icons.android),
+          Image.asset(
+            // Path to the image asset.
+            constants.laoziAvatarPath,
+            width: laoziAvatarSize,
+            height: laoziAvatarSize,
           ),
         Flexible(
           child: Container(
             padding: const EdgeInsets.all(12.0),
-            margin: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
             decoration: BoxDecoration(
-              color: message.isAi ? Colors.grey.shade300 : Colors.blue.shade300,
+              color: message.isAi
+                  ? colorScheme.secondaryContainer
+                  : colorScheme.primary,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
@@ -33,7 +40,9 @@ class ChatMessage extends StatelessWidget {
                   // Replace escaped quotes with actual quotes.
                   .replaceAll(r'\"', '"'),
               style: TextStyle(
-                color: message.isAi ? Colors.black : Colors.white,
+                color: message.isAi
+                    ? colorScheme.onSecondaryContainer
+                    : colorScheme.onPrimary,
               ),
             ),
           ),

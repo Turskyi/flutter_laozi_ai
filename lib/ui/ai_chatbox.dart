@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
-import 'package:laozi_ai/ui/chat_message.dart';
+import 'package:laozi_ai/res/constants.dart' as constants;
+import 'package:laozi_ai/ui/app_bar/wave_app_bar.dart';
+import 'package:laozi_ai/ui/chat_messages_list.dart';
 
 class AIChatBox extends StatefulWidget {
   const AIChatBox({super.key});
@@ -17,100 +19,66 @@ class _AIChatBoxState extends State<AIChatBox> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(translate('title')),
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: BlocBuilder<ChatBloc, ChatState>(
-              builder: (_, ChatState state) {
-                final int itemCount = state is ChatError
-                    // Add extra space for the error message.
-                    ? state.messages.length + 1
-                    : state.messages.length;
-                if (state.messages.isEmpty) {
-                  // If there are no messages, show the welcome message.
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(32.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          //TODO: replace icon with the Laozi ai icon.
-                          // Placeholder for Bot icon.
-                          const Icon(Icons.android, size: 28),
-                          const SizedBox(height: 24),
-                          Text(
-                            translate('chat.sendMessageToStartChat'),
-                            style: Theme.of(context).textTheme.titleLarge,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            translate('chat.youCanAskAnyQuestionAbout'),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-                return ListView.builder(
-                  itemCount: itemCount,
-                  itemBuilder: (_, int index) {
-                    // Check if the current item is the last one and the state
-                    // is `ChatError`.
-                    if (index == state.messages.length && state is ChatError) {
-                      // Return a widget that displays the error message.
-                      return ListTile(
-                        title: Text(
-                          state.errorMessage,
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                      );
-                    }
-                    // Otherwise, return the `ChatMessage` widget.
-                    return ChatMessage(message: state.messages[index]);
-                  },
-                );
-              },
+      extendBodyBehindAppBar: true,
+      appBar: WaveAppBar(title: translate('title')),
+      body: BlocBuilder<ChatBloc, ChatState>(
+        builder: (_, ChatState state) {
+          return DecoratedBox(
+            decoration: BoxDecoration(
+              // Build background picture.
+              image: state.messages.isNotEmpty
+                  ? const DecorationImage(
+                      opacity: 0.5,
+                      image: AssetImage(constants.backgroundImagePath),
+                      fit: BoxFit.cover,
+                    )
+                  : null,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
+            child: Column(
               children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    controller: _textEditingController,
-                    decoration: InputDecoration(
-                      hintText: translate('chat.askSomething'),
-                      border: const OutlineInputBorder(),
-                    ),
+                const Expanded(child: ChatMessagesList()),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextField(
+                          controller: _textEditingController,
+                          decoration: InputDecoration(
+                            hintText: translate('chat.askSomething'),
+                            border: const OutlineInputBorder(),
+                            fillColor: Colors.black,
+                            filled: true,
+                          ),
+                        ),
+                      ),
+                      ValueListenableBuilder<TextEditingValue>(
+                        valueListenable: _textEditingController,
+                        child: BlocBuilder<ChatBloc, ChatState>(
+                          builder: (_, ChatState state) {
+                            return state is SentMessageState
+                                ? const CircularProgressIndicator()
+                                : const Icon(Icons.send);
+                          },
+                        ),
+                        builder:
+                            (_, TextEditingValue value, Widget? iconWidget) {
+                          return IconButton(
+                            icon: iconWidget ?? const SizedBox(),
+                            onPressed: value.text.isNotEmpty
+                                ? _handleSendMessage
+                                : null,
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                ),
-                ValueListenableBuilder<TextEditingValue>(
-                  valueListenable: _textEditingController,
-                  child: BlocBuilder<ChatBloc, ChatState>(
-                    builder: (_, ChatState state) {
-                      return state is SentMessageState
-                          ? const CircularProgressIndicator()
-                          : const Icon(Icons.send);
-                    },
-                  ),
-                  builder: (_, TextEditingValue value, Widget? iconWidget) {
-                    return IconButton(
-                      icon: iconWidget ?? const SizedBox(),
-                      onPressed:
-                          value.text.isNotEmpty ? _handleSendMessage : null,
-                    );
-                  },
                 ),
               ],
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

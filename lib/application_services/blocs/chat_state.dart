@@ -23,14 +23,14 @@ final class ChatError extends ChatState {
   const ChatError({
     required this.errorMessage,
     super.messages,
-    super.language,
+    required super.language,
   });
 
   final String errorMessage;
 }
 
 final class AiMessageUpdated extends ChatState {
-  const AiMessageUpdated({required super.messages, super.language});
+  const AiMessageUpdated({required super.messages, required super.language});
 
   @override
   bool operator ==(Object other) =>
@@ -45,5 +45,5 @@ final class AiMessageUpdated extends ChatState {
 }
 
 final class SentMessageState extends ChatState {
-  const SentMessageState({required super.messages, super.language});
+  const SentMessageState({required super.messages, required super.language});
 }
