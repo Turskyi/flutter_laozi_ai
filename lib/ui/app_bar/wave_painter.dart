@@ -20,7 +20,7 @@ class WavePainter extends CustomPainter {
         // Medium shade.
         colorScheme.onPrimaryFixedVariant,
         // Darker shade.
-        colorScheme.onSecondaryContainer.withAlpha(246),
+        colorScheme.onSecondaryContainer.withAlpha(244),
       ],
       stops: const <double>[0.0, 0.5, 1.0],
       begin: Alignment.topCenter,

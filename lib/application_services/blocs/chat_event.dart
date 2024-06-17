@@ -20,3 +20,9 @@ final class UpdateAiMessageEvent extends ChatEvent {
 
   final String pieceOfMessage;
 }
+
+final class ChangeLanguageEvent extends ChatEvent {
+  const ChangeLanguageEvent(this.language);
+
+  final Language language;
+}

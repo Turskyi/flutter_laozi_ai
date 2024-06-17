@@ -427,3 +427,16 @@ more expression and flexibility.
 
 For any inquiries or suggestions, please open an issue on theGitHub repository
 or reach out to me directly at [dmytro@turskyi.com](mailto:dmytro@turskyi.com).
+
+• Screenshots:
+
+<!--suppress CheckImageSize -->
+<img src="screenshots/portrait_android_ua.png" width="400"  alt="screenshot">
+<!--suppress CheckImageSize -->
+<img src="screenshots/portrait_android_start_en.png" width="400"  alt="screenshot">
+<!--suppress CheckImageSize -->
+<img src="screenshots/portrait_tablet_android_chat_en.png" width="400"  alt="screenshot">
+
+## Screen Recording:
+
+<img src="screen_recordings/demo.gif" width="400"  alt="screenshot">

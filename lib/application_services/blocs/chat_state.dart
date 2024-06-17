@@ -13,6 +13,13 @@ sealed class ChatState {
 
 final class ChatInitial extends ChatState {
   const ChatInitial({required super.language});
+
+  ChatInitial copyWith({
+    Language? language,
+  }) =>
+      ChatInitial(
+        language: language ?? this.language,
+      );
 }
 
 final class LoadingHomeState extends ChatState {
@@ -27,6 +34,17 @@ final class ChatError extends ChatState {
   });
 
   final String errorMessage;
+
+  ChatError copyWith({
+    String? errorMessage,
+    List<Message>? messages,
+    Language? language,
+  }) =>
+      ChatError(
+        errorMessage: errorMessage ?? this.errorMessage,
+        messages: messages ?? this.messages,
+        language: language ?? this.language,
+      );
 }
 
 final class AiMessageUpdated extends ChatState {
@@ -42,8 +60,26 @@ final class AiMessageUpdated extends ChatState {
 
   @override
   int get hashCode => Object.hash(language, messages);
+
+  AiMessageUpdated copyWith({
+    List<Message>? messages,
+    Language? language,
+  }) =>
+      AiMessageUpdated(
+        messages: messages ?? this.messages,
+        language: language ?? this.language,
+      );
 }
 
 final class SentMessageState extends ChatState {
   const SentMessageState({required super.messages, required super.language});
+
+  SentMessageState copyWith({
+    List<Message>? messages,
+    Language? language,
+  }) =>
+      SentMessageState(
+        messages: messages ?? this.messages,
+        language: language ?? this.language,
+      );
 }

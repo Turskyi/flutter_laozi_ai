@@ -37,6 +37,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
+  flutter_email_sender: ^6.0.3
   flutter_translate: ^4.1.0
   get_it: ^7.7.0
   http: ^1.2.1
@@ -47,6 +48,8 @@ dependencies:
   # Set to specific version when this error is gone: "Because every version of flutter_test from sdk depends on meta 1.12.0 and laozi_ai depends on meta ^1.15.0, flutter_test from sdk is forbidden.
   # So, because laozi_ai depends on flutter_test from sdk, version solving failed.".
   meta: any
+  package_info_plus: ^8.0.0
+  path_provider: ^2.1.3
   retrofit: ^4.1.0
   retrofit_generator: ^8.1.0
   shared_preferences: ^2.2.3

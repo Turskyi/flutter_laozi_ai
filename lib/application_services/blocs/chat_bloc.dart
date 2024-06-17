@@ -70,6 +70,36 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         );
       }
     });
+
+    on<ChangeLanguageEvent>(
+      (
+        ChangeLanguageEvent event,
+        Emitter<ChatState> emit,
+      ) async {
+        final Language language = event.language;
+        if (language != state.language) {
+          final bool isSaved = await _settingsRepository
+              .saveLanguageIsoCode(language.isoLanguageCode);
+          if (isSaved) {
+            emit(
+              switch (state) {
+                ChatInitial() =>
+                  (state as ChatInitial).copyWith(language: language),
+                ChatError() =>
+                  (state as ChatError).copyWith(language: language),
+                SentMessageState() =>
+                  (state as SentMessageState).copyWith(language: language),
+                AiMessageUpdated() =>
+                  (state as AiMessageUpdated).copyWith(language: language),
+                _ => state,
+              },
+            );
+          } else {
+            add(const LoadHomeEvent());
+          }
+        }
+      },
+    );
   }
 
   final ChatRepository _chatRepository;

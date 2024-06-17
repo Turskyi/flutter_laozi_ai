@@ -1,10 +1,10 @@
-import 'package:entities/entities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:interface_adapters/interface_adapters.dart';
-import 'package:interface_adapters/src/ui/res/resources.dart';
-import 'package:interface_adapters/src/ui/res/values/dimens.dart';
+import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
+import 'package:laozi_ai/entities/enums/language.dart';
+import 'package:laozi_ai/res/resources.dart';
+import 'package:laozi_ai/res/values/dimens.dart';
 
 /// A widget that builds the language selector dropdown.
 class LanguageSelector extends StatelessWidget {
@@ -21,16 +21,16 @@ class LanguageSelector extends StatelessWidget {
             // The child of each item is a row with the flag and the name of the
             // language.
             child: Padding(
-              padding: const EdgeInsets.only(left: 24, bottom: 6.0),
+              padding: const EdgeInsets.only(left: 24, bottom: 16.0),
               child: Text(language.flag),
             ),
           ),
         )
         .toList();
-    return BlocBuilder<HomePresenter, HomeViewModel>(
-      builder: (BuildContext context, HomeViewModel viewModel) {
+    return BlocBuilder<ChatBloc, ChatState>(
+      builder: (BuildContext context, ChatState state) {
         final Dimens dimens = Resources.of(context).dimens;
-        final Language currentLanguage = viewModel.language;
+        final Language currentLanguage = state.language;
         return DropdownButton<Language>(
           padding: EdgeInsets.only(left: dimens.leftPadding),
           // The value of the dropdown is the current language.
@@ -88,9 +88,7 @@ class LanguageSelector extends StatelessWidget {
               changeLocale(context, language.isoLanguageCode)
                   // The returned value is always `null`.
                   .then((_) {
-                context
-                    .read<HomePresenter>()
-                    .add(ChangeLanguageEvent(language));
+                context.read<ChatBloc>().add(ChangeLanguageEvent(language));
               });
             }
           },

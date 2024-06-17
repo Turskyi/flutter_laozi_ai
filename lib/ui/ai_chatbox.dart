@@ -1,10 +1,17 @@
+import 'dart:io';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/ui/app_bar/wave_app_bar.dart';
 import 'package:laozi_ai/ui/chat_messages_list.dart';
+import 'package:laozi_ai/ui/language_selector.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AIChatBox extends StatefulWidget {
   const AIChatBox({super.key});
@@ -18,12 +25,23 @@ class _AIChatBoxState extends State<AIChatBox> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: WaveAppBar(title: translate('title')),
-      body: BlocBuilder<ChatBloc, ChatState>(
-        builder: (_, ChatState state) {
-          return DecoratedBox(
+    return BlocBuilder<ChatBloc, ChatState>(
+      builder: (_, ChatState state) {
+        return Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: WaveAppBar(
+            title: translate('title'),
+            actions: <Widget>[
+              if (state.messages.isNotEmpty)
+                IconButton(
+                  icon: const Icon(Icons.bug_report_outlined),
+                  onPressed: _onBugReportPressed,
+                ),
+              // Use the `LanguageSelector` widget as an action.
+              const LanguageSelector(),
+            ],
+          ),
+          body: DecoratedBox(
             decoration: BoxDecoration(
               // Build background picture.
               image: state.messages.isNotEmpty
@@ -77,9 +95,9 @@ class _AIChatBoxState extends State<AIChatBox> {
                 ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -92,5 +110,41 @@ class _AIChatBoxState extends State<AIChatBox> {
   void _handleSendMessage() {
     context.read<ChatBloc>().add(SendMessageEvent(_textEditingController.text));
     _textEditingController.clear();
+  }
+
+  Future<void> _onBugReportPressed() => PackageInfo.fromPlatform().then(
+        (PackageInfo packageInfo) => BetterFeedback.of(context).show(
+          (UserFeedback feedback) => _sendFeedback(
+            feedback: feedback,
+            packageInfo: packageInfo,
+          ),
+        ),
+      );
+
+  Future<void> _sendFeedback({
+    required UserFeedback feedback,
+    required PackageInfo packageInfo,
+  }) =>
+      _writeImageToStorage(feedback.screenshot)
+          .then((String screenshotFilePath) {
+        return FlutterEmailSender.send(
+          Email(
+            body: '${feedback.text}\n\nApp id: ${packageInfo.packageName}\n'
+                'App version: ${packageInfo.version}\n'
+                'Build number: ${packageInfo.buildNumber}',
+            subject: '${translate('app_feedback')}: '
+                '${packageInfo.appName}',
+            recipients: <String>[constants.supportEmail],
+            attachmentPaths: <String>[screenshotFilePath],
+          ),
+        );
+      });
+
+  Future<String> _writeImageToStorage(Uint8List feedbackScreenshot) async {
+    final Directory output = await getTemporaryDirectory();
+    final String screenshotFilePath = '${output.path}/feedback.png';
+    final File screenshotFile = File(screenshotFilePath);
+    await screenshotFile.writeAsBytes(feedbackScreenshot);
+    return screenshotFilePath;
   }
 }

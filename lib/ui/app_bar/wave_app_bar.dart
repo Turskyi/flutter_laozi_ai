@@ -6,18 +6,21 @@ class WaveAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.title,
     this.height = kToolbarHeight * 1.1,
+    this.actions = const<Widget>[],
   });
 
   final String title;
   final double height;
+  final List<Widget> actions;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title),
+      title: Text(title, maxLines: 2),
       scrolledUnderElevation: 0.0,
       backgroundColor: Colors.transparent,
       flexibleSpace: const AnimatedWave(),
+      actions: actions,
     );
   }
 
