@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
@@ -28,6 +29,17 @@ class _AIChatBoxState extends State<AIChatBox> {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(
       builder: (_, ChatState state) {
+        if (state is LoadingHomeState) {
+          return Scaffold(
+            appBar: const WaveAppBar(actions: <Widget>[LanguageSelector()]),
+            body: Center(
+              child: SpinKitFadingCircle(
+                color: Theme.of(context).colorScheme.primary,
+                size: 200.0,
+              ),
+            ),
+          );
+        }
         return Scaffold(
           extendBodyBehindAppBar: true,
           appBar: WaveAppBar(

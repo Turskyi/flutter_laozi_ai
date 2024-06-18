@@ -12,7 +12,7 @@ class LanguageSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<DropdownMenuItem<Language>> languageOptions = Language.values
+    final List<DropdownMenuItem<Language>> languageOptions = Language.values
         .map(
           (Language language) => DropdownMenuItem<Language>(
             alignment: Alignment.center,
@@ -21,7 +21,7 @@ class LanguageSelector extends StatelessWidget {
             // The child of each item is a row with the flag and the name of the
             // language.
             child: Padding(
-              padding: const EdgeInsets.only(left: 24, bottom: 16.0),
+              padding: const EdgeInsets.only(left: 24, bottom: 8.0),
               child: Text(language.flag),
             ),
           ),
@@ -44,7 +44,7 @@ class LanguageSelector extends StatelessWidget {
           //TODO: add a comment why we cannot use the `BuildContext` from
           // `selectedItemBuilder` callback.
           selectedItemBuilder: (_) {
-            List<Center> languageSelectorItems = Language.values
+            final List<Center> languageSelectorItems = Language.values
                 .map(
                   (Language language) => Center(
                     child: AnimatedSwitcher(
@@ -72,8 +72,7 @@ class LanguageSelector extends StatelessWidget {
                 : languageSelectorItems.reversed.toList();
           },
           underline: const SizedBox(),
-          elevation: dimens.noElevation,
-          dropdownColor: Colors.transparent,
+          dropdownColor: Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(dimens.borderRadius),
           // The items of the dropdown are the supported languages.
           items: currentLanguage.isEnglish

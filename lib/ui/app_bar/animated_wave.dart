@@ -35,7 +35,7 @@ class _AnimatedWaveState extends State<AnimatedWave>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: kToolbarHeight + kMinInteractiveDimension,
+      height: kToolbarHeight * 2,
       child: CustomPaint(
         painter: WavePainter(
           waveAnimationValue: _animation.value,

@@ -4,8 +4,8 @@ import 'package:laozi_ai/ui/app_bar/animated_wave.dart';
 class WaveAppBar extends StatelessWidget implements PreferredSizeWidget {
   const WaveAppBar({
     super.key,
-    required this.title,
-    this.height = kToolbarHeight * 1.1,
+    this.title = '',
+    this.height = kToolbarHeight * 1.2,
     this.actions = const<Widget>[],
   });
 

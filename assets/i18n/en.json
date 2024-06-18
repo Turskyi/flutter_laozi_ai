@@ -1,5 +1,6 @@
 {
   "title": "Daoism - Laozi AI Chatbot",
+  "app_feedback": "App Feedback",
   "chat": {
     "askSomething": "Ask something...",
     "sendMessageToStartChat": "Send a message to start the chat with Laozi AI!",
