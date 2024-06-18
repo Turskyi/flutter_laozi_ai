@@ -13,8 +13,9 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   @override
   Language getLanguage() {
-    final String? savedLanguageIsoCode =
-        _preferences.getString(Settings.languageIsoCode.key);
+    final String? savedLanguageIsoCode = _preferences.getString(
+      Settings.languageIsoCode.key,
+    );
     if (savedLanguageIsoCode != null) {
       return Language.fromIsoLanguageCode(savedLanguageIsoCode);
     } else {

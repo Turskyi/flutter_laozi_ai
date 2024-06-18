@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:laozi_ai/entities/message.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 
@@ -33,16 +34,25 @@ class ChatMessage extends StatelessWidget {
                   : colorScheme.primary,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Text(
-              '${message.content}'
+            child: MarkdownBody(
+              data: '${message.content}'
                   // Replace escaped newlines with actual newlines.
                   .replaceAll(r'\n', '\n')
                   // Replace escaped quotes with actual quotes.
                   .replaceAll(r'\"', '"'),
-              style: TextStyle(
-                color: message.isAi
-                    ? colorScheme.onSecondaryContainer
-                    : colorScheme.onPrimary,
+              styleSheet: MarkdownStyleSheet(
+                p: TextStyle(
+                  color: message.isAi
+                      ? colorScheme.onSecondaryContainer
+                      : colorScheme.onPrimary,
+                ),
+                strong: const TextStyle(fontWeight: FontWeight.bold),
+                em: const TextStyle(fontStyle: FontStyle.italic),
+                listBullet: TextStyle(
+                  color: message.isAi
+                      ? colorScheme.onSecondaryContainer
+                      : colorScheme.onPrimary,
+                ),
               ),
             ),
           ),

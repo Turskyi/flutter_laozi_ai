@@ -20,9 +20,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ) : super(const LoadingHomeState()) {
     on<LoadHomeEvent>(
       (_, Emitter<ChatState> emit) {
-        emit(
-          ChatInitial(language: _settingsRepository.getLanguage()),
-        );
+        final Language savedLanguage = _settingsRepository.getLanguage();
+        emit(ChatInitial(language: savedLanguage));
       },
     );
     on<SendMessageEvent>((SendMessageEvent event, Emitter<ChatState> emit) {

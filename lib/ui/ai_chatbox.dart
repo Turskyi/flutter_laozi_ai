@@ -1,5 +1,7 @@
 import 'dart:io';
+
 import 'package:feedback/feedback.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -10,7 +12,6 @@ import 'package:laozi_ai/ui/app_bar/wave_app_bar.dart';
 import 'package:laozi_ai/ui/chat_messages_list.dart';
 import 'package:laozi_ai/ui/language_selector.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AIChatBox extends StatefulWidget {
@@ -112,6 +113,7 @@ class _AIChatBoxState extends State<AIChatBox> {
     _textEditingController.clear();
   }
 
+  //TODO: move to ChatBloc
   Future<void> _onBugReportPressed() => PackageInfo.fromPlatform().then(
         (PackageInfo packageInfo) => BetterFeedback.of(context).show(
           (UserFeedback feedback) => _sendFeedback(
