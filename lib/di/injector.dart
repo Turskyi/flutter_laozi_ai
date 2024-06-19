@@ -3,4 +3,4 @@ import 'package:injectable/injectable.dart';
 import 'package:laozi_ai/di/injector.config.dart';
 
 @InjectableInit(initializerName: 'initDependencyInjection')
-void injectDependencies() => GetIt.I.initDependencyInjection();
+Future<GetIt> injectDependencies() => GetIt.I.initDependencyInjection();

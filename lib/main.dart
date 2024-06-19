@@ -19,8 +19,13 @@ import 'package:laozi_ai/localization_delelegate_getter.dart';
 /// components in the system. They don’t know about [main], and they don’t care
 /// when it changes.
 void main() async {
+  // Ensure that the Flutter engine is initialized, to avoid errors with
+  // `SharedPreferences` dependencies initialization.
   WidgetsFlutterBinding.ensureInitialized();
-  injectDependencies();
+
+  // Initialize dependency injection and wait for `SharedPreferences`.
+  await injectDependencies();
+
   final LocalizationDelegate localizationDelegate =
       await getLocalizationDelegate();
   runApp(
