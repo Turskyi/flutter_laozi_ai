@@ -1,9 +1,18 @@
 {
   "title": "Daoism - Laozi AI Chatbot",
-  "app_feedback": "App Feedback",
+  "submit": "submit",
   "chat": {
     "askSomething": "Ask something...",
     "sendMessageToStartChat": "Send a message to start the chat with Laozi AI!",
     "youCanAskAnyQuestionAbout": "You can ask Laozi Chatbot any question about Daoism and he will find the relevant information."
+  },
+  "feedback": {
+    "appFeedback": "App Feedback",
+    "whatKind": "What kind of feedback do you want to give?",
+    "whatIsYourFeedback": "What is your feedback?",
+    "howDoesThisFeel": "How does this make you feel?",
+    "feedbackSent": "Your feedback has been sent successfully!",
+    "bugReport": "Bug report",
+    "featureRequest": "Feature request"
   }
 }

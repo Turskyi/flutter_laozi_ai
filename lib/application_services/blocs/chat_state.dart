@@ -12,18 +12,29 @@ sealed class ChatState {
 }
 
 final class ChatInitial extends ChatState {
-  const ChatInitial({required super.language});
+  const ChatInitial({required super.language, super.messages});
 
   ChatInitial copyWith({
+    List<Message>? messages,
     Language? language,
   }) =>
       ChatInitial(
+        messages: messages ?? this.messages,
         language: language ?? this.language,
       );
 }
 
 final class LoadingHomeState extends ChatState {
-  const LoadingHomeState() : super();
+  const LoadingHomeState({super.messages, super.language});
+
+  LoadingHomeState copyWith({
+    List<Message>? messages,
+    Language? language,
+  }) =>
+      LoadingHomeState(
+        messages: messages ?? this.messages,
+        language: language ?? this.language,
+      );
 }
 
 final class ChatError extends ChatState {
@@ -79,6 +90,35 @@ final class SentMessageState extends ChatState {
     Language? language,
   }) =>
       SentMessageState(
+        messages: messages ?? this.messages,
+        language: language ?? this.language,
+      );
+}
+
+final class FeedbackState extends ChatState {
+  const FeedbackState({
+    required super.messages,
+    required super.language,
+  });
+
+  FeedbackState copyWith({
+    List<Message>? messages,
+    Language? language,
+  }) =>
+      FeedbackState(
+        messages: messages ?? this.messages,
+        language: language ?? this.language,
+      );
+}
+
+final class FeedbackSent extends ChatState {
+  const FeedbackSent({required super.messages, required super.language});
+
+  FeedbackSent copyWith({
+    List<Message>? messages,
+    Language? language,
+  }) =>
+      FeedbackSent(
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );

@@ -14,7 +14,7 @@ class Message {
       other is Message &&
           runtimeType == other.runtimeType &&
           role == other.role &&
-          content == other.content;
+          content.toString() == other.content.toString();
 
   @override
   int get hashCode =>

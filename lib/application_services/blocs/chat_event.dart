@@ -26,3 +26,17 @@ final class ChangeLanguageEvent extends ChatEvent {
 
   final Language language;
 }
+
+final class BugReportPressedEvent extends ChatEvent {
+  const BugReportPressedEvent();
+}
+
+final class ClosingFeedbackEvent extends ChatEvent {
+  const ClosingFeedbackEvent();
+}
+
+final class SubmitFeedbackEvent extends ChatEvent {
+  const SubmitFeedbackEvent(this.feedback);
+
+  final UserFeedback feedback;
+}

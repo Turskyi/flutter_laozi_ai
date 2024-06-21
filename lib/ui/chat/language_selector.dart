@@ -41,9 +41,7 @@ class LanguageSelector extends StatelessWidget {
             Icons.arrow_drop_down_outlined,
             color: Colors.white,
           ),
-          //TODO: add a comment why we cannot use the `BuildContext` from
-          // `selectedItemBuilder` callback.
-          selectedItemBuilder: (_) {
+          selectedItemBuilder: (BuildContext context) {
             final List<Center> languageSelectorItems = Language.values
                 .map(
                   (Language language) => Center(

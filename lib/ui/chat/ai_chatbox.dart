@@ -1,19 +1,13 @@
-import 'dart:io';
-
 import 'package:feedback/feedback.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
-import 'package:laozi_ai/ui/app_bar/wave_app_bar.dart';
-import 'package:laozi_ai/ui/chat_messages_list.dart';
-import 'package:laozi_ai/ui/language_selector.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:laozi_ai/ui/chat/app_bar/wave_app_bar.dart';
+import 'package:laozi_ai/ui/chat/chat_messages_list.dart';
+import 'package:laozi_ai/ui/chat/language_selector.dart';
 
 class AIChatBox extends StatefulWidget {
   const AIChatBox({super.key});
@@ -24,22 +18,25 @@ class AIChatBox extends StatefulWidget {
 
 class _AIChatBoxState extends State<AIChatBox> {
   final TextEditingController _textEditingController = TextEditingController();
+  FeedbackController? _feedbackController;
+
+  @override
+  void didChangeDependencies() {
+    _feedbackController = BetterFeedback.of(context);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChatBloc, ChatState>(
-      builder: (_, ChatState state) {
-        if (state is LoadingHomeState) {
-          return Scaffold(
-            appBar: const WaveAppBar(actions: <Widget>[LanguageSelector()]),
-            body: Center(
-              child: SpinKitFadingCircle(
-                color: Theme.of(context).colorScheme.primary,
-                size: 200.0,
-              ),
-            ),
-          );
+    return BlocConsumer<ChatBloc, ChatState>(
+      listener: (BuildContext context, ChatState state) {
+        if (state is FeedbackState) {
+          _showFeedbackUi();
+        } else if (state is FeedbackSent) {
+          _notifyFeedbackSent();
         }
+      },
+      builder: (BuildContext context, ChatState state) {
         return Scaffold(
           extendBodyBehindAppBar: true,
           appBar: WaveAppBar(
@@ -67,7 +64,19 @@ class _AIChatBoxState extends State<AIChatBox> {
             ),
             child: Column(
               children: <Widget>[
-                const Expanded(child: ChatMessagesList()),
+                Expanded(
+                  child: state is LoadingHomeState
+                      ? Stack(
+                          children: <Widget>[
+                            const ChatMessagesList(),
+                            SpinKitFadingCircle(
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 200.0,
+                            ),
+                          ],
+                        )
+                      : const ChatMessagesList(),
+                ),
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
@@ -117,7 +126,35 @@ class _AIChatBoxState extends State<AIChatBox> {
   @override
   void dispose() {
     _textEditingController.dispose();
+    _feedbackController?.dispose();
     super.dispose();
+  }
+
+  void _notifyFeedbackSent() {
+    BetterFeedback.of(context).hide();
+    // Let user know that his feedback is sent.
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(translate('feedback.feedbackSent')),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _showFeedbackUi() {
+    _feedbackController?.show(
+      (UserFeedback feedback) =>
+          context.read<ChatBloc>().add(SubmitFeedbackEvent(feedback)),
+    );
+    _feedbackController?.addListener(_onFeedbackChanged);
+  }
+
+  void _onFeedbackChanged() {
+    bool? isVisible = _feedbackController?.isVisible;
+    if (isVisible == false) {
+      _feedbackController?.removeListener(_onFeedbackChanged);
+      context.read<ChatBloc>().add(const ClosingFeedbackEvent());
+    }
   }
 
   void _handleSendMessage() {
@@ -125,40 +162,6 @@ class _AIChatBoxState extends State<AIChatBox> {
     _textEditingController.clear();
   }
 
-  //TODO: move to ChatBloc
-  Future<void> _onBugReportPressed() => PackageInfo.fromPlatform().then(
-        (PackageInfo packageInfo) => BetterFeedback.of(context).show(
-          (UserFeedback feedback) => _sendFeedback(
-            feedback: feedback,
-            packageInfo: packageInfo,
-          ),
-        ),
-      );
-
-  Future<void> _sendFeedback({
-    required UserFeedback feedback,
-    required PackageInfo packageInfo,
-  }) =>
-      _writeImageToStorage(feedback.screenshot)
-          .then((String screenshotFilePath) {
-        return FlutterEmailSender.send(
-          Email(
-            body: '${feedback.text}\n\nApp id: ${packageInfo.packageName}\n'
-                'App version: ${packageInfo.version}\n'
-                'Build number: ${packageInfo.buildNumber}',
-            subject: '${translate('app_feedback')}: '
-                '${packageInfo.appName}',
-            recipients: <String>[constants.supportEmail],
-            attachmentPaths: <String>[screenshotFilePath],
-          ),
-        );
-      });
-
-  Future<String> _writeImageToStorage(Uint8List feedbackScreenshot) async {
-    final Directory output = await getTemporaryDirectory();
-    final String screenshotFilePath = '${output.path}/feedback.png';
-    final File screenshotFile = File(screenshotFilePath);
-    await screenshotFile.writeAsBytes(feedbackScreenshot);
-    return screenshotFilePath;
-  }
+  void _onBugReportPressed() =>
+      context.read<ChatBloc>().add(const BugReportPressedEvent());
 }

@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/router/app_route.dart';
-import 'package:laozi_ai/ui/ai_chatbox.dart';
+import 'package:laozi_ai/ui/chat/ai_chatbox.dart';
 
 Map<String, WidgetBuilder> routeMap = <String, WidgetBuilder>{
   AppRoute.home.path: (_) => BlocProvider<ChatBloc>(

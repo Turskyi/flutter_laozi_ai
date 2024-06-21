@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:laozi_ai/ui/app_bar/animated_wave.dart';
+import 'package:laozi_ai/ui/chat/app_bar/animated_wave.dart';
 
 class WaveAppBar extends StatelessWidget implements PreferredSizeWidget {
   const WaveAppBar({

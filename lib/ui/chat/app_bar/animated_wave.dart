@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:laozi_ai/ui/app_bar/wave_painter.dart';
+import 'package:laozi_ai/ui/chat/app_bar/wave_painter.dart';
 
 class AnimatedWave extends StatefulWidget {
   const AnimatedWave({super.key});
