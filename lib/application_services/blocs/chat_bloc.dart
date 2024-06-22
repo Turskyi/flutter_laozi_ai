@@ -10,6 +10,8 @@ import 'package:laozi_ai/domain_services/chat_repository.dart';
 import 'package:laozi_ai/domain_services/email_repository.dart';
 import 'package:laozi_ai/domain_services/settings_repository.dart';
 import 'package:laozi_ai/entities/chat.dart';
+import 'package:laozi_ai/entities/enums/feedback_rating.dart';
+import 'package:laozi_ai/entities/enums/feedback_type.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/entities/enums/role.dart';
 import 'package:laozi_ai/entities/message.dart';
@@ -131,11 +133,31 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       try {
         final String screenshotFilePath =
             await _writeImageToStorage(feedback.screenshot);
+
         final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+        final Map<String, dynamic>? extra = feedback.extra;
+        final dynamic rating = extra?['rating'];
+        final dynamic type = extra?['feedback_type'];
+
+        // Construct the feedback text with details from `extra'.
+        final StringBuffer feedbackBody = StringBuffer()
+          ..writeln('${type is FeedbackType ? translate('feedback.type') : ''}:'
+              ' ${type is FeedbackType ? type.value : ''}')
+          ..writeln()
+          ..writeln(feedback.text)
+          ..writeln()
+          ..writeln('${translate('appId')}: ${packageInfo.packageName}')
+          ..writeln('${translate('appVersion')}: ${packageInfo.version}')
+          ..writeln('${translate('buildNumber')}: ${packageInfo.buildNumber}')
+          ..writeln()
+          ..writeln(
+              '${rating is FeedbackRating ? translate('feedback.rating') : ''}'
+              '${rating is FeedbackRating ? ':' : ''}'
+              ' ${rating is FeedbackRating ? rating.value : ''}');
+
         final Email email = Email(
-          body: '${feedback.text}\n\nApp id: ${packageInfo.packageName}\n'
-              'App version: ${packageInfo.version}\n'
-              'Build number: ${packageInfo.buildNumber}',
+          body: feedbackBody.toString(),
           subject: '${translate('feedback.appFeedback')}: '
               '${packageInfo.appName}',
           recipients: <String>[constants.supportEmail],

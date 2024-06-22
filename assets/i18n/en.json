@@ -1,6 +1,9 @@
 {
   "title": "Daoism - Laozi AI Chatbot",
   "submit": "submit",
+  "appId": "App id",
+  "appVersion": "App version",
+  "buildNumber": "Build number",
   "chat": {
     "askSomething": "Ask something...",
     "sendMessageToStartChat": "Send a message to start the chat with Laozi AI!",
@@ -13,6 +16,11 @@
     "howDoesThisFeel": "How does this make you feel?",
     "feedbackSent": "Your feedback has been sent successfully!",
     "bugReport": "Bug report",
-    "featureRequest": "Feature request"
+    "featureRequest": "Feature request",
+    "type": "Feedback Type",
+    "rating": "Rating",
+    "bad": "Bad",
+    "neutral": "Neutral",
+    "good": "Good"
   }
 }

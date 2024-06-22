@@ -25,8 +25,8 @@ class FeedbackDetails {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      if (rating != null) 'rating': rating.toString(),
-      'feedback_type': feedbackType.toString(),
+      if (rating != null) 'rating': rating,
+      'feedback_type': feedbackType,
       'feedback_text': feedbackText,
     };
   }
