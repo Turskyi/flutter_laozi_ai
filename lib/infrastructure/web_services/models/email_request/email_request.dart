@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'feedback_email.g.dart';
+part 'email_request.g.dart';
 
 /// Request example:
 /// {
@@ -9,8 +9,8 @@ part 'feedback_email.g.dart';
 ///  "message": "Example"
 /// }
 @JsonSerializable(createFactory: false)
-class FeedbackEmail {
-  const FeedbackEmail({
+class EmailRequest {
+  const EmailRequest({
     required this.email,
     required this.subject,
     required this.message,
@@ -20,9 +20,9 @@ class FeedbackEmail {
   final String subject;
   final String message;
 
-  Map<String, dynamic> toJson() => _$FeedbackEmailToJson(this);
+  Map<String, dynamic> toJson() => _$EmailRequestToJson(this);
 
   @override
   String toString() =>
-      'FeedbackEmailEmail{email: $email, subject: $subject, message: $message}';
+      'EmailRequest{email: $email, subject: $subject, message: $message}';
 }

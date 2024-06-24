@@ -73,7 +73,7 @@ class _RetrofitClient implements RetrofitClient {
   }
 
   @override
-  Future<EmailResponse> email(FeedbackEmail email) async {
+  Future<EmailResponse> email(EmailRequest email) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Content-Type': 'application/json'};

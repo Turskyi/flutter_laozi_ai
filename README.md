@@ -426,7 +426,8 @@ more expression and flexibility.
 ## Contact:
 
 For any inquiries or suggestions, please open an issue on theGitHub repository
-or reach out to me directly at [dmytro@turskyi.com](mailto:dmytro@turskyi.com).
+or reach out to me directly at
+[support@daoizm.online](mailto:support@daoizm.online).
 
 • Screenshots:
 
@@ -435,7 +436,7 @@ or reach out to me directly at [dmytro@turskyi.com](mailto:dmytro@turskyi.com).
 <!--suppress CheckImageSize -->
 <img src="screenshots/portrait_android_start_en.png" width="400"  alt="screenshot">
 <!--suppress CheckImageSize -->
-<img src="screenshots/portrait_tablet_android_chat_en.png" width="400"  alt="screenshot">
+<img src="screenshots/portrait_android_tablet_chat_en.png" width="400"  alt="screenshot">
 
 ## Screen Recording:
 
