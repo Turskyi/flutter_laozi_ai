@@ -32,7 +32,7 @@ class _RetrofitClient implements RetrofitClient {
     )
         .compose(
           _dio.options,
-          'chat',
+          'chat-android-en',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -59,7 +59,7 @@ class _RetrofitClient implements RetrofitClient {
     )
         .compose(
           _dio.options,
-          'chat-ua',
+          'chat-android-ua',
           queryParameters: queryParameters,
           data: _data,
         )

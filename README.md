@@ -441,3 +441,9 @@ or reach out to me directly at
 ## Screen Recording:
 
 <img src="screen_recordings/demo.gif" width="400"  alt="screenshot">
+
+## Download
+
+<a href="https://play.google.com/store/apps/details?id=com.turskyi.laozi_ai" target="_blank">
+<img src="https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png" width=240  alt="google play badge"/>
+</a>

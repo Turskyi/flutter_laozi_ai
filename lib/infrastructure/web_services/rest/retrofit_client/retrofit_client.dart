@@ -10,12 +10,13 @@ part 'retrofit_client.g.dart';
 abstract class RetrofitClient {
   factory RetrofitClient(Dio dio, {String baseUrl}) = _RetrofitClient;
 
-  @POST('chat')
+  @POST('chat-android-en')
   Stream<String> sendChatMessage(@Body() ChatRequest chatRequest);
 
-  @POST('chat-ua')
+  @POST('chat-android-ua')
   Stream<String> sendUkrainianChatMessage(@Body() ChatRequest chatRequest);
 
+  //TODO: replace with different email API.
   @POST('https://an-artist-art.vercel.app/api/email')
   @Headers(<String, dynamic>{'Content-Type': 'application/json'})
   Future<EmailResponse> email(@Body() EmailRequest email);
