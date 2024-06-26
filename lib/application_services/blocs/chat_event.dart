@@ -15,10 +15,29 @@ final class SendMessageEvent extends ChatEvent {
   final String message;
 }
 
+final class RetrySendMessageEvent extends ChatEvent {
+  const RetrySendMessageEvent();
+}
+
 final class UpdateAiMessageEvent extends ChatEvent {
   const UpdateAiMessageEvent(this.pieceOfMessage);
 
   final String pieceOfMessage;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UpdateAiMessageEvent &&
+          runtimeType == other.runtimeType &&
+          pieceOfMessage == other.pieceOfMessage;
+
+  @override
+  int get hashCode => pieceOfMessage.hashCode;
+
+  @override
+  String toString() {
+    return 'UpdateAiMessageEvent{pieceOfMessage: $pieceOfMessage}';
+  }
 }
 
 final class ChangeLanguageEvent extends ChatEvent {
@@ -39,4 +58,10 @@ final class SubmitFeedbackEvent extends ChatEvent {
   const SubmitFeedbackEvent(this.feedback);
 
   final UserFeedback feedback;
+}
+
+final class ErrorEvent extends ChatEvent {
+  const ErrorEvent(this.error);
+
+  final String error;
 }

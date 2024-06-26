@@ -4,6 +4,7 @@ class Message {
   const Message({required this.role, required this.content});
 
   final Role role;
+
   final StringBuffer content;
 
   bool get isAi => role.isAiAssistant;
@@ -19,4 +20,12 @@ class Message {
   @override
   int get hashCode =>
       role.hashCode ^ content.hashCode ^ content.length.hashCode;
+
+  Message copyWith({Role? role, StringBuffer? content}) =>
+      Message(role: role ?? this.role, content: content ?? this.content);
+
+  @override
+  String toString() {
+    return 'Message{role: $role, content: $content}';
+  }
 }

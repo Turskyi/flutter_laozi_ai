@@ -22,5 +22,9 @@
     "bad": "Bad",
     "neutral": "Neutral",
     "good": "Good"
+  },
+  "error": {
+    "pleaseCheckInternet": "An error occurred. Please check your internet connection and try again.",
+    "unexpectedError": "An unexpected error occurred. Please try again."
   }
 }

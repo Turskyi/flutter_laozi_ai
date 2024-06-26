@@ -11,9 +11,9 @@ import 'package:laozi_ai/entities/feedback_details.dart';
 /// other fields are optional.
 class FeedbackForm extends StatefulWidget {
   const FeedbackForm({
-    super.key,
     required this.onSubmit,
     required this.scrollController,
+    super.key,
   });
 
   final OnSubmit onSubmit;

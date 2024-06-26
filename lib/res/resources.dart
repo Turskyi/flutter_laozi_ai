@@ -5,10 +5,10 @@ import 'package:laozi_ai/res/values/dimens.dart';
 
 class Resources extends InheritedWidget {
   const Resources({
+    required super.child,
     super.key,
     this.dimens = const Dimens(),
     this.durations = const AppDurations(),
-    required super.child,
   });
 
   final Dimens dimens;
