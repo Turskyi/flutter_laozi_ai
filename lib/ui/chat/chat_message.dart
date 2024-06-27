@@ -4,7 +4,7 @@ import 'package:laozi_ai/entities/message.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 
 class ChatMessage extends StatelessWidget {
-  const ChatMessage({super.key, required this.message});
+  const ChatMessage({required this.message, super.key});
 
   final Message message;
 

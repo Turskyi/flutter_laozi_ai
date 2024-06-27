@@ -18,7 +18,7 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(
-      builder: (_, ChatState state) {
+      builder: (BuildContext context, ChatState state) {
         final int itemCount = state is ChatError
             // Add extra space for the error message.
             ? state.messages.length + 1
@@ -77,11 +77,30 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
             // Check if the current item is the last one and the state
             // is `ChatError`.
             if (index == state.messages.length && state is ChatError) {
-              // Return a widget that displays the error message.
-              return ListTile(
-                title: Text(
-                  state.errorMessage,
-                  style: const TextStyle(color: Colors.red),
+              return Container(
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 15.0,
+                ),
+                padding: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  color: Colors.redAccent, // Improved contrast
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: ListTile(
+                  title: Text(
+                    state.errorMessage,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.refresh, color: Colors.white),
+                    onPressed: () => context
+                        .read<ChatBloc>()
+                        .add(const RetrySendMessageEvent()),
+                  ),
                 ),
               );
             }

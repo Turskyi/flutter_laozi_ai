@@ -29,7 +29,7 @@ class _AIChatBoxState extends State<AIChatBox> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ChatBloc, ChatState>(
-      listener: (BuildContext context, ChatState state) {
+      listener: (_, ChatState state) {
         if (state is FeedbackState) {
           _showFeedbackUi();
         } else if (state is FeedbackSent) {
@@ -95,13 +95,9 @@ class _AIChatBoxState extends State<AIChatBox> {
                       ),
                       ValueListenableBuilder<TextEditingValue>(
                         valueListenable: _textEditingController,
-                        child: BlocBuilder<ChatBloc, ChatState>(
-                          builder: (_, ChatState state) {
-                            return state is SentMessageState
-                                ? const CircularProgressIndicator()
-                                : const Icon(Icons.send);
-                          },
-                        ),
+                        child: state is SentMessageState
+                            ? const CircularProgressIndicator()
+                            : const Icon(Icons.send),
                         builder:
                             (_, TextEditingValue value, Widget? iconWidget) {
                           return IconButton(

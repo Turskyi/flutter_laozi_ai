@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -35,7 +37,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(ChatInitial(language: savedLanguage, messages: state.messages));
       },
     );
-    on<SendMessageEvent>((SendMessageEvent event, Emitter<ChatState> emit) {
+    on<SendMessageEvent>((
+      SendMessageEvent event,
+      Emitter<ChatState> emit,
+    ) {
       // Create a new list of messages by adding the new message to the
       // existing list.
       final List<Message> updatedMessages = List<Message>.from(state.messages)
@@ -46,10 +51,30 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       );
       try {
         _chatRepository
-            .sendChat(Chat(messages: state.messages, language: state.language))
-            .listen((String line) => add(UpdateAiMessageEvent(line)));
-      } catch (error) {
-        _emitChatError(emit: emit, error: error);
+            .sendChat(Chat(messages: updatedMessages, language: state.language))
+            .listen(
+          (String line) => add(UpdateAiMessageEvent(line)),
+          onError: (Object error, StackTrace stackTrace) {
+            debugPrint(
+              'Error in $runtimeType in `onError`: $error.\n'
+              'Stacktrace: $stackTrace',
+            );
+            if (error is DioException) {
+              if (kIsWeb && kDebugMode) {
+                add(ErrorEvent(translate('error.cors')));
+              } else {
+                add(ErrorEvent(translate('error.pleaseCheckInternet')));
+              }
+            } else {
+              add(ErrorEvent(translate('error.unexpectedError')));
+            }
+          },
+        );
+      } catch (error, stackTrace) {
+        debugPrint(
+          'Error in $runtimeType in `catch`: $error.\nStacktrace: $stackTrace',
+        );
+        add(ErrorEvent(translate('error.oops')));
       }
     });
     on<UpdateAiMessageEvent>((
@@ -57,11 +82,25 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       Emitter<ChatState> emit,
     ) {
       if (state.messages.isNotEmpty && state.messages.last.isAi) {
-        state.messages.last.content.write(event.pieceOfMessage);
+        // Copy the last message and update its content
+        final List<Message> updatedMessages =
+            List<Message>.from(state.messages);
+        final Message lastMessage = updatedMessages.removeLast();
+        final Message updatedLastMessage = lastMessage.copyWith(
+          content: StringBuffer(
+            lastMessage.content.toString() + event.pieceOfMessage,
+          ),
+        );
+        updatedMessages.add(updatedLastMessage);
+
         emit(
-          AiMessageUpdated(messages: state.messages, language: state.language),
+          AiMessageUpdated(
+            messages: updatedMessages,
+            language: state.language,
+          ),
         );
       } else {
+        // Add a new AI message
         final List<Message> updatedMessages = List<Message>.from(state.messages)
           ..add(
             Message(
@@ -69,8 +108,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               content: StringBuffer(event.pieceOfMessage),
             ),
           );
+
         emit(
-          AiMessageUpdated(messages: updatedMessages, language: state.language),
+          AiMessageUpdated(
+            messages: updatedMessages,
+            language: state.language,
+          ),
         );
       }
     });
@@ -124,8 +167,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         AiMessageUpdated(messages: state.messages, language: state.language),
       );
     });
-    on<SubmitFeedbackEvent>(
-        (SubmitFeedbackEvent event, Emitter<ChatState> emit) async {
+
+    on<SubmitFeedbackEvent>((
+      SubmitFeedbackEvent event,
+      Emitter<ChatState> emit,
+    ) async {
       emit(
         LoadingHomeState(messages: state.messages, language: state.language),
       );
@@ -165,21 +211,53 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         );
         try {
           await FlutterEmailSender.send(email);
-        } catch (error) {
+        } catch (_) {
           try {
             await _emailRepository.sendFeedback(email);
             emit(
               FeedbackSent(messages: state.messages, language: state.language),
             );
-          } catch (error) {
-            _emitChatError(emit: emit, error: error);
+          } catch (_) {
+            add(ErrorEvent(translate('error.unexpectedError')));
           }
         }
-      } catch (error) {
-        _emitChatError(emit: emit, error: error);
+      } catch (_) {
+        add(ErrorEvent(translate('error.unexpectedError')));
       }
       emit(
         AiMessageUpdated(messages: state.messages, language: state.language),
+      );
+    });
+
+    on<RetrySendMessageEvent>((_, Emitter<ChatState> emit) async {
+      final List<Message> currentMessages = List<Message>.from(state.messages);
+      emit(
+        SentMessageState(
+          messages: currentMessages,
+          language: state.language,
+        ),
+      );
+      _chatRepository
+          .sendChat(Chat(messages: currentMessages, language: state.language))
+          .listen(
+        (String line) => add(UpdateAiMessageEvent(line)),
+        onError: (Object error) {
+          if (error is DioException) {
+            add(ErrorEvent(translate('error.pleaseCheckInternet')));
+          } else {
+            add(ErrorEvent(translate('error.unexpectedError')));
+          }
+        },
+      );
+    });
+
+    on<ErrorEvent>((ErrorEvent event, Emitter<ChatState> emit) {
+      emit(
+        ChatError(
+          errorMessage: event.error,
+          messages: state.messages,
+          language: state.language,
+        ),
       );
     });
   }
@@ -195,16 +273,4 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     await screenshotFile.writeAsBytes(feedbackScreenshot);
     return screenshotFilePath;
   }
-
-  void _emitChatError({
-    required Emitter<ChatState> emit,
-    required Object error,
-  }) =>
-      emit(
-        ChatError(
-          errorMessage: '$error',
-          messages: state.messages,
-          language: state.language,
-        ),
-      );
 }

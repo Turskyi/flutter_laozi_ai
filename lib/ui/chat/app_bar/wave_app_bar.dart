@@ -6,7 +6,7 @@ class WaveAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.title = '',
     this.height = kToolbarHeight * 1.2,
-    this.actions = const<Widget>[],
+    this.actions = const <Widget>[],
   });
 
   final String title;

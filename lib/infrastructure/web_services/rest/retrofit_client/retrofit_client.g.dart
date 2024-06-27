@@ -19,7 +19,171 @@ class _RetrofitClient implements RetrofitClient {
   String? baseUrl;
 
   @override
-  Stream<String> sendChatMessage(ChatRequest chatRequest) async* {
+  Stream<String> sendEnglishAndroidChatMessage(ChatRequest chatRequest) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(chatRequest.toJson());
+    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'chat-android-en',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data!;
+    yield value;
+  }
+
+  @override
+  Stream<String> sendUkrainianAndroidChatMessage(
+      ChatRequest chatRequest) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(chatRequest.toJson());
+    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'chat-android-ua',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data!;
+    yield value;
+  }
+
+  @override
+  Stream<String> sendEnglishIosChatMessage(ChatRequest chatRequest) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(chatRequest.toJson());
+    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'chat-ios-en',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data!;
+    yield value;
+  }
+
+  @override
+  Stream<String> sendUkrainianIosChatMessage(ChatRequest chatRequest) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(chatRequest.toJson());
+    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'chat-ios-ua',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data!;
+    yield value;
+  }
+
+  @override
+  Stream<String> sendEnglishWebChatMessage(ChatRequest chatRequest) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(chatRequest.toJson());
+    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'chat-web-app-en',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data!;
+    yield value;
+  }
+
+  @override
+  Stream<String> sendUkrainianWebChatMessage(ChatRequest chatRequest) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(chatRequest.toJson());
+    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'chat-web-app-ua',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data!;
+    yield value;
+  }
+
+  @override
+  Stream<String> sendChatMessageOnUnknownPlatform(
+      ChatRequest chatRequest) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -46,34 +210,7 @@ class _RetrofitClient implements RetrofitClient {
   }
 
   @override
-  Stream<String> sendUkrainianChatMessage(ChatRequest chatRequest) async* {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(chatRequest.toJson());
-    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'chat-ua',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-    final value = _result.data!;
-    yield value;
-  }
-
-  @override
-  Future<EmailResponse> email(FeedbackEmail email) async {
+  Future<EmailResponse> email(EmailRequest email) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Content-Type': 'application/json'};

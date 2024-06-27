@@ -9,6 +9,20 @@ sealed class ChatState {
 
   final Language language;
   final List<Message> messages;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ChatState &&
+          runtimeType == other.runtimeType &&
+          language == other.language &&
+          messages == other.messages;
+
+  @override
+  int get hashCode => language.hashCode ^ messages.hashCode;
+
+  @override
+  String toString() => 'ChatState(messages: $messages, language: $language)';
 }
 
 final class ChatInitial extends ChatState {
@@ -22,6 +36,9 @@ final class ChatInitial extends ChatState {
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );
+
+  @override
+  String toString() => 'ChatInitial(messages: $messages, language: $language)';
 }
 
 final class LoadingHomeState extends ChatState {
@@ -35,13 +52,17 @@ final class LoadingHomeState extends ChatState {
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );
+
+  @override
+  String toString() =>
+      'LoadingHomeState(messages: $messages, language: $language)';
 }
 
 final class ChatError extends ChatState {
   const ChatError({
     required this.errorMessage,
-    super.messages,
     required super.language,
+    super.messages,
   });
 
   final String errorMessage;
@@ -56,6 +77,25 @@ final class ChatError extends ChatState {
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ChatError &&
+        other.errorMessage == errorMessage &&
+        other.language == language &&
+        other.messages == messages;
+  }
+
+  @override
+  int get hashCode =>
+      errorMessage.hashCode ^ language.hashCode ^ messages.hashCode;
+
+  @override
+  String toString() => 'ChatError(errorMessage: $errorMessage, '
+      'messages: $messages, '
+      'language: $language)';
 }
 
 final class AiMessageUpdated extends ChatState {
@@ -80,6 +120,10 @@ final class AiMessageUpdated extends ChatState {
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );
+
+  @override
+  String toString() =>
+      'AiMessageUpdated(messages: $messages, language: $language)';
 }
 
 final class SentMessageState extends ChatState {
@@ -93,6 +137,10 @@ final class SentMessageState extends ChatState {
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );
+
+  @override
+  String toString() =>
+      'SentMessageState(messages: $messages, language: $language)';
 }
 
 final class FeedbackState extends ChatState {
@@ -109,6 +157,10 @@ final class FeedbackState extends ChatState {
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );
+
+  @override
+  String toString() =>
+      'FeedbackState(messages: $messages, language: $language)';
 }
 
 final class FeedbackSent extends ChatState {
@@ -122,4 +174,7 @@ final class FeedbackSent extends ChatState {
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );
+
+  @override
+  String toString() => 'FeedbackSent(messages: $messages, language: $language)';
 }
