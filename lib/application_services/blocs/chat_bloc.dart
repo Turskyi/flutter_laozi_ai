@@ -49,19 +49,33 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       emit(
         SentMessageState(messages: updatedMessages, language: state.language),
       );
-
-      _chatRepository
-          .sendChat(Chat(messages: updatedMessages, language: state.language))
-          .listen(
-        (String line) => add(UpdateAiMessageEvent(line)),
-        onError: (Object error) {
-          if (error is DioException) {
-            add(ErrorEvent(translate('error.pleaseCheckInternet')));
-          } else {
-            add(ErrorEvent(translate('error.unexpectedError')));
-          }
-        },
-      );
+      try {
+        _chatRepository
+            .sendChat(Chat(messages: updatedMessages, language: state.language))
+            .listen(
+          (String line) => add(UpdateAiMessageEvent(line)),
+          onError: (Object error, StackTrace stackTrace) {
+            debugPrint(
+              'Error in $runtimeType in `onError`: $error.\n'
+              'Stacktrace: $stackTrace',
+            );
+            if (error is DioException) {
+              if (kIsWeb && kDebugMode) {
+                add(ErrorEvent(translate('error.cors')));
+              } else {
+                add(ErrorEvent(translate('error.pleaseCheckInternet')));
+              }
+            } else {
+              add(ErrorEvent(translate('error.unexpectedError')));
+            }
+          },
+        );
+      } catch (error, stackTrace) {
+        debugPrint(
+          'Error in $runtimeType in `catch`: $error.\nStacktrace: $stackTrace',
+        );
+        add(ErrorEvent(translate('error.oops')));
+      }
     });
     on<UpdateAiMessageEvent>((
       UpdateAiMessageEvent event,

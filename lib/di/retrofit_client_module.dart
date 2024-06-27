@@ -9,8 +9,12 @@ abstract class RetrofitClientModule {
   RetrofitClient getRestClient(
     LoggingInterceptor loggingInterceptor,
   ) {
-    final Dio dio = Dio();
-    dio.interceptors.add(loggingInterceptor);
+    final Dio dio = Dio()
+      ..interceptors.add(loggingInterceptor)
+      ..options.connectTimeout = const Duration(minutes: 1)
+      ..options.receiveTimeout = const Duration(minutes: 1)
+      ..options.sendTimeout = const Duration(minutes: 1);
+
     return RetrofitClient(dio, baseUrl: constants.baseUrl);
   }
 }

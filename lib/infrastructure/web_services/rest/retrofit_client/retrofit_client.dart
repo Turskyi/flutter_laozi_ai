@@ -11,12 +11,31 @@ abstract class RetrofitClient {
   factory RetrofitClient(Dio dio, {String baseUrl}) = _RetrofitClient;
 
   @POST('chat-android-en')
-  Stream<String> sendChatMessage(@Body() ChatRequest chatRequest);
+  Stream<String> sendEnglishAndroidChatMessage(@Body() ChatRequest chatRequest);
 
   @POST('chat-android-ua')
-  Stream<String> sendUkrainianChatMessage(@Body() ChatRequest chatRequest);
+  Stream<String> sendUkrainianAndroidChatMessage(
+    @Body() ChatRequest chatRequest,
+  );
 
-  //TODO: replace with different email API.
+  @POST('chat-ios-en')
+  Stream<String> sendEnglishIosChatMessage(@Body() ChatRequest chatRequest);
+
+  @POST('chat-ios-ua')
+  Stream<String> sendUkrainianIosChatMessage(@Body() ChatRequest chatRequest);
+
+  @POST('chat-web-app-en')
+  Stream<String> sendEnglishWebChatMessage(@Body() ChatRequest chatRequest);
+
+  @POST('chat-web-app-ua')
+  Stream<String> sendUkrainianWebChatMessage(@Body() ChatRequest chatRequest);
+
+  @POST('chat')
+  Stream<String> sendChatMessageOnUnknownPlatform(
+    @Body() ChatRequest chatRequest,
+  );
+
+  //TODO: replace with different email service.
   @POST('https://an-artist-art.vercel.app/api/email')
   @Headers(<String, dynamic>{'Content-Type': 'application/json'})
   Future<EmailResponse> email(@Body() EmailRequest email);
