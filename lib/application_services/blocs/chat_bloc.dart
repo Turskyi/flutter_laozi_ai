@@ -167,6 +167,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         AiMessageUpdated(messages: state.messages, language: state.language),
       );
     });
+
     on<SubmitFeedbackEvent>((
       SubmitFeedbackEvent event,
       Emitter<ChatState> emit,
