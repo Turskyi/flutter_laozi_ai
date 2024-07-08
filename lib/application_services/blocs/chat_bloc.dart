@@ -9,7 +9,6 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:injectable/injectable.dart';
 import 'package:laozi_ai/domain_services/chat_repository.dart';
-import 'package:laozi_ai/domain_services/email_repository.dart';
 import 'package:laozi_ai/domain_services/settings_repository.dart';
 import 'package:laozi_ai/entities/chat.dart';
 import 'package:laozi_ai/entities/enums/feedback_rating.dart';
@@ -29,7 +28,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc(
     this._chatRepository,
     this._settingsRepository,
-    this._emailRepository,
   ) : super(const LoadingHomeState()) {
     on<LoadHomeEvent>(
       (_, Emitter<ChatState> emit) {
@@ -82,7 +80,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       Emitter<ChatState> emit,
     ) {
       if (state.messages.isNotEmpty && state.messages.last.isAi) {
-        // Copy the last message and update its content
+        // Copy the last message and update its content.
         final List<Message> updatedMessages =
             List<Message>.from(state.messages);
         final Message lastMessage = updatedMessages.removeLast();
@@ -100,7 +98,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           ),
         );
       } else {
-        // Add a new AI message
+        // Add a new AI message.
         final List<Message> updatedMessages = List<Message>.from(state.messages)
           ..add(
             Message(
@@ -211,17 +209,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         );
         try {
           await FlutterEmailSender.send(email);
-        } catch (_) {
-          try {
-            await _emailRepository.sendFeedback(email);
-            emit(
-              FeedbackSent(messages: state.messages, language: state.language),
-            );
-          } catch (_) {
-            add(ErrorEvent(translate('error.unexpectedError')));
-          }
+        } catch (error, stackTrace) {
+          debugPrint(
+            'Error in $runtimeType in `onError`: $error.\n'
+            'Stacktrace: $stackTrace',
+          );
+          add(ErrorEvent(translate('error.unexpectedError')));
         }
-      } catch (_) {
+      } catch (error, stackTrace) {
+        debugPrint(
+          'Error in $runtimeType in `onError`: $error.\n'
+          'Stacktrace: $stackTrace',
+        );
         add(ErrorEvent(translate('error.unexpectedError')));
       }
       emit(
@@ -241,10 +240,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           .sendChat(Chat(messages: currentMessages, language: state.language))
           .listen(
         (String line) => add(UpdateAiMessageEvent(line)),
-        onError: (Object error) {
+        onError: (Object error, StackTrace stackTrace) {
           if (error is DioException) {
             add(ErrorEvent(translate('error.pleaseCheckInternet')));
           } else {
+            debugPrint(
+              'Error in $runtimeType in `onError`: $error.\n'
+              'Stacktrace: $stackTrace',
+            );
             add(ErrorEvent(translate('error.unexpectedError')));
           }
         },
@@ -264,7 +267,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   final ChatRepository _chatRepository;
   final SettingsRepository _settingsRepository;
-  final EmailRepository _emailRepository;
 
   Future<String> _writeImageToStorage(Uint8List feedbackScreenshot) async {
     final Directory output = await getTemporaryDirectory();

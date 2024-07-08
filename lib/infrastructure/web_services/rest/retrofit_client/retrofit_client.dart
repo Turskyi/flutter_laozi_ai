@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:laozi_ai/infrastructure/web_services/models/chat_request/chat_request.dart';
-import 'package:laozi_ai/infrastructure/web_services/models/email_request/email_request.dart';
-import 'package:laozi_ai/infrastructure/web_services/models/email_response/email_response.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'retrofit_client.g.dart';
@@ -34,9 +32,4 @@ abstract class RetrofitClient {
   Stream<String> sendChatMessageOnUnknownPlatform(
     @Body() ChatRequest chatRequest,
   );
-
-  //TODO: replace with different email service.
-  @POST('https://an-artist-art.vercel.app/api/email')
-  @Headers(<String, dynamic>{'Content-Type': 'application/json'})
-  Future<EmailResponse> email(@Body() EmailRequest email);
 }

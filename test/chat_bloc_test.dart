@@ -2,7 +2,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
 import 'package:laozi_ai/domain_services/chat_repository.dart';
-import 'package:laozi_ai/domain_services/email_repository.dart';
 import 'package:laozi_ai/domain_services/settings_repository.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:mocktail/mocktail.dart';
@@ -12,19 +11,15 @@ class MockChatRepository extends Mock implements ChatRepository {}
 
 class MockSettingsRepository extends Mock implements SettingsRepository {}
 
-class MockEmailRepository extends Mock implements EmailRepository {}
-
 void main() {
   // Define the mock instances.
   late MockChatRepository mockChatRepository;
   late MockSettingsRepository mockSettingsRepository;
-  late MockEmailRepository mockEmailRepository;
 
   // Initialize the mock instances before each test.
   setUp(() {
     mockChatRepository = MockChatRepository();
     mockSettingsRepository = MockSettingsRepository();
-    mockEmailRepository = MockEmailRepository();
   });
 
   // Define the test for LoadHomeEvent.
@@ -37,7 +32,6 @@ void main() {
       return ChatBloc(
         mockChatRepository,
         mockSettingsRepository,
-        mockEmailRepository,
       );
     },
     act: (ChatBloc bloc) => bloc.add(const LoadHomeEvent()),

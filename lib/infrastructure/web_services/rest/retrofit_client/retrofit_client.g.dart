@@ -6,7 +6,7 @@ part of 'retrofit_client.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
 class _RetrofitClient implements RetrofitClient {
   _RetrofitClient(
@@ -41,8 +41,8 @@ class _RetrofitClient implements RetrofitClient {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data!;
-    yield value;
+    final _value = _result.data!;
+    yield _value;
   }
 
   @override
@@ -69,8 +69,8 @@ class _RetrofitClient implements RetrofitClient {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data!;
-    yield value;
+    final _value = _result.data!;
+    yield _value;
   }
 
   @override
@@ -96,8 +96,8 @@ class _RetrofitClient implements RetrofitClient {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data!;
-    yield value;
+    final _value = _result.data!;
+    yield _value;
   }
 
   @override
@@ -123,8 +123,8 @@ class _RetrofitClient implements RetrofitClient {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data!;
-    yield value;
+    final _value = _result.data!;
+    yield _value;
   }
 
   @override
@@ -150,8 +150,8 @@ class _RetrofitClient implements RetrofitClient {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data!;
-    yield value;
+    final _value = _result.data!;
+    yield _value;
   }
 
   @override
@@ -177,8 +177,8 @@ class _RetrofitClient implements RetrofitClient {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data!;
-    yield value;
+    final _value = _result.data!;
+    yield _value;
   }
 
   @override
@@ -205,38 +205,8 @@ class _RetrofitClient implements RetrofitClient {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data!;
-    yield value;
-  }
-
-  @override
-  Future<EmailResponse> email(EmailRequest email) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
-    _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
-    _data.addAll(email.toJson());
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<EmailResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'application/json',
-    )
-            .compose(
-              _dio.options,
-              'https://an-artist-art.vercel.app/api/email',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = EmailResponse.fromJson(_result.data!);
-    return value;
+    final _value = _result.data!;
+    yield _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
