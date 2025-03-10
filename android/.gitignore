@@ -16,3 +16,7 @@ key.properties
 /keystore
 /keystore/
 /app/google-services.json
+/key.properties
+/app/.cxx/
+/app/.cxx/Debug/
+app/.cxx

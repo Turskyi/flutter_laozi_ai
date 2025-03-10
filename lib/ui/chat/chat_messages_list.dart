@@ -26,35 +26,37 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
         if (state.messages.isEmpty) {
           // If there are no messages, show the welcome message.
           const double laoziSize = 300.0;
-          return Center(
-            child: Padding(
-              padding:
-                  const EdgeInsets.only(left: 32.0, right: 32.0, top: 32.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    // Resizes the image when the keyboard opens up.
-                    Image.asset(
-                      // Path to the image asset.
-                      constants.laoziImagePath,
-                      width: laoziSize,
-                      height: laoziSize,
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      translate('chat.sendMessageToStartChat'),
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      translate('chat.youCanAskAnyQuestionAbout'),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 24),
-                  ],
-                ),
+          return Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.only(
+              left: 32.0,
+              right: 32.0,
+              top: 32.0,
+            ),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(bottom: 12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  // Resizes the image when the keyboard opens up.
+                  Image.asset(
+                    // Path to the image asset.
+                    constants.laoziImagePath,
+                    width: laoziSize,
+                    height: laoziSize,
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    translate('chat.sendMessageToStartChat'),
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    translate('chat.youCanAskAnyQuestionAbout'),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             ),
           );
@@ -84,7 +86,8 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
                 ),
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
-                  color: Colors.redAccent, // Improved contrast
+                  // Improved contrast.
+                  color: Colors.redAccent,
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: ListTile(

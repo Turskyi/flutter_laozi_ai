@@ -2,8 +2,9 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/di/injector.dart';
-import 'package:laozi_ai/laozi_ai_app.dart';
-import 'package:laozi_ai/localization/localization_delelegate_getter.dart';
+import 'package:laozi_ai/ui/laozi_ai_app.dart';
+import 'package:laozi_ai/localization/localization_delelegate_getter.dart'
+    as locale;
 import 'package:laozi_ai/ui/feedback/feedback_form.dart';
 
 /// The [main] is the ultimate detail — the lowest-level policy.
@@ -28,7 +29,7 @@ void main() async {
   await injectDependencies();
 
   final LocalizationDelegate localizationDelegate =
-      await getLocalizationDelegate();
+      await locale.getLocalizationDelegate();
   runApp(
     LocalizedApp(
       localizationDelegate,

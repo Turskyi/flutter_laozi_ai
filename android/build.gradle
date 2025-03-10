@@ -3,6 +3,7 @@ buildscript {
         application_id = 'com.turskyi.laozi_ai'
 
         getSigningProperty = { key ->
+            //noinspection GroovyAssignabilityCheck
             def value = System.getenv(key) ?: project.findProperty("production.$key") ?: project.findProperty("dev.$key")
             return value
         }
@@ -21,7 +22,7 @@ buildscript {
 
 plugins {
     id 'com.google.gms.google-services' version '4.4.2' apply false
-    id 'com.google.firebase.crashlytics' version '3.0.1' apply false
+    id 'com.google.firebase.crashlytics' version '3.0.3' apply false
 }
 
 allprojects {

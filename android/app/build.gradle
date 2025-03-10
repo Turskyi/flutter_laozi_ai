@@ -11,6 +11,7 @@ def localProperties = new Properties()
 def localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader("UTF-8") { reader ->
+        //noinspection GroovyAssignabilityCheck
         localProperties.load(reader)
     }
 }
@@ -29,14 +30,15 @@ def keyProperties = new Properties()
 def keyPropertiesFile = rootProject.file('key.properties')
 if (keyPropertiesFile.exists()) {
     keyPropertiesFile.withReader('UTF-8') { reader ->
+        //noinspection GroovyAssignabilityCheck
         keyProperties.load(reader)
     }
 }
 // Debug environment variables.
-def signing_key_debug_path = keyProperties.getProperty('production.SIGNING_KEY_DEBUG_PATH') ?: rootProject.SIGNING_KEY_DEBUG_PATH
-def signing_key_debug_password = keyProperties.getProperty('production.SIGNING_KEY_DEBUG_PASSWORD') ?: rootProject.SIGNING_KEY_DEBUG_PASSWORD
-def signing_key_debug_key = keyProperties.getProperty('production.SIGNING_KEY_DEBUG_KEY') ?: rootProject.SIGNING_KEY_DEBUG_KEY
-def signing_key_debug_key_password = keyProperties.getProperty('production.SIGNING_KEY_DEBUG_KEY_PASSWORD') ?: rootProject.SIGNING_KEY_DEBUG_KEY_PASSWORD
+def signing_key_debug_path = keyProperties.getProperty('dev.SIGNING_KEY_DEBUG_PATH') ?: rootProject.SIGNING_KEY_DEBUG_PATH
+def signing_key_debug_password = keyProperties.getProperty('dev.SIGNING_KEY_DEBUG_PASSWORD') ?: rootProject.SIGNING_KEY_DEBUG_PASSWORD
+def signing_key_debug_key = keyProperties.getProperty('dev.SIGNING_KEY_DEBUG_KEY') ?: rootProject.SIGNING_KEY_DEBUG_KEY
+def signing_key_debug_key_password = keyProperties.getProperty('dev.SIGNING_KEY_DEBUG_KEY_PASSWORD') ?: rootProject.SIGNING_KEY_DEBUG_KEY_PASSWORD
 // Release environment variables.
 def signing_key_release_path = keyProperties.getProperty('production.SIGNING_KEY_RELEASE_PATH') ?: rootProject.SIGNING_KEY_RELEASE_PATH
 def signing_key_release_password = keyProperties.getProperty('production.SIGNING_KEY_RELEASE_PASSWORD') ?: rootProject.SIGNING_KEY_RELEASE_PASSWORD
@@ -47,11 +49,11 @@ android {
     namespace = rootProject.application_id
     compileSdk = flutter.compileSdkVersion
     //TODO: change back to dynamic "flutter.ndkVersion" version, when the error "One or more plugins require a higher Android NDK version." is gone.
-    ndkVersion = "26.1.10909125"
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     defaultConfig {
@@ -100,10 +102,10 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
-            signingConfig signingConfigs.production
+            signingConfig = signingConfigs.production
         }
         debug {
-            signingConfig signingConfigs.dev
+            signingConfig = signingConfigs.dev
         }
     }
 }
@@ -113,5 +115,6 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.google.firebase:firebase-crashlytics:19.0.1'
+    implementation 'com.google.firebase:firebase-crashlytics:19.4.1'
 }
+

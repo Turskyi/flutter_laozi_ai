@@ -3,6 +3,8 @@
 [![codecov](https://codecov.io/gh/Turskyi/flutter_laozi_ai/graph/badge.svg?token=JEURBJLKTI)](https://codecov.io/gh/Turskyi/flutter_laozi_ai)
 [![Code Quality](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/code_quality_tests.yml/badge.svg)](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/code_quality_tests.yml)
 [![Upload Android build to App Tester.](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/flutter_android_ci.yml/badge.svg?branch=master)](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/flutter_android_ci.yml)
+[![Codemagic build status](https://api.codemagic.io/apps/667a310740730af77f00b920/667a310740730af77f00b91f/status_badge.svg)](https://codemagic.io/app/667a310740730af77f00b920/667a310740730af77f00b91f/latest_build)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Turskyi/flutter_laozi_ai)
 <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/Turskyi/flutter_laozi_ai">
 
 # Daoism - Laozi AI Chatbot (Flutter Version)
@@ -99,7 +101,9 @@ folder:
 
 ## Layers
 
-#### APPLICATION CORE - `entities`, `domain_services` and `application_services` (`core`)
+#### APPLICATION CORE - `entities`, `domain_services` and
+
+`application_services` (`core`)
 
 The number of layers in the application `core` will vary, but remember that
 the `Entities` is the very center, and since all couplings are toward the
@@ -173,7 +177,8 @@ tabs to report bugs, request features, or give feedback.
 
 - [DON'T cast a nullable value to a non-nullable type. This hides a null check and most of the time it is not what is expected.](https://dart-lang.github.io/linter/lints/avoid_as.html)
 
-- [PREFER using `const` for instantiating constant constructors](https://dart-lang.github.io/linter/lints/prefer_const_constructors.html)
+- [PREFER using
+  `const` for instantiating constant constructors](https://dart-lang.github.io/linter/lints/prefer_const_constructors.html)
 
 If a constructor can be invoked as const to produce a canonicalized instance,
 it's preferable to do so.
@@ -425,11 +430,11 @@ more expression and flexibility.
 
 ## Contact:
 
-For any inquiries or suggestions, please open an issue on theGitHub repository
+For any inquiries or suggestions, please open an issue on the GitHub repository
 or reach out to me directly at
 [support@daoizm.online](mailto:support@daoizm.online).
 
-• Screenshots:
+## Screenshots:
 
 <!--suppress CheckImageSize -->
 <img src="screenshots/portrait_android_ua.png" width="400"  alt="screenshot">
@@ -447,3 +452,7 @@ or reach out to me directly at
 <a href="https://play.google.com/store/apps/details?id=com.turskyi.laozi_ai" target="_blank">
 <img src="https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png" width=240  alt="google play badge"/>
 </a>
+
+## [[Video] Daoism - Laozi AI Chatbot: App Demo & Development with Google Gemini](https://www.youtube.com/watch?v=wyVk3TPaE7c)
+
+[![Watch the video](https://img.youtube.com/vi/wyVk3TPaE7c/maxresdefault.jpg)](https://www.youtube.com/watch?v=wyVk3TPaE7c)

@@ -47,13 +47,16 @@ class ChatMessage extends StatelessWidget {
                       : colorScheme.onPrimary,
                 ),
                 strong: const TextStyle(fontWeight: FontWeight.bold),
-                em: const TextStyle(fontStyle: FontStyle.italic),
+                em: const TextStyle(
+                  fontStyle: FontStyle.italic,
+                ),
                 listBullet: TextStyle(
                   color: message.isAi
                       ? colorScheme.onSecondaryContainer
                       : colorScheme.onPrimary,
                 ),
               ),
+              selectable: true,
             ),
           ),
         ),
