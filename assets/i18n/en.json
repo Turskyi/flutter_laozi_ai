@@ -5,7 +5,7 @@
   "appVersion": "App version",
   "buildNumber": "Build number",
   "chat": {
-    "askSomething": "Ask something...",
+    "askSomething": "Ask something about Daoism...",
     "sendMessageToStartChat": "Send a message to start the chat with Laozi AI!",
     "youCanAskAnyQuestionAbout": "You can ask Laozi Chatbot any question about Daoism and he will find the relevant information."
   },

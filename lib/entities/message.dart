@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:laozi_ai/entities/enums/role.dart';
 
 class Message {
@@ -26,6 +27,10 @@ class Message {
 
   @override
   String toString() {
-    return 'Message{role: $role, content: $content}';
+    if (kDebugMode) {
+      return 'Message{role: $role, content: $content}';
+    } else {
+      return super.toString();
+    }
   }
 }

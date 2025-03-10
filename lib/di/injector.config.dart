@@ -1,3 +1,4 @@
+// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -8,55 +9,56 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:get_it/get_it.dart' as _i1;
-import 'package:injectable/injectable.dart' as _i2;
-import 'package:laozi_ai/application_services/blocs/chat_bloc.dart' as _i10;
+import 'package:get_it/get_it.dart' as _i174;
+import 'package:injectable/injectable.dart' as _i526;
+import 'package:laozi_ai/application_services/blocs/chat_bloc.dart' as _i841;
 import 'package:laozi_ai/application_services/repositories/chat_repository_impl.dart'
-    as _i9;
+    as _i848;
 import 'package:laozi_ai/application_services/repositories/settings_repository_impl.dart'
-    as _i7;
-import 'package:laozi_ai/di/preferences_module.dart' as _i11;
-import 'package:laozi_ai/di/retrofit_client_module.dart' as _i12;
-import 'package:laozi_ai/domain_services/chat_repository.dart' as _i8;
-import 'package:laozi_ai/domain_services/settings_repository.dart' as _i6;
+    as _i731;
+import 'package:laozi_ai/di/preferences_module.dart' as _i475;
+import 'package:laozi_ai/di/retrofit_client_module.dart' as _i609;
+import 'package:laozi_ai/domain_services/chat_repository.dart' as _i732;
+import 'package:laozi_ai/domain_services/settings_repository.dart' as _i301;
 import 'package:laozi_ai/infrastructure/web_services/rest/logging_interceptor.dart'
-    as _i4;
+    as _i890;
 import 'package:laozi_ai/infrastructure/web_services/rest/retrofit_client/retrofit_client.dart'
-    as _i5;
-import 'package:shared_preferences/shared_preferences.dart' as _i3;
+    as _i222;
+import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
-extension GetItInjectableX on _i1.GetIt {
+extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
-  Future<_i1.GetIt> initDependencyInjection({
+  Future<_i174.GetIt> initDependencyInjection({
     String? environment,
-    _i2.EnvironmentFilter? environmentFilter,
+    _i526.EnvironmentFilter? environmentFilter,
   }) async {
-    final gh = _i2.GetItHelper(
+    final gh = _i526.GetItHelper(
       this,
       environment,
       environmentFilter,
     );
     final sharedPreferencesModule = _$SharedPreferencesModule();
     final retrofitClientModule = _$RetrofitClientModule();
-    await gh.factoryAsync<_i3.SharedPreferences>(
+    await gh.factoryAsync<_i460.SharedPreferences>(
       () => sharedPreferencesModule.prefs,
       preResolve: true,
     );
-    gh.factory<_i4.LoggingInterceptor>(() => const _i4.LoggingInterceptor());
-    gh.factory<_i5.RetrofitClient>(
-        () => retrofitClientModule.getRestClient(gh<_i4.LoggingInterceptor>()));
-    gh.factory<_i6.SettingsRepository>(
-        () => _i7.SettingsRepositoryImpl(gh<_i3.SharedPreferences>()));
-    gh.factory<_i8.ChatRepository>(
-        () => _i9.ChatRepositoryImpl(gh<_i5.RetrofitClient>()));
-    gh.factory<_i10.ChatBloc>(() => _i10.ChatBloc(
-          gh<_i8.ChatRepository>(),
-          gh<_i6.SettingsRepository>(),
+    gh.factory<_i890.LoggingInterceptor>(
+        () => const _i890.LoggingInterceptor());
+    gh.factory<_i301.SettingsRepository>(
+        () => _i731.SettingsRepositoryImpl(gh<_i460.SharedPreferences>()));
+    gh.factory<_i222.RetrofitClient>(() =>
+        retrofitClientModule.getRestClient(gh<_i890.LoggingInterceptor>()));
+    gh.factory<_i732.ChatRepository>(
+        () => _i848.ChatRepositoryImpl(gh<_i222.RetrofitClient>()));
+    gh.factory<_i841.ChatBloc>(() => _i841.ChatBloc(
+          gh<_i732.ChatRepository>(),
+          gh<_i301.SettingsRepository>(),
         ));
     return this;
   }
 }
 
-class _$SharedPreferencesModule extends _i11.SharedPreferencesModule {}
+class _$SharedPreferencesModule extends _i475.SharedPreferencesModule {}
 
-class _$RetrofitClientModule extends _i12.RetrofitClientModule {}
+class _$RetrofitClientModule extends _i609.RetrofitClientModule {}

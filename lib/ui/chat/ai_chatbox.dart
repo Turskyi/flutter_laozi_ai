@@ -77,38 +77,48 @@ class _AIChatBoxState extends State<AIChatBox> {
                         )
                       : const ChatMessagesList(),
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextField(
-                          controller: _textEditingController,
-                          decoration: InputDecoration(
-                            hintText: translate('chat.askSomething'),
-                            border: const OutlineInputBorder(),
-                            fillColor: Colors.black,
-                            filled: true,
+                SafeArea(
+                  top: false,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 8.0,
+                      right: 8.0,
+                      bottom: 8.0,
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            enabled: state is! SentMessageState,
+                            controller: _textEditingController,
+                            decoration: InputDecoration(
+                              hintText: translate('chat.askSomething'),
+                              border: const OutlineInputBorder(),
+                              fillColor: Colors.black,
+                              filled: true,
+                            ),
                           ),
                         ),
-                      ),
-                      ValueListenableBuilder<TextEditingValue>(
-                        valueListenable: _textEditingController,
-                        child: state is SentMessageState
-                            ? const CircularProgressIndicator()
-                            : const Icon(Icons.send),
-                        builder:
-                            (_, TextEditingValue value, Widget? iconWidget) {
-                          return IconButton(
-                            icon: iconWidget ?? const SizedBox(),
-                            onPressed: value.text.isNotEmpty
-                                ? _handleSendMessage
-                                : null,
-                          );
-                        },
-                      ),
-                    ],
+                        ValueListenableBuilder<TextEditingValue>(
+                          valueListenable: _textEditingController,
+                          child: state is SentMessageState
+                              ? const CircularProgressIndicator()
+                              : const Icon(Icons.send),
+                          builder: (
+                            _,
+                            TextEditingValue value,
+                            Widget? iconWidget,
+                          ) {
+                            return IconButton(
+                              icon: iconWidget ?? const SizedBox(),
+                              onPressed: value.text.isNotEmpty
+                                  ? _handleSendMessage
+                                  : null,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -146,7 +156,7 @@ class _AIChatBoxState extends State<AIChatBox> {
   }
 
   void _onFeedbackChanged() {
-    bool? isVisible = _feedbackController?.isVisible;
+    final bool? isVisible = _feedbackController?.isVisible;
     if (isVisible == false) {
       _feedbackController?.removeListener(_onFeedbackChanged);
       context.read<ChatBloc>().add(const ClosingFeedbackEvent());

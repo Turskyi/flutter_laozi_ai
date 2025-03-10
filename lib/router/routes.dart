@@ -21,9 +21,11 @@ Map<String, WidgetBuilder> routeMap = <String, WidgetBuilder>{
                 changeLocale(context, savedLanguage.isoLanguageCode)
                     // The returned value in `then` is always `null`.
                     .then((_) {
-                  context
-                      .read<ChatBloc>()
-                      .add(ChangeLanguageEvent(savedLanguage));
+                  if (context.mounted) {
+                    context
+                        .read<ChatBloc>()
+                        .add(ChangeLanguageEvent(savedLanguage));
+                  }
                 });
               }
             }
