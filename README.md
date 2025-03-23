@@ -7,7 +7,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Turskyi/flutter_laozi_ai)
 <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/Turskyi/flutter_laozi_ai">
 
-# Daoism - Laozi AI Chatbot (Flutter Version)
+# Daoism - Laozi AI (Flutter Version)
 
 This project is a Flutter-based mobile application that brings the wisdom of
 Laozi and Daoist
@@ -29,6 +29,7 @@ Flutter framework for a smooth and responsive interface.
 Join our testing program and provide valuable feedback:
 
 - [Android App Distribution Tester Invite](https://appdistribution.firebase.dev/i/fa9deb62ac3a884b)
+- [iOS TestFlight Tester Invite](https://testflight.apple.com/join/Yw8SqhUw)
 
 ### Clone the Repository:
 

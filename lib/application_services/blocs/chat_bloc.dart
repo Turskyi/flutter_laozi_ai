@@ -180,9 +180,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
         final PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-        final Map<String, dynamic>? extra = feedback.extra;
-        final dynamic rating = extra?['rating'];
-        final dynamic type = extra?['feedback_type'];
+        final Map<String, Object?>? extra = feedback.extra;
+        final Object? rating = extra?['rating'];
+        final Object? type = extra?['feedback_type'];
 
         // Construct the feedback text with details from `extra'.
         final StringBuffer feedbackBody = StringBuffer()
