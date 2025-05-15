@@ -91,7 +91,7 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: ListTile(
-                  title: Text(
+                  title: SelectableText(
                     state.errorMessage,
                     style: const TextStyle(
                       color: Colors.white,
