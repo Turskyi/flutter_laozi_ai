@@ -10,10 +10,9 @@
 # Daoism - Laozi AI (Flutter Version)
 
 This project is a Flutter-based mobile application that brings the wisdom of
-Laozi and Daoist
-teachings to users' fingertips. It is designed with a focus on user experience,
-leveraging the
-Flutter framework for a smooth and responsive interface.
+Laozi and Daoist teachings to users' fingertips. It is designed with a focus on
+user experience, leveraging the Flutter framework for a smooth and responsive
+interface.
 
 ## Getting Started
 
@@ -60,6 +59,40 @@ flutter run
 ```bash
 flutter build apk --release
 ```
+
+## Associated Links / Project URLs
+
+This Flutter project interacts with and is related to the following online
+resources:
+
+1. **Primary Web Application & API Backend:**
+
+* **URL:** [https://daoizm.online](https://daoizm.online)
+* **Description:** This is the main web presence for the Laozi AI project. It
+  hosts a Next.js frontend and, importantly, the **API backend that this Flutter
+  application consumes** for its core functionality. While the frontend at this
+  URL is built with Next.js (not Flutter), the backend services are essential
+  for this mobile app.
+* *Note: This domain is privately hosted and its availability depends on
+  continued domain registration.*
+
+2. **Stable Web Application & API Backend (Fallback/Alternative):**
+
+* **URL:** [https://laozi-chatbot.vercel.app](https://laozi-chatbot.vercel.app)
+* **Description:** This URL also hosts the Next.js frontend and the same API
+  backend used by the Flutter application. It serves as a more stable, long-term
+  accessible alternative to `daoizm.online` as it's hosted on Vercel's free
+  tier.
+
+3. **Flutter Web Deployment (Demo):**
+
+* **URL:** [https://laozi-ai.web.app](https://laozi-ai.web.app)
+* **Description:** This is a **web deployment of this exact Flutter application
+  **, hosted on Firebase. While the primary focus of this repository is the
+  Android and iOS mobile application, this web version allows users to quickly
+  try out the "mobile" experience directly in their browser without needing to
+  install the app from an app store. It's provided for convenience and
+  demonstration purposes.
 
 ## Libraries Used:
 
@@ -450,9 +483,15 @@ or reach out to me directly at
 
 ## Download
 
-<a href="https://play.google.com/store/apps/details?id=com.turskyi.laozi_ai" target="_blank">
-<img src="https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png" width=240  alt="google play badge"/>
-</a>
+<!--suppress HtmlDeprecatedAttribute -->
+<div align="center">
+  <a href="https://play.google.com/store/apps/details?id=com.turskyi.laozi_ai" target="_blank" style="display: inline-block; vertical-align: middle;">
+    <img src="https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png" width=240 alt="google play badge"/>
+  </a>
+  <a href="https://apps.apple.com/ca/app/daoism-laozi-ai/id6743682937" target="_blank" style="display: inline-block; vertical-align: middle;">
+    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" width=200 alt="app store badge"/>
+  </a>
+</div>
 
 ## [[Video] Daoism - Laozi AI Chatbot: App Demo & Development with Google Gemini](https://www.youtube.com/watch?v=wyVk3TPaE7c)
 
