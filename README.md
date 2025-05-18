@@ -67,32 +67,37 @@ resources:
 
 1. **Primary Web Application & API Backend:**
 
-* **URL:** [https://daoizm.online](https://daoizm.online)
-* **Description:** This is the main web presence for the Laozi AI project. It
+- **URL:** [https://daoizm.online](https://daoizm.online)
+- **Description:** This is the main web presence for the Laozi AI project. It
   hosts a Next.js frontend and, importantly, the **API backend that this Flutter
   application consumes** for its core functionality. While the frontend at this
   URL is built with Next.js (not Flutter), the backend services are essential
   for this mobile app.
-* *Note: This domain is privately hosted and its availability depends on
-  continued domain registration.*
+- _Note: This domain is privately hosted and its availability depends on
+  continued domain registration._
 
 2. **Stable Web Application & API Backend (Fallback/Alternative):**
 
-* **URL:** [https://laozi-chatbot.vercel.app](https://laozi-chatbot.vercel.app)
-* **Description:** This URL also hosts the Next.js frontend and the same API
+- **URL:** [https://laozi-chatbot.vercel.app](https://laozi-chatbot.vercel.app)
+- **Description:** This URL also hosts the Next.js frontend and the same API
   backend used by the Flutter application. It serves as a more stable, long-term
   accessible alternative to `daoizm.online` as it's hosted on Vercel's free
   tier.
 
 3. **Flutter Web Deployment (Demo):**
 
-* **URL:** [https://laozi-ai.web.app](https://laozi-ai.web.app)
-* **Description:** This is a **web deployment of this exact Flutter application
+- **URL:** [https://laozi-ai.web.app](https://laozi-ai.web.app)
+- **Description:** This is a **web deployment of this exact Flutter application
   **, hosted on Firebase. While the primary focus of this repository is the
   Android and iOS mobile application, this web version allows users to quickly
   try out the "mobile" experience directly in their browser without needing to
   install the app from an app store. It's provided for convenience and
   demonstration purposes.
+
+4. **Project Board:**
+   [GitHub Project Board](https://github.com/users/Turskyi/projects/17)
+
+5. [Web and Backend Source Code (Next.js)](https://github.com/Turskyi/nextjs-laozi-chatbot)
 
 ## Libraries Used:
 
@@ -496,3 +501,6 @@ or reach out to me directly at
 ## [[Video] Daoism - Laozi AI Chatbot: App Demo & Development with Google Gemini](https://www.youtube.com/watch?v=wyVk3TPaE7c)
 
 [![Watch the video](https://img.youtube.com/vi/wyVk3TPaE7c/maxresdefault.jpg)](https://www.youtube.com/watch?v=wyVk3TPaE7c)
+
+**Developer:** Dmytro Turskyi ([turskyi.com](https://turskyi.com))  
+ _Single developer and maintainer of this project._
