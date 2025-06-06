@@ -489,18 +489,18 @@ or reach out to me directly at
 ## Download
 
 <!--suppress HtmlDeprecatedAttribute -->
-<div align="center">
-  <a href="https://play.google.com/store/apps/details?id=com.turskyi.laozi_ai" target="_blank" style="display: inline-block; vertical-align: middle;">
-    <img src="https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png" width=240 alt="google play badge"/>
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=com.turskyi.laozi_ai" target="_blank">
+    <img src="https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png" height="80" alt="google play badge"/>
   </a>
-  <a href="https://apps.apple.com/ca/app/daoism-laozi-ai/id6743682937" target="_blank" style="display: inline-block; vertical-align: middle;">
-    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" width=200 alt="app store badge"/>
+  <a href="https://apps.apple.com/ca/app/daoism-laozi-ai/id6743682937" target="_blank">
+    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" height="80" alt="app store badge"/>
   </a>
-</div>
+</p>
 
 ## [[Video] Daoism - Laozi AI Chatbot: App Demo & Development with Google Gemini](https://www.youtube.com/watch?v=wyVk3TPaE7c)
 
 [![Watch the video](https://img.youtube.com/vi/wyVk3TPaE7c/maxresdefault.jpg)](https://www.youtube.com/watch?v=wyVk3TPaE7c)
 
 **Developer:** Dmytro Turskyi ([turskyi.com](https://turskyi.com))  
- _Single developer and maintainer of this project._
+_Single developer and maintainer of this project._
