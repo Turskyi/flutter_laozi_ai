@@ -65,3 +65,9 @@ final class ErrorEvent extends ChatEvent {
 
   final String error;
 }
+
+final class LaunchUrlEvent extends ChatEvent {
+  const LaunchUrlEvent(this.url);
+
+  final String url;
+}

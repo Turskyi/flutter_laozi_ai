@@ -1,3 +1,4 @@
+//file:noinspection GrDeprecatedAPIUsage
 buildscript {
     ext {
         application_id = 'com.turskyi.laozi_ai'
@@ -32,8 +33,10 @@ allprojects {
     }
 }
 
+//noinspection GrDeprecatedAPIUsage
 rootProject.buildDir = "../build"
 subprojects {
+    //noinspection GrDeprecatedAPIUsage
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
 subprojects {
