@@ -26,6 +26,10 @@ class SettingsRepositoryImpl implements SettingsRepository {
   }
 
   @override
-  Future<bool> saveLanguageIsoCode(String languageIsoCode) =>
-      _preferences.setString(Settings.languageIsoCode.key, languageIsoCode);
+  Future<bool> saveLanguageIsoCode(String languageIsoCode) {
+    return _preferences.setString(
+      Settings.languageIsoCode.key,
+      languageIsoCode,
+    );
+  }
 }
