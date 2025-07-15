@@ -34,9 +34,11 @@ void main() async {
     LocalizedApp(
       localizationDelegate,
       BetterFeedback(
-        feedbackBuilder: (BuildContext _,
+        feedbackBuilder: (
+          BuildContext _,
           OnSubmit onSubmit,
-          ScrollController? scrollController,) {
+          ScrollController? scrollController,
+        ) {
           return FeedbackForm(
             onSubmit: onSubmit,
             scrollController: scrollController,
