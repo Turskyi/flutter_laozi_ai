@@ -27,15 +27,9 @@ class _AIChatBoxState extends State<AIChatBox> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext _) {
     return BlocConsumer<ChatBloc, ChatState>(
-      listener: (_, ChatState state) {
-        if (state is FeedbackState) {
-          _showFeedbackUi();
-        } else if (state is FeedbackSent) {
-          _notifyFeedbackSent();
-        }
-      },
+      listener: _chatStateListener,
       builder: (BuildContext context, ChatState state) {
         return Scaffold(
           extendBodyBehindAppBar: true,
@@ -97,6 +91,7 @@ class _AIChatBoxState extends State<AIChatBox> {
                               fillColor: Colors.black,
                               filled: true,
                             ),
+                            onSubmitted: _submitChatMessage,
                           ),
                         ),
                         ValueListenableBuilder<TextEditingValue>(
@@ -105,7 +100,7 @@ class _AIChatBoxState extends State<AIChatBox> {
                               ? const CircularProgressIndicator()
                               : const Icon(Icons.send),
                           builder: (
-                            _,
+                            BuildContext _,
                             TextEditingValue value,
                             Widget? iconWidget,
                           ) {
@@ -149,8 +144,9 @@ class _AIChatBoxState extends State<AIChatBox> {
 
   void _showFeedbackUi() {
     _feedbackController?.show(
-      (UserFeedback feedback) =>
-          context.read<ChatBloc>().add(SubmitFeedbackEvent(feedback)),
+      (UserFeedback feedback) {
+        context.read<ChatBloc>().add(SubmitFeedbackEvent(feedback));
+      },
     );
     _feedbackController?.addListener(_onFeedbackChanged);
   }
@@ -168,6 +164,21 @@ class _AIChatBoxState extends State<AIChatBox> {
     _textEditingController.clear();
   }
 
-  void _onBugReportPressed() =>
-      context.read<ChatBloc>().add(const BugReportPressedEvent());
+  void _onBugReportPressed() {
+    context.read<ChatBloc>().add(const BugReportPressedEvent());
+  }
+
+  void _submitChatMessage(String value) {
+    if (value.isNotEmpty) {
+      _handleSendMessage();
+    }
+  }
+
+  void _chatStateListener(BuildContext _, ChatState state) {
+    if (state is FeedbackState) {
+      _showFeedbackUi();
+    } else if (state is FeedbackSent) {
+      _notifyFeedbackSent();
+    }
+  }
 }

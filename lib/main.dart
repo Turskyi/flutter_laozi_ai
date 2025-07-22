@@ -2,10 +2,10 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/di/injector.dart';
-import 'package:laozi_ai/ui/laozi_ai_app.dart';
 import 'package:laozi_ai/localization/localization_delelegate_getter.dart'
     as locale;
 import 'package:laozi_ai/ui/feedback/feedback_form.dart';
+import 'package:laozi_ai/ui/laozi_ai_app.dart';
 
 /// The [main] is the ultimate detail — the lowest-level policy.
 /// It is the initial entry point of the system.
@@ -35,14 +35,15 @@ void main() async {
       localizationDelegate,
       BetterFeedback(
         feedbackBuilder: (
-          BuildContext context,
+          BuildContext _,
           OnSubmit onSubmit,
           ScrollController? scrollController,
-        ) =>
-            FeedbackForm(
-          onSubmit: onSubmit,
-          scrollController: scrollController,
-        ),
+        ) {
+          return FeedbackForm(
+            onSubmit: onSubmit,
+            scrollController: scrollController,
+          );
+        },
         theme: FeedbackThemeData(feedbackSheetColor: Colors.grey.shade50),
         child: const LaoziAiApp(),
       ),

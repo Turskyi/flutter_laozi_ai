@@ -84,7 +84,7 @@ class LanguageSelector extends StatelessWidget {
             if (language != null) {
               changeLocale(context, language.isoLanguageCode)
                   // The returned value is always `null`.
-                  .then((_) {
+                  .then((Object? _) {
                 if (context.mounted) {
                   context.read<ChatBloc>().add(ChangeLanguageEvent(language));
                 }
