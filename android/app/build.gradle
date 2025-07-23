@@ -73,10 +73,15 @@ android {
     signingConfigs {
         production {
             // FCI_BUILD_ID is exported by Codemagic
+            //noinspection GroovyAssignabilityCheck
             if (System.getenv()["FCI_BUILD_ID"] != null) {
+                //noinspection GroovyAssignabilityCheck
                 storeFile file(System.getenv()["CM_KEYSTORE_PATH"])
+                //noinspection GroovyAssignabilityCheck
                 storePassword System.getenv()["CM_KEYSTORE_PASSWORD"]
+                //noinspection GroovyAssignabilityCheck
                 keyAlias System.getenv()["CM_KEY_ALIAS"]
+                //noinspection GroovyAssignabilityCheck
                 keyPassword System.getenv()["CM_KEY_PASSWORD"]
             } else {
                 storeFile file(signing_key_release_path)
@@ -87,10 +92,15 @@ android {
         }
         dev {
             // FCI_BUILD_ID is exported by Codemagic
+            //noinspection GroovyAssignabilityCheck
             if (System.getenv()["FCI_BUILD_ID"] != null) {
+                //noinspection GroovyAssignabilityCheck
                 storeFile file(System.getenv()["CM_KEYSTORE_PATH"])
+                //noinspection GroovyAssignabilityCheck
                 storePassword System.getenv()["CM_KEYSTORE_PASSWORD"]
+                //noinspection GroovyAssignabilityCheck
                 keyAlias System.getenv()["CM_KEY_ALIAS"]
+                //noinspection GroovyAssignabilityCheck
                 keyPassword System.getenv()["CM_KEY_PASSWORD"]
             } else {
                 storeFile file(signing_key_debug_path)
