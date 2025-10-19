@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
+import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/ui/chat/app_bar/wave_app_bar.dart';
 import 'package:laozi_ai/ui/chat/chat_messages_list.dart';
 import 'package:laozi_ai/ui/chat/language_selector.dart';
@@ -33,6 +34,24 @@ class _AIChatBoxState extends State<AIChatBox> {
       builder: (BuildContext context, ChatState state) {
         return Scaffold(
           extendBodyBehindAppBar: true,
+          drawer: Drawer(
+            child: ListView(
+              children: <Widget>[
+                DrawerHeader(child: Text(translate('title'))),
+                ListTile(title: Text(translate('about')), onTap: _openAbout),
+                ListTile(title: Text(translate('faq')), onTap: _openFaq),
+                ListTile(
+                  title: Text(translate('privacy')),
+                  onTap: _openPrivacy,
+                ),
+                const Divider(),
+                ListTile(
+                  title: Text(translate('report_bug')),
+                  onTap: _onBugReportPressed,
+                ),
+              ],
+            ),
+          ),
           appBar: WaveAppBar(
             title: translate('title'),
             actions: <Widget>[
@@ -131,17 +150,6 @@ class _AIChatBoxState extends State<AIChatBox> {
     super.dispose();
   }
 
-  void _notifyFeedbackSent() {
-    BetterFeedback.of(context).hide();
-    // Let user know that his feedback is sent.
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(translate('feedback.feedbackSent')),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
-
   void _showFeedbackUi() {
     _feedbackController?.show(
       (UserFeedback feedback) {
@@ -180,5 +188,28 @@ class _AIChatBoxState extends State<AIChatBox> {
     } else if (state is FeedbackSent) {
       _notifyFeedbackSent();
     }
+  }
+
+  void _notifyFeedbackSent() {
+    BetterFeedback.of(context).hide();
+    // Let user know that his feedback is sent.
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(translate('feedback.feedbackSent')),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _openAbout() {
+    Navigator.of(context).pushNamed(AppRoute.about.path);
+  }
+
+  void _openFaq() {
+    Navigator.of(context).pushNamed(AppRoute.faq.path);
+  }
+
+  void _openPrivacy() {
+    Navigator.of(context).pushNamed(AppRoute.privacy.path);
   }
 }

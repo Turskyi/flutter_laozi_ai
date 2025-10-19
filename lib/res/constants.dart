@@ -4,9 +4,11 @@ const String fallbackWebsiteUrl = 'https://laozi-chatbot.vercel.app';
 const String baseUrl = '$primaryWebsiteUrl/api/';
 const String supportEmail = 'support@$primaryDomain';
 const String imageAssetsPath = 'assets/images/';
-const String backgroundImagePath = '${imageAssetsPath}background.png';
+const String backgroundImagePath = '${imageAssetsPath}yinyang.png';
 const String laoziImagePath = '${imageAssetsPath}laozi.png';
 const String laoziAvatarPath = '${imageAssetsPath}laozi_head.png';
+const String appName = 'Daoism - Laozi AI';
+const String googleAiModelName = 'gemini-2.5-flash';
 
 /// A constant for one minute in milliseconds.
 const int oneMinute = 60000;
