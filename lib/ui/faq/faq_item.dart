@@ -17,8 +17,9 @@ class FaqItem extends StatelessWidget {
     return ExpansionTile(
       title: Text(
         translate(titleKey),
-        style:
-        theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        style: theme.textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
       ),
       children: paragraphKeys.map((String key) {
         return Padding(
