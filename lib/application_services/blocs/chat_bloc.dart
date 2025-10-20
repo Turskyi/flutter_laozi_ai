@@ -125,94 +125,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       (String line) => add(UpdateAiMessageEvent(line)),
       onError: (Object error, StackTrace stackTrace) {
         if (error is DioException) {
-          final StringBuffer buffer = StringBuffer();
-          buffer.writeln('DioException caught in _onRetrySendMessageEvent:');
-          buffer.writeln('  Type: ${error.type}');
-          buffer.writeln('  Message: ${error.message}');
-          buffer.writeln('  Request Options:');
-          buffer.writeln('    Path: ${error.requestOptions.path}');
-          buffer.writeln('    Method: ${error.requestOptions.method}');
-          buffer.writeln('    Base URL: ${error.requestOptions.baseUrl}');
-          buffer.writeln('    Headers: ${error.requestOptions.headers}');
-          buffer.writeln(
-            '    Query Parameters: ${error.requestOptions.queryParameters}',
+          _handleDioError(
+            error: error,
+            stackTrace: stackTrace,
+            isSendMessage: false,
           );
-          buffer.writeln('    Data: ${error.requestOptions.data}');
-          buffer.writeln(
-            '    Connect Timeout: ${error.requestOptions.connectTimeout}',
-          );
-          buffer.writeln(
-            '    Receive Timeout: ${error.requestOptions.receiveTimeout}',
-          );
-          if (error.response != null) {
-            buffer.writeln('  Response:');
-            buffer.writeln('    Data: ${error.response?.data}');
-            buffer.writeln('    Headers: ${error.response?.headers}');
-            buffer.writeln('    Status Code: ${error.response?.statusCode}');
-            buffer.writeln(
-              '    Status Message: ${error.response?.statusMessage}',
-            );
-          }
-          if (error.error != null) {
-            buffer.writeln('  Underlying error: ${error.error}');
-          }
-          buffer.writeln('  Stacktrace: $stackTrace');
-
-          debugPrint(buffer.toString());
-
-          String errorMessageKey =
-              'error.unexpected_network_error'; // Default error key
-
-          switch (error.type) {
-            case DioExceptionType.badResponse:
-              final int? statusCode = error.response?.statusCode;
-              if (statusCode != null) {
-                if (statusCode >= 500) {
-                  errorMessageKey = 'error.server_error_please_try_later';
-                } else if (statusCode == 400) {
-                  errorMessageKey = 'error.bad_request';
-                } else if (statusCode == 401) {
-                  errorMessageKey = 'error.unauthorized';
-                } else if (statusCode == 403) {
-                  errorMessageKey = 'error.forbidden';
-                } else if (statusCode == 404) {
-                  errorMessageKey = 'error.not_found';
-                } else if (statusCode == 429) {
-                  errorMessageKey = 'error.too_many_requests';
-                } else if (statusCode >= 400) {
-                  errorMessageKey = 'error.client_error';
-                } else {
-                  errorMessageKey = 'error.bad_response';
-                }
-              } else {
-                errorMessageKey = 'error.bad_response_no_status';
-              }
-              break;
-            case DioExceptionType.connectionTimeout:
-            case DioExceptionType.sendTimeout:
-            case DioExceptionType.receiveTimeout:
-              errorMessageKey = 'error.request_timeout_check_internet';
-              break;
-            case DioExceptionType.connectionError:
-              errorMessageKey = 'error.connection_error_check_internet';
-              break;
-            case DioExceptionType.cancel:
-              errorMessageKey = 'error.request_cancelled';
-              break;
-            case DioExceptionType.unknown:
-            default:
-              // For unknown errors, 'error.unexpected_network_error' is
-              // already set.
-              // If the underlying error.error is a SocketException, it's
-              // likely a network issue.
-              if (error.error is SocketException) {
-                errorMessageKey = 'error.connection_error_check_internet';
-              }
-              break;
-          }
-          add(ErrorEvent(translate(errorMessageKey)));
         } else {
-          // General error handling for non-DioExceptions
+          // General error handling for non-DioExceptions.
           debugPrint(
             'Error in $runtimeType in `onError` (RetrySendMessageEvent): '
             '$error.\n'
@@ -318,95 +237,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           .listen(
         (String line) => add(UpdateAiMessageEvent(line)),
         onError: (Object error, StackTrace stackTrace) {
-          // Maintaining the detailed logging and specific error handling for
-          // DioException here as well.
           if (error is DioException) {
-            final StringBuffer buffer = StringBuffer();
-            buffer.writeln('DioException caught in _onSendMessageEvent:');
-            buffer.writeln('  Type: ${error.type}');
-            buffer.writeln('  Message: ${error.message}');
-            buffer.writeln('  Request Options:');
-            buffer.writeln('    Path: ${error.requestOptions.path}');
-            buffer.writeln('    Method: ${error.requestOptions.method}');
-            buffer.writeln('    Base URL: ${error.requestOptions.baseUrl}');
-            if (error.response != null) {
-              buffer.writeln('  Response:');
-              buffer.writeln('    Data: ${error.response?.data}');
-              buffer.writeln('    Headers: ${error.response?.headers}');
-              buffer.writeln('    Status Code: ${error.response?.statusCode}');
-              buffer.writeln(
-                '    Status Message: ${error.response?.statusMessage}',
-              );
-            }
-            if (error.error != null) {
-              buffer.writeln('  Underlying error: ${error.error}');
-            }
-            buffer.writeln('  Stacktrace: $stackTrace');
-            debugPrint(buffer.toString());
-
-            String errorMessageKey = 'error.unexpected_network_error';
-
-            // Apply the same switch logic for DioException types
-            switch (error.type) {
-              case DioExceptionType.badResponse:
-                final int? statusCode = error.response?.statusCode;
-                if (statusCode != null) {
-                  if (kIsWeb && kDebugMode) {
-                    // Specific check from original code
-                    errorMessageKey =
-                        'error.cors'; // Original logic for CORS on web debug
-                  } else if (statusCode >= 500) {
-                    errorMessageKey = 'error.server_error_please_try_later';
-                  } else if (statusCode == 400) {
-                    errorMessageKey = 'error.bad_request';
-                  } else if (statusCode == 401) {
-                    errorMessageKey = 'error.unauthorized';
-                  } else if (statusCode == 403) {
-                    errorMessageKey = 'error.forbidden';
-                  } else if (statusCode == 404) {
-                    errorMessageKey = 'error.not_found';
-                  } else if (statusCode == 429) {
-                    errorMessageKey = 'error.too_many_requests';
-                  } else if (statusCode >= 400) {
-                    errorMessageKey = 'error.client_error';
-                  } else {
-                    errorMessageKey = 'error.bad_response';
-                  }
-                } else {
-                  errorMessageKey = kIsWeb && kDebugMode
-                      ? 'error.cors'
-                      : 'error.bad_response_no_status';
-                }
-                break;
-              case DioExceptionType.connectionTimeout:
-              case DioExceptionType.sendTimeout:
-              case DioExceptionType.receiveTimeout:
-                errorMessageKey = kIsWeb && kDebugMode
-                    ? 'error.cors'
-                    : 'error.request_timeout_check_internet';
-                break;
-              case DioExceptionType.connectionError:
-                errorMessageKey = kIsWeb && kDebugMode
-                    ? 'error.cors'
-                    : 'error.connection_error_check_internet';
-                break;
-              case DioExceptionType.cancel:
-                errorMessageKey = 'error.request_cancelled';
-                break;
-              case DioExceptionType.unknown:
-              default:
-                if (error.error is SocketException) {
-                  errorMessageKey = kIsWeb && kDebugMode
-                      ? 'error.cors'
-                      : 'error.connection_error_check_internet';
-                } else {
-                  errorMessageKey = kIsWeb && kDebugMode
-                      ? 'error.cors'
-                      : 'error.unexpected_network_error';
-                }
-                break;
-            }
-            add(ErrorEvent(translate(errorMessageKey)));
+            _handleDioError(
+              error: error,
+              stackTrace: stackTrace,
+              isSendMessage: true,
+            );
           } else {
             debugPrint(
               'Error in $runtimeType in `onError` (SendMessageEvent): $error.\n'
@@ -425,6 +261,101 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         ErrorEvent(translate('error.oops_something_went_wrong')),
       );
     }
+  }
+
+  void _handleDioError({
+    required DioException error,
+    required StackTrace stackTrace,
+    required bool isSendMessage,
+  }) {
+    final StringBuffer buffer = StringBuffer();
+    buffer.writeln(
+      'DioException caught in '
+      '${isSendMessage ? '_onSendMessageEvent' : '_onRetrySendMessageEvent'}:',
+    );
+    buffer.writeln('  Type: ${error.type}');
+    buffer.writeln('  Message: ${error.message}');
+    buffer.writeln('  Request Options:');
+    buffer.writeln('    Path: ${error.requestOptions.path}');
+    buffer.writeln('    Method: ${error.requestOptions.method}');
+    buffer.writeln('    Base URL: ${error.requestOptions.baseUrl}');
+    if (error.response != null) {
+      buffer.writeln('  Response:');
+      buffer.writeln('    Data: ${error.response?.data}');
+      buffer.writeln('    Headers: ${error.response?.headers}');
+      buffer.writeln('    Status Code: ${error.response?.statusCode}');
+      buffer.writeln(
+        '    Status Message: ${error.response?.statusMessage}',
+      );
+    }
+    if (error.error != null) {
+      buffer.writeln('  Underlying error: ${error.error}');
+    }
+    buffer.writeln('  Stacktrace: $stackTrace');
+    debugPrint(buffer.toString());
+
+    String errorMessageKey = 'error.unexpected_network_error';
+
+    switch (error.type) {
+      case DioExceptionType.badResponse:
+        final int? statusCode = error.response?.statusCode;
+        if (statusCode != null) {
+          if (isSendMessage && kIsWeb && kDebugMode) {
+            errorMessageKey = 'error.cors';
+          } else if (statusCode == HttpStatus.gatewayTimeout) {
+            errorMessageKey = 'error.gateway_timeout';
+          } else if (statusCode >= HttpStatus.internalServerError) {
+            errorMessageKey = 'error.server_error_please_try_later';
+          } else if (statusCode == HttpStatus.badRequest) {
+            errorMessageKey = 'error.bad_request';
+          } else if (statusCode == HttpStatus.unauthorized) {
+            errorMessageKey = 'error.unauthorized';
+          } else if (statusCode == HttpStatus.forbidden) {
+            errorMessageKey = 'error.forbidden';
+          } else if (statusCode == HttpStatus.notFound) {
+            errorMessageKey = 'error.not_found';
+          } else if (statusCode == HttpStatus.tooManyRequests) {
+            errorMessageKey = 'error.too_many_requests';
+          } else if (statusCode >= HttpStatus.badRequest) {
+            errorMessageKey = 'error.client_error';
+          } else {
+            errorMessageKey = 'error.bad_response';
+          }
+        } else {
+          errorMessageKey = isSendMessage && kIsWeb && kDebugMode
+              ? 'error.cors'
+              : 'error.bad_response_no_status';
+        }
+        break;
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.sendTimeout:
+      case DioExceptionType.receiveTimeout:
+        errorMessageKey = isSendMessage && kIsWeb && kDebugMode
+            ? 'error.cors'
+            : 'error.request_timeout_check_internet';
+        break;
+      case DioExceptionType.connectionError:
+        errorMessageKey = isSendMessage && kIsWeb && kDebugMode
+            ? 'error.cors'
+            : 'error.connection_error_check_internet';
+        break;
+      case DioExceptionType.cancel:
+        errorMessageKey = 'error.request_cancelled';
+        break;
+      case DioExceptionType.unknown:
+      default:
+        if (error.error is SocketException) {
+          errorMessageKey = isSendMessage && kIsWeb && kDebugMode
+              ? 'error.cors'
+              : 'error.connection_error_check_internet';
+        } else {
+          errorMessageKey = isSendMessage && kIsWeb && kDebugMode
+              ? 'error.cors'
+              : 'error.unexpected_network_error';
+        }
+        break;
+    }
+    add(ErrorEvent(translate(errorMessageKey)));
   }
 
   FutureOr<void> _onUpdateAiMessageEvent(

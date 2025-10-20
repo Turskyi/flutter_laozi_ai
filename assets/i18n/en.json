@@ -35,6 +35,7 @@
     "oops": "Oops! Something went wrong. Please try again later.",
     "cors": "Error: Local Environment Setup Required\nTo run this application locally on web, please use the following command:\nflutter run -d chrome --web-browser-flag \"--disable-web-security\"\nThis step is necessary to bypass CORS restrictions during local development. Please note that this flag should only be used in a development environment and never in production.",
     "server_error_please_try_later": "Server error. Please try again later.",
+    "gateway_timeout": "The server took too long to respond. This might be due to a very complex question. Please try asking something simpler. If you believe this is an error, please report the prompt to the developer.",
     "bad_request": "Bad request. Please check your input.",
     "unauthorized": "Unauthorized. Please check your credentials.",
     "forbidden": "Forbidden. You do not have permission to access this resource.",
@@ -94,7 +95,10 @@
     "different_answers_title": "Why are answers different on web and mobile?",
     "different_answers_p1": "Laozi AI uses different AI setups depending on the platform you are using.",
     "different_answers_p2": "The web version includes a retrieval system that leverages website content to provide more context-aware and detailed answers.",
-    "different_answers_p3": "On the other hand, the mobile versions rely solely on the AI model’s internal knowledge, which can lead to slightly different or more conversational responses."
+    "different_answers_p3": "On the other hand, the mobile versions rely solely on the AI model’s internal knowledge, which can lead to slightly different or more conversational responses.",
+    "gateway_timeout_title": "Why did I get a ‘gateway timeout’ error?",
+    "gateway_timeout_p1": "A ‘gateway timeout’ error (504) is a rare issue that can occur if your question is too complex for the AI to answer within the server’s time limit (10 seconds). While we aim to handle all prompts, some very demanding questions can cause this issue.",
+    "gateway_timeout_p2": "If you see this error, please try rephrasing your question to be more concise. If you believe the prompt should be supported, we would appreciate it if you would use the ‘Report Bug’ feature. Please include a screenshot of the prompt and the error, as this will help us improve the AI’s performance."
   },
   "privacy_page": {
     "title": "Privacy Policy for \"{appName}\" Website and Mobile App",

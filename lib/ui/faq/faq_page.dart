@@ -55,6 +55,13 @@ class FaqPage extends StatelessWidget {
               'faq_page.different_answers_p3',
             ],
           ),
+          FaqItem(
+            titleKey: 'faq_page.gateway_timeout_title',
+            paragraphKeys: <String>[
+              'faq_page.gateway_timeout_p1',
+              'faq_page.gateway_timeout_p2',
+            ],
+          ),
         ],
       ),
     );
