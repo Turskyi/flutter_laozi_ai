@@ -9,7 +9,6 @@ import 'package:laozi_ai/ui/about/about_page.dart';
 import 'package:laozi_ai/ui/chat/ai_chatbox.dart';
 import 'package:laozi_ai/ui/faq/faq_page.dart';
 import 'package:laozi_ai/ui/privacy/privacy_page.dart';
-import 'package:laozi_ai/ui/support/support_page.dart';
 
 Map<String, WidgetBuilder> routeMap = <String, WidgetBuilder>{
   AppRoute.home.path: (BuildContext _) => BlocProvider<ChatBloc>(
@@ -42,5 +41,4 @@ Map<String, WidgetBuilder> routeMap = <String, WidgetBuilder>{
   AppRoute.about.path: (BuildContext _) => const AboutPage(),
   AppRoute.faq.path: (BuildContext _) => const FaqPage(),
   AppRoute.privacy.path: (BuildContext _) => const PrivacyPage(),
-  AppRoute.support.path: (BuildContext _) => const SupportPage(),
 };
