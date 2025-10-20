@@ -15,7 +15,9 @@ class MessageRequest {
   final String content;
 
   @override
-  String toString() => 'MessageRequest(role: $role, content: $content)';
+  String toString() {
+    return '${toJson()}';
+  }
 
   Map<String, dynamic> toJson() => _$MessageRequestToJson(this);
 

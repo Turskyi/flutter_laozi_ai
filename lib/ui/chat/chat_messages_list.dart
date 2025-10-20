@@ -34,7 +34,7 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
               top: 32.0,
             ),
             child: SingleChildScrollView(
-              padding: EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.only(bottom: 12),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

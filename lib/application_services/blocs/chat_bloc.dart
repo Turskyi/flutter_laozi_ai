@@ -125,13 +125,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       (String line) => add(UpdateAiMessageEvent(line)),
       onError: (Object error, StackTrace stackTrace) {
         if (error is DioException) {
-          add(ErrorEvent(translate('error.pleaseCheckInternet')));
+          _handleDioError(
+            error: error,
+            stackTrace: stackTrace,
+            isSendMessage: false,
+          );
         } else {
+          // General error handling for non-DioExceptions.
           debugPrint(
-            'Error in $runtimeType in `onError`: $error.\n'
+            'Error in $runtimeType in `onError` (RetrySendMessageEvent): '
+            '$error.\n'
             'Stacktrace: $stackTrace',
           );
-          add(ErrorEvent(translate('error.unexpectedError')));
+          add(ErrorEvent(translate('error.unexpected_error')));
         }
       },
     );
@@ -162,9 +168,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         ..writeln()
         ..writeln(feedback.text)
         ..writeln()
-        ..writeln('${translate('appId')}: ${packageInfo.packageName}')
-        ..writeln('${translate('appVersion')}: ${packageInfo.version}')
-        ..writeln('${translate('buildNumber')}: ${packageInfo.buildNumber}')
+        ..writeln('${translate('app_id')}: ${packageInfo.packageName}')
+        ..writeln('${translate('app_version')}: ${packageInfo.version}')
+        ..writeln('${translate('build_number')}: ${packageInfo.buildNumber}')
         ..writeln()
         ..writeln(
             '${rating is FeedbackRating ? translate('feedback.rating') : ''}'
@@ -173,7 +179,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       final Email email = Email(
         body: feedbackBody.toString(),
-        subject: '${translate('feedback.appFeedback')}: '
+        subject: '${translate('feedback.app_feedback')}: '
             '${packageInfo.appName}',
         recipients: <String>[constants.supportEmail],
         attachmentPaths: <String>[screenshotFilePath],
@@ -182,17 +188,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         await FlutterEmailSender.send(email);
       } catch (error, stackTrace) {
         debugPrint(
-          'Error in $runtimeType in `onError`: $error.\n'
+          'Error in $runtimeType sending email: $error.\n'
           'Stacktrace: $stackTrace',
         );
-        add(ErrorEvent(translate('error.unexpectedError')));
+        add(ErrorEvent(translate('error.unexpected_error_sending_feedback')));
       }
     } catch (error, stackTrace) {
       debugPrint(
-        'Error in $runtimeType in `onError`: $error.\n'
+        'Error in $runtimeType preparing feedback: $error.\n'
         'Stacktrace: $stackTrace',
       );
-      add(ErrorEvent(translate('error.unexpectedError')));
+      add(ErrorEvent(translate('error.unexpected_error_preparing_feedback')));
     }
     emit(
       AiMessageUpdated(messages: state.messages, language: state.language),
@@ -231,27 +237,125 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           .listen(
         (String line) => add(UpdateAiMessageEvent(line)),
         onError: (Object error, StackTrace stackTrace) {
-          debugPrint(
-            'Error in $runtimeType in `onError`: $error.\n'
-            'Stacktrace: $stackTrace',
-          );
           if (error is DioException) {
-            if (kIsWeb && kDebugMode) {
-              add(ErrorEvent(translate('error.cors')));
-            } else {
-              add(ErrorEvent(translate('error.pleaseCheckInternet')));
-            }
+            _handleDioError(
+              error: error,
+              stackTrace: stackTrace,
+              isSendMessage: true,
+            );
           } else {
-            add(ErrorEvent(translate('error.unexpectedError')));
+            debugPrint(
+              'Error in $runtimeType in `onError` (SendMessageEvent): $error.\n'
+              'Stacktrace: $stackTrace',
+            );
+            add(ErrorEvent(translate('error.unexpected_error')));
           }
         },
       );
     } catch (error, stackTrace) {
       debugPrint(
-        'Error in $runtimeType in `catch`: $error.\nStacktrace: $stackTrace',
+        'Error in $runtimeType in `catch` (SendMessageEvent): $error.\n'
+        'Stacktrace: $stackTrace',
       );
-      add(ErrorEvent(translate('error.oops')));
+      add(
+        ErrorEvent(translate('error.oops_something_went_wrong')),
+      );
     }
+  }
+
+  void _handleDioError({
+    required DioException error,
+    required StackTrace stackTrace,
+    required bool isSendMessage,
+  }) {
+    final StringBuffer buffer = StringBuffer();
+    buffer.writeln(
+      'DioException caught in '
+      '${isSendMessage ? '_onSendMessageEvent' : '_onRetrySendMessageEvent'}:',
+    );
+    buffer.writeln('  Type: ${error.type}');
+    buffer.writeln('  Message: ${error.message}');
+    buffer.writeln('  Request Options:');
+    buffer.writeln('    Path: ${error.requestOptions.path}');
+    buffer.writeln('    Method: ${error.requestOptions.method}');
+    buffer.writeln('    Base URL: ${error.requestOptions.baseUrl}');
+    if (error.response != null) {
+      buffer.writeln('  Response:');
+      buffer.writeln('    Data: ${error.response?.data}');
+      buffer.writeln('    Headers: ${error.response?.headers}');
+      buffer.writeln('    Status Code: ${error.response?.statusCode}');
+      buffer.writeln(
+        '    Status Message: ${error.response?.statusMessage}',
+      );
+    }
+    if (error.error != null) {
+      buffer.writeln('  Underlying error: ${error.error}');
+    }
+    buffer.writeln('  Stacktrace: $stackTrace');
+    debugPrint(buffer.toString());
+
+    String errorMessageKey = 'error.unexpected_network_error';
+
+    switch (error.type) {
+      case DioExceptionType.badResponse:
+        final int? statusCode = error.response?.statusCode;
+        if (statusCode != null) {
+          if (isSendMessage && kIsWeb && kDebugMode) {
+            errorMessageKey = 'error.cors';
+          } else if (statusCode == HttpStatus.gatewayTimeout) {
+            errorMessageKey = 'error.gateway_timeout';
+          } else if (statusCode >= HttpStatus.internalServerError) {
+            errorMessageKey = 'error.server_error_please_try_later';
+          } else if (statusCode == HttpStatus.badRequest) {
+            errorMessageKey = 'error.bad_request';
+          } else if (statusCode == HttpStatus.unauthorized) {
+            errorMessageKey = 'error.unauthorized';
+          } else if (statusCode == HttpStatus.forbidden) {
+            errorMessageKey = 'error.forbidden';
+          } else if (statusCode == HttpStatus.notFound) {
+            errorMessageKey = 'error.not_found';
+          } else if (statusCode == HttpStatus.tooManyRequests) {
+            errorMessageKey = 'error.too_many_requests';
+          } else if (statusCode >= HttpStatus.badRequest) {
+            errorMessageKey = 'error.client_error';
+          } else {
+            errorMessageKey = 'error.bad_response';
+          }
+        } else {
+          errorMessageKey = isSendMessage && kIsWeb && kDebugMode
+              ? 'error.cors'
+              : 'error.bad_response_no_status';
+        }
+        break;
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.sendTimeout:
+      case DioExceptionType.receiveTimeout:
+        errorMessageKey = isSendMessage && kIsWeb && kDebugMode
+            ? 'error.cors'
+            : 'error.request_timeout_check_internet';
+        break;
+      case DioExceptionType.connectionError:
+        errorMessageKey = isSendMessage && kIsWeb && kDebugMode
+            ? 'error.cors'
+            : 'error.connection_error_check_internet';
+        break;
+      case DioExceptionType.cancel:
+        errorMessageKey = 'error.request_cancelled';
+        break;
+      case DioExceptionType.unknown:
+      default:
+        if (error.error is SocketException) {
+          errorMessageKey = isSendMessage && kIsWeb && kDebugMode
+              ? 'error.cors'
+              : 'error.connection_error_check_internet';
+        } else {
+          errorMessageKey = isSendMessage && kIsWeb && kDebugMode
+              ? 'error.cors'
+              : 'error.unexpected_network_error';
+        }
+        break;
+    }
+    add(ErrorEvent(translate(errorMessageKey)));
   }
 
   FutureOr<void> _onUpdateAiMessageEvent(
@@ -321,6 +425,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           },
         );
       } else {
+        // If saving fails, revert to previous state or reload home,
+        // here it reloads home which re-fetches saved language.
         add(const LoadHomeEvent());
       }
     }
