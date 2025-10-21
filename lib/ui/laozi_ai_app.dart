@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:laozi_ai/env/env.dart';
 import 'package:laozi_ai/res/resources.dart';
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/router/routes.dart' as routes;
+import 'package:resend/resend.dart';
 
 class LaoziAiApp extends StatelessWidget {
   const LaoziAiApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Resend(apiKey: Env.resendApiKey);
     return Resources(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

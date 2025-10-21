@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/ui/privacy/widgets/privacy_section.dart';
+import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
 
 class PrivacyPage extends StatelessWidget {
   const PrivacyPage({super.key});
@@ -19,6 +20,7 @@ class PrivacyPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: kIsWeb ? const HomeAppBarButton() : null,
         title: Text(
           translate(
             isAndroid ? 'privacy_page_android.title' : 'privacy_page.title',

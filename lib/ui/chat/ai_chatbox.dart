@@ -44,6 +44,10 @@ class _AIChatBoxState extends State<AIChatBox> {
                   title: Text(translate('privacy')),
                   onTap: _openPrivacy,
                 ),
+                ListTile(
+                  title: Text(translate('support')),
+                  onTap: _openSupport,
+                ),
                 const Divider(),
                 ListTile(
                   title: Text(translate('report_bug')),
@@ -211,5 +215,9 @@ class _AIChatBoxState extends State<AIChatBox> {
 
   void _openPrivacy() {
     Navigator.of(context).pushNamed(AppRoute.privacy.path);
+  }
+
+  void _openSupport() {
+    Navigator.of(context).pushNamed(AppRoute.support.path);
   }
 }

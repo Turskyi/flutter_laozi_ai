@@ -21,7 +21,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build
 # suffix.
-version: 0.0.7+7
+version: 0.0.8+8
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
@@ -37,6 +37,7 @@ dependencies:
   bloc_test: ^10.0.0
   collection: ^1.19.1
   dio: ^5.8.0+1
+  envied: ^1.3.1
   feedback: ^3.2.0
   flutter:
     sdk: flutter
@@ -56,6 +57,7 @@ dependencies:
   mocktail: ^1.0.4
   package_info_plus: ^8.3.0
   path_provider: ^2.1.5
+  resend: ^1.0.0
   retrofit: ^4.6.0
   # Tried to use ^10.0.0, but it did not compile.
   retrofit_generator: any
@@ -68,12 +70,13 @@ dependency_overrides:
 
 dev_dependencies:
   # Tried to use ^2.6.0, but it did not compile.
-  build_runner: any
+  build_runner: ^2.7.1
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
+  envied_generator: ^1.3.1
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter

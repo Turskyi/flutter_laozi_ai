@@ -16,7 +16,7 @@
     "youCanAskAnyQuestionAbout": "You can ask Laozi Chatbot any question about Daoism and he will find the relevant information."
   },
   "feedback": {
-    "appFeedback": "App Feedback",
+    "app_feedback": "App Feedback",
     "whatKind": "What kind of feedback do you want to give?",
     "whatIsYourFeedback": "What is your feedback?",
     "howDoesThisFeel": "How does this make you feel?",
@@ -30,6 +30,7 @@
     "good": "Good"
   },
   "error": {
+    "launch_email_failed": "Could not launch the email application.",
     "pleaseCheckInternet": "An error occurred. Please check your internet connection and try again.",
     "unexpectedError": "An unexpected error occurred. Please try again.",
     "oops": "Oops! Something went wrong. Please try again later.",
@@ -144,5 +145,27 @@
     "changes_to_this_privacy_policy_body": "This Privacy Policy is effective as of {date} and will remain in effect except with respect to any changes in its provisions in the future, which will be in effect immediately after being posted on this page. We reserve the right to update or change our Privacy Policy at any time, and you should check this Privacy Policy periodically.",
     "contact_us_title": "Contact Us",
     "contact_us_body": "If you have any questions about this Privacy Policy, please contact us at {email}."
+  },
+  "support_page": {
+    "title": "Support",
+    "description": "If you have any questions, feedback, or need assistance, please fill out the form below. We will get back to you as soon as possible.",
+    "email_direct": "You can also reach us directly at {email}.",
+    "privacy_notice": "Your information will only be used to respond to your inquiry and will not be shared.",
+    "full_name": "Full Name",
+    "full_name_hint": "John Doe",
+    "email_address": "Email Address",
+    "email_address_hint": "example@something.something",
+    "message": "Message",
+    "message_hint": "Your message",
+    "send": "Send",
+    "sending": "Sending...",
+    "sent": "Sent.",
+    "fill_out_all_fields": "Please fill out all fields.",
+    "email_sent_successfully": "Email sent successfully!",
+    "failed_to_send_email": "Failed to send your message. Please try again.",
+    "customer_email_body": "Thank you for reaching out to us! Your support message has been received and will be reviewed promptly. We appreciate your feedback and will get back to you soon.\n\nBest regards,\nThe {appName} Team.",
+    "customer_email_subject": "Thank You! Your Support Message Has Been Sent to {appName}",
+    "support_email_subject": "New Message Received from {appName}",
+    "support_email_body": "New support message received"
   }
 }

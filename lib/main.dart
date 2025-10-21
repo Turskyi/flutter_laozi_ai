@@ -30,6 +30,7 @@ void main() async {
 
   final LocalizationDelegate localizationDelegate =
       await locale.getLocalizationDelegate();
+
   runApp(
     LocalizedApp(
       localizationDelegate,
