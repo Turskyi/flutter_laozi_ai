@@ -6,9 +6,9 @@ import 'package:injectable/injectable.dart';
 import 'package:laozi_ai/domain_services/chat_repository.dart';
 import 'package:laozi_ai/entities/chat.dart';
 import 'package:laozi_ai/entities/message.dart';
-import 'package:laozi_ai/infrastructure/web_services/models/chat_request/chat_request.dart';
-import 'package:laozi_ai/infrastructure/web_services/models/chat_request/message_request.dart';
-import 'package:laozi_ai/infrastructure/web_services/rest/retrofit_client/retrofit_client.dart';
+import 'package:laozi_ai/infrastructure/data_sources/remote/models/chat_request/chat_request.dart';
+import 'package:laozi_ai/infrastructure/data_sources/remote/models/chat_request/message_request.dart';
+import 'package:laozi_ai/infrastructure/data_sources/remote/rest/retrofit_client/retrofit_client.dart';
 
 @Injectable(as: ChatRepository)
 class ChatRepositoryImpl implements ChatRepository {
@@ -19,14 +19,14 @@ class ChatRepositoryImpl implements ChatRepository {
   @override
   Stream<String> sendChat(Chat chat) {
     final ChatRequest request = ChatRequest(
-      messages: chat.messages
-          .map(
-            (Message message) => MessageRequest(
-              role: message.role.name,
-              content: '${message.content}',
-            ),
-          )
-          .toList(),
+      messages: chat.messages.map(
+        (Message message) {
+          return MessageRequest(
+            role: message.role.name,
+            content: '${message.content}',
+          );
+        },
+      ).toList(),
     );
 
     if (kIsWeb) {

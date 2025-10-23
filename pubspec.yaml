@@ -50,6 +50,7 @@ dependencies:
   http: ^1.4.0
   injectable: ^2.5.0
   injectable_generator: ^2.7.0
+  intl: ^0.20.2
   json_annotation: ^4.9.0
   logger: ^2.6.1
   # Tried to use ^1.17.0, but it did not compile.
