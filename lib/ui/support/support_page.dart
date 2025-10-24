@@ -15,32 +15,57 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SupportPage extends StatelessWidget {
   const SupportPage({
     required this.preferences,
+    required this.initialLanguage,
     super.key,
   });
 
   final SharedPreferences preferences;
+  final Language initialLanguage;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SupportBloc>(
-      create: (BuildContext context) {
-        final Language initialLanguage = Language.fromIsoLanguageCode(
-          LocalizedApp.of(context).delegate.currentLocale.languageCode,
-        );
-
+      create: (BuildContext _) {
         return SupportBloc(
           EmailRepositoryImpl(Resend.instance),
           SettingsRepositoryImpl(preferences),
           initialLanguage,
         );
       },
-      child: const _SupportPage(),
+      child: BlocListener<SupportBloc, SupportState>(
+        listener: (BuildContext context, SupportState state) {
+          if (state is SupportInitial) {
+            final Language currentLanguage = Language.fromIsoLanguageCode(
+              LocalizedApp.of(context).delegate.currentLocale.languageCode,
+            );
+            final Language savedLanguage = state.language;
+            if (currentLanguage != savedLanguage) {
+              changeLocale(context, savedLanguage.isoLanguageCode)
+                  // The returned value in `then` is always `null`.
+                  .then((Object? _) {
+                if (context.mounted) {
+                  context
+                      .read<SupportBloc>()
+                      .add(ChangeSupportLanguageEvent(savedLanguage));
+                }
+              });
+            }
+          }
+        },
+        child: _SupportPage(
+          initialLanguage: initialLanguage,
+        ),
+      ),
     );
   }
 }
 
 class _SupportPage extends StatefulWidget {
-  const _SupportPage();
+  const _SupportPage({
+    required this.initialLanguage,
+  });
+
+  final Language initialLanguage;
 
   @override
   State<_SupportPage> createState() => _SupportPageState();
@@ -59,6 +84,22 @@ class _SupportPageState extends State<_SupportPage> {
     _nameController.addListener(_onFormChanged);
     _emailController.addListener(_onFormChanged);
     _messageController.addListener(_onFormChanged);
+
+    final Language currentLanguage = Language.fromIsoLanguageCode(
+      LocalizedApp.of(context).delegate.currentLocale.languageCode,
+    );
+    final Language savedLanguage = widget.initialLanguage;
+    if (currentLanguage != savedLanguage) {
+      changeLocale(context, savedLanguage.isoLanguageCode)
+          // The returned value in `then` is always `null`.
+          .then((Object? _) {
+        if (mounted) {
+          context
+              .read<SupportBloc>()
+              .add(ChangeSupportLanguageEvent(savedLanguage));
+        }
+      });
+    }
   }
 
   void _onFormChanged() {
@@ -84,9 +125,26 @@ class _SupportPageState extends State<_SupportPage> {
               return LanguageSelector(
                 currentLanguage: state.language,
                 onLanguageSelected: (Language newLanguage) {
+                  // Dispatch event to the presenter to handle language
+                  // change logic and update its state (which might also
+                  // update this screen's language).
                   context.read<SupportBloc>().add(
                         ChangeSupportLanguageEvent(newLanguage),
                       );
+                  // Force a rebuild of the current screen's state
+                  // (`_SupportPageState`).
+                  // This is necessary because the `AppBar`'s title `Text`
+                  // widget, which uses
+                  // `translate('support_page.title')`, needs to be
+                  // reconstructed with the new locale provided by the
+                  // `flutter_translate` package after `changeLocale`
+                  // (implicitly called) has taken effect.
+                  // While the `SupportBloc`'s state will update, that
+                  // not directly trigger a rebuild of the `AppBar` title
+                  // without this explicit `setState`.
+                  // This ensures the title immediately reflects the newly
+                  // selected language.
+                  setState(() {});
                 },
               );
             },

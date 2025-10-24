@@ -14,11 +14,12 @@ class EmailRepositoryImpl {
 
   final Resend _resend;
 
-  Future<void> sendSupportEmail({
+  Future<bool> sendSupportEmail({
     required String name,
     required String userEmail,
     required String message,
   }) async {
+    bool isEmailSent = false;
     final Email supportEmail = Email(
       body: '${translate('support_page.support_email_body')}:\n\n '
           'Email: $userEmail\n\n'
@@ -61,6 +62,7 @@ class EmailRepositoryImpl {
           subject: customerEmail.subject,
           text: customerEmail.body,
         );
+        isEmailSent = true;
       }
     } catch (e) {
       debugPrint('Error sending email: $e');
@@ -73,6 +75,7 @@ class EmailRepositoryImpl {
         }
       }
     }
+    return isEmailSent;
   }
 
   Future<void> _launchEmailClient(Email supportEmail) async {

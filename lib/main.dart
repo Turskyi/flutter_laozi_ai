@@ -57,12 +57,12 @@ void main() async {
   );
 
   if (savedLanguage != currentLanguage) {
-    final Locale locale = localeFromString(savedLanguage.isoLanguageCode);
+    final Locale savedLocale = localeFromString(savedLanguage.isoLanguageCode);
 
-    localizationDelegate.changeLocale(locale);
+    localizationDelegate.changeLocale(savedLocale);
 
-    // Notify listeners that the locale has changed so they can update.
-    localizationDelegate.onLocaleChanged?.call(locale);
+    // Notify listeners that the savedLocale has changed so they can update.
+    localizationDelegate.onLocaleChanged?.call(savedLocale);
   }
 
   Map<String, WidgetBuilder> routeMap = <String, WidgetBuilder>{
@@ -97,7 +97,10 @@ void main() async {
     AppRoute.faq.path: (BuildContext _) => const FaqPage(),
     AppRoute.privacy.path: (BuildContext _) => const PrivacyPage(),
     AppRoute.support.path: (BuildContext _) {
-      return SupportPage(preferences: preferences);
+      return SupportPage(
+        preferences: preferences,
+        initialLanguage: savedLanguage,
+      );
     },
   };
 

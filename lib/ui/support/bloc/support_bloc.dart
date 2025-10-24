@@ -29,12 +29,16 @@ class SupportBloc extends Bloc<SupportEvent, SupportState> {
   ) async {
     emit(SupportLoading(language: state.language));
     try {
-      await _emailRepository.sendSupportEmail(
+      final bool isSent = await _emailRepository.sendSupportEmail(
         name: event.name,
         userEmail: event.email,
         message: event.message,
       );
-      emit(SupportSuccess(language: state.language));
+      if (isSent) {
+        emit(SupportSuccess(language: state.language));
+      } else {
+        emit(SupportInitial(language: state.language));
+      }
     } catch (e) {
       emit(
         SupportFailure(
