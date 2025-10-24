@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
+import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/ui/chat/app_bar/wave_app_bar.dart';
@@ -65,7 +66,14 @@ class _AIChatBoxState extends State<AIChatBox> {
                   onPressed: _onBugReportPressed,
                 ),
               // Use the `LanguageSelector` widget as an action.
-              const LanguageSelector(),
+              LanguageSelector(
+                currentLanguage: state.language,
+                onLanguageSelected: (Language newLanguage) {
+                  context.read<ChatBloc>().add(
+                        ChangeLanguageEvent(newLanguage),
+                      );
+                },
+              ),
             ],
           ),
           body: DecoratedBox(

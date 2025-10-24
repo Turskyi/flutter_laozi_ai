@@ -22,7 +22,16 @@ sealed class ChatState {
   int get hashCode => language.hashCode ^ messages.hashCode;
 
   @override
-  String toString() => 'ChatState(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'ChatState('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class ChatInitial extends ChatState {
@@ -38,7 +47,16 @@ final class ChatInitial extends ChatState {
       );
 
   @override
-  String toString() => 'ChatInitial(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'ChatInitial('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class LoadingHomeState extends ChatState {
@@ -54,8 +72,16 @@ final class LoadingHomeState extends ChatState {
       );
 
   @override
-  String toString() =>
-      'LoadingHomeState(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'LoadingHomeState('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class ChatError extends ChatState {
@@ -93,9 +119,17 @@ final class ChatError extends ChatState {
       errorMessage.hashCode ^ language.hashCode ^ messages.hashCode;
 
   @override
-  String toString() => 'ChatError(errorMessage: $errorMessage, '
-      'messages: $messages, '
-      'language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'ChatError('
+          'errorMessage: $errorMessage, '
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class AiMessageUpdated extends ChatState {
@@ -122,8 +156,16 @@ final class AiMessageUpdated extends ChatState {
       );
 
   @override
-  String toString() =>
-      'AiMessageUpdated(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'AiMessageUpdated('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class SentMessageState extends ChatState {
@@ -139,8 +181,16 @@ final class SentMessageState extends ChatState {
       );
 
   @override
-  String toString() =>
-      'SentMessageState(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'SentMessageState('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class FeedbackState extends ChatState {
@@ -159,8 +209,16 @@ final class FeedbackState extends ChatState {
       );
 
   @override
-  String toString() =>
-      'FeedbackState(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'FeedbackState('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class FeedbackSent extends ChatState {
@@ -176,5 +234,14 @@ final class FeedbackSent extends ChatState {
       );
 
   @override
-  String toString() => 'FeedbackSent(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'FeedbackSent('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }

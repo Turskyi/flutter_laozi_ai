@@ -3,11 +3,15 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/env/env.dart';
 import 'package:laozi_ai/res/resources.dart';
 import 'package:laozi_ai/router/app_route.dart';
-import 'package:laozi_ai/router/routes.dart' as routes;
 import 'package:resend/resend.dart';
 
 class LaoziAiApp extends StatelessWidget {
-  const LaoziAiApp({super.key});
+  const LaoziAiApp({
+    required this.routeMap,
+    super.key,
+  });
+
+  final Map<String, WidgetBuilder> routeMap;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,7 @@ class LaoziAiApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: translate('title'),
         initialRoute: AppRoute.home.path,
-        routes: routes.routeMap,
+        routes: routeMap,
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(

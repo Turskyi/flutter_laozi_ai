@@ -3,19 +3,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/application_services/repositories/email_repository_impl.dart';
+import 'package:laozi_ai/application_services/repositories/settings_repository_impl.dart';
+import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
+import 'package:laozi_ai/ui/chat/language_selector.dart';
 import 'package:laozi_ai/ui/support/bloc/support_bloc.dart';
 import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
 import 'package:resend/resend.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SupportPage extends StatelessWidget {
-  const SupportPage({super.key});
+  const SupportPage({
+    required this.preferences,
+    super.key,
+  });
+
+  final SharedPreferences preferences;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SupportBloc>(
-      create: (BuildContext _) {
-        return SupportBloc(EmailRepositoryImpl(Resend.instance));
+      create: (BuildContext context) {
+        final Language initialLanguage = Language.fromIsoLanguageCode(
+          LocalizedApp.of(context).delegate.currentLocale.languageCode,
+        );
+
+        return SupportBloc(
+          EmailRepositoryImpl(Resend.instance),
+          SettingsRepositoryImpl(preferences),
+          initialLanguage,
+        );
       },
       child: const _SupportPage(),
     );
@@ -61,6 +78,20 @@ class _SupportPageState extends State<_SupportPage> {
       appBar: AppBar(
         leading: kIsWeb ? const HomeAppBarButton() : null,
         title: Text(translate('support_page.title')),
+        actions: <Widget>[
+          BlocBuilder<SupportBloc, SupportState>(
+            builder: (BuildContext context, SupportState state) {
+              return LanguageSelector(
+                currentLanguage: state.language,
+                onLanguageSelected: (Language newLanguage) {
+                  context.read<SupportBloc>().add(
+                        ChangeSupportLanguageEvent(newLanguage),
+                      );
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: BlocConsumer<SupportBloc, SupportState>(
         listener: (BuildContext context, SupportState state) {
