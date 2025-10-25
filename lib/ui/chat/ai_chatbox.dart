@@ -21,10 +21,31 @@ class AIChatBox extends StatefulWidget {
 class _AIChatBoxState extends State<AIChatBox> {
   final TextEditingController _textEditingController = TextEditingController();
   FeedbackController? _feedbackController;
+  Object? initialLanguage;
 
   @override
   void didChangeDependencies() {
     _feedbackController = BetterFeedback.of(context);
+    // Extract the arguments from the current ModalRoute
+    // settings and cast them as `Language`.
+    if (initialLanguage == null) {
+      initialLanguage = ModalRoute.of(context)?.settings.arguments;
+      if (initialLanguage is Language) {
+        final Language savedLanguage = initialLanguage as Language;
+        final Language currentLanguage = Language.fromIsoLanguageCode(
+          LocalizedApp.of(context).delegate.currentLocale.languageCode,
+        );
+        if (currentLanguage != savedLanguage) {
+          changeLocale(context, savedLanguage.isoLanguageCode)
+              // The returned value in `then` is always `null`.
+              .then((Object? _) {
+            if (mounted) {
+              context.read<ChatBloc>().add(ChangeLanguageEvent(savedLanguage));
+            }
+          });
+        }
+      }
+    }
     super.didChangeDependencies();
   }
 
@@ -67,8 +88,11 @@ class _AIChatBoxState extends State<AIChatBox> {
                 ),
               // Use the `LanguageSelector` widget as an action.
               LanguageSelector(
-                currentLanguage: state.language,
+                currentLanguage: initialLanguage is Language
+                    ? (initialLanguage as Language)
+                    : state.language,
                 onLanguageSelected: (Language newLanguage) {
+                  initialLanguage = newLanguage;
                   context.read<ChatBloc>().add(
                         ChangeLanguageEvent(newLanguage),
                       );
@@ -158,7 +182,7 @@ class _AIChatBoxState extends State<AIChatBox> {
   @override
   void dispose() {
     _textEditingController.dispose();
-    _feedbackController?.dispose();
+    _feedbackController?.removeListener(_onFeedbackChanged);
     super.dispose();
   }
 

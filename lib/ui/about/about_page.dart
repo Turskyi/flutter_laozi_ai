@@ -1,18 +1,48 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/ui/about/widgets/bullet_point.dart';
+import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
 
 const double _kYinYangImageSize = 180.0;
 
-class AboutPage extends StatelessWidget {
-  const AboutPage({super.key});
+class AboutPage extends StatefulWidget {
+  const AboutPage({
+    required this.initialLanguage,
+    super.key,
+  });
+
+  final Language initialLanguage;
+
+  @override
+  State<AboutPage> createState() => _AboutPageState();
+}
+
+class _AboutPageState extends State<AboutPage> {
+  @override
+  void initState() {
+    super.initState();
+    final Language currentLanguage = Language.fromIsoLanguageCode(
+      LocalizedApp.of(context).delegate.currentLocale.languageCode,
+    );
+    final Language savedLanguage = widget.initialLanguage;
+    if (currentLanguage != savedLanguage) {
+      changeLocale(context, savedLanguage.isoLanguageCode);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
+        leading: kIsWeb
+            ? HomeAppBarButton(
+                language: widget.initialLanguage,
+              )
+            : null,
         title: Text(translate('about_page.title')),
       ),
       body: SingleChildScrollView(

@@ -32,29 +32,8 @@ class SupportPage extends StatelessWidget {
           initialLanguage,
         );
       },
-      child: BlocListener<SupportBloc, SupportState>(
-        listener: (BuildContext context, SupportState state) {
-          if (state is SupportInitial) {
-            final Language currentLanguage = Language.fromIsoLanguageCode(
-              LocalizedApp.of(context).delegate.currentLocale.languageCode,
-            );
-            final Language savedLanguage = state.language;
-            if (currentLanguage != savedLanguage) {
-              changeLocale(context, savedLanguage.isoLanguageCode)
-                  // The returned value in `then` is always `null`.
-                  .then((Object? _) {
-                if (context.mounted) {
-                  context
-                      .read<SupportBloc>()
-                      .add(ChangeSupportLanguageEvent(savedLanguage));
-                }
-              });
-            }
-          }
-        },
-        child: _SupportPage(
-          initialLanguage: initialLanguage,
-        ),
+      child: _SupportPage(
+        initialLanguage: initialLanguage,
       ),
     );
   }
@@ -102,22 +81,17 @@ class _SupportPageState extends State<_SupportPage> {
     }
   }
 
-  void _onFormChanged() {
-    final bool isPopulated = _nameController.text.isNotEmpty &&
-        _emailController.text.isNotEmpty &&
-        _messageController.text.isNotEmpty;
-    if (_isFormPopulated != isPopulated) {
-      setState(() {
-        _isFormPopulated = isPopulated;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: kIsWeb ? const HomeAppBarButton() : null,
+        leading: kIsWeb
+            ? BlocBuilder<SupportBloc, SupportState>(
+                builder: (BuildContext _, SupportState state) {
+                  return HomeAppBarButton(language: state.language);
+                },
+              )
+            : null,
         title: Text(translate('support_page.title')),
         actions: <Widget>[
           BlocBuilder<SupportBloc, SupportState>(
@@ -275,5 +249,16 @@ class _SupportPageState extends State<_SupportPage> {
     _emailController.dispose();
     _messageController.dispose();
     super.dispose();
+  }
+
+  void _onFormChanged() {
+    final bool isPopulated = _nameController.text.isNotEmpty &&
+        _emailController.text.isNotEmpty &&
+        _messageController.text.isNotEmpty;
+    if (_isFormPopulated != isPopulated) {
+      setState(() {
+        _isFormPopulated = isPopulated;
+      });
+    }
   }
 }

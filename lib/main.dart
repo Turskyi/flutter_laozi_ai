@@ -93,9 +93,13 @@ void main() async {
             child: const AIChatBox(),
           ),
         ),
-    AppRoute.about.path: (BuildContext _) => const AboutPage(),
+    AppRoute.about.path: (BuildContext _) {
+      return AboutPage(initialLanguage: savedLanguage);
+    },
     AppRoute.faq.path: (BuildContext _) => const FaqPage(),
-    AppRoute.privacy.path: (BuildContext _) => const PrivacyPage(),
+    AppRoute.privacy.path: (BuildContext _) {
+      return PrivacyPage(initialLanguage: savedLanguage);
+    },
     AppRoute.support.path: (BuildContext _) {
       return SupportPage(
         preferences: preferences,
