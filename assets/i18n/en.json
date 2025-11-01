@@ -99,7 +99,10 @@
     "different_answers_p3": "On the other hand, the mobile versions rely solely on the AI model’s internal knowledge, which can lead to slightly different or more conversational responses.",
     "gateway_timeout_title": "Why did I get a ‘gateway timeout’ error?",
     "gateway_timeout_p1": "A ‘gateway timeout’ error (504) is a rare issue that can occur if your question is too complex for the AI to answer within the server’s time limit (10 seconds). While we aim to handle all prompts, some very demanding questions can cause this issue.",
-    "gateway_timeout_p2": "If you see this error, please try rephrasing your question to be more concise. If you believe the prompt should be supported, we would appreciate it if you would use the ‘Report Bug’ feature. Please include a screenshot of the prompt and the error, as this will help us improve the AI’s performance."
+    "gateway_timeout_p2": "If you see this error, please try rephrasing your question to be more concise. If you believe the prompt should be supported, we would appreciate it if you would use the ‘Report Bug’ feature. Please include a screenshot of the prompt and the error, as this will help us improve the AI’s performance.",
+    "chat_history_title": "Why are my past chat sessions not saved?",
+    "chat_history_p1": "Yes, you’re right — the app doesn’t currently save past sessions. That’s quite a complex feature to implement, and honestly, I’m not sure if I’ll ever have the time to add it. Sorry about that.",
+    "chat_history_p2": "On the positive side, this simplicity also means that every conversation is completely private. You can ask anything you like, and there’s absolutely no way for me (or anyone else) to see or store those chats. Compared to other apps that require accounts or credentials to sync conversations — which makes them far from truly private — I think this approach offers a nice balance of freedom and anonymity."
   },
   "privacy_page": {
     "title": "Privacy Policy for \"{appName}\" Website and Mobile App",

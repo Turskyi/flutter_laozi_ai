@@ -43,8 +43,11 @@ class _PrivacyPageState extends State<PrivacyPage> {
 
     return Scaffold(
       appBar: AppBar(
-        leading:
-            kIsWeb ? HomeAppBarButton(language: widget.initialLanguage) : null,
+        leading: kIsWeb
+            ? HomeAppBarButton(
+                language: widget.initialLanguage,
+              )
+            : null,
         title: Text(
           translate(
             isAndroid ? 'privacy_page_android.title' : 'privacy_page.title',

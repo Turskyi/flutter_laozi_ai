@@ -62,6 +62,13 @@ class FaqPage extends StatelessWidget {
               'faq_page.gateway_timeout_p2',
             ],
           ),
+          FaqItem(
+            titleKey: 'faq_page.chat_history_title',
+            paragraphKeys: <String>[
+              'faq_page.chat_history_p1',
+              'faq_page.chat_history_p2',
+            ],
+          ),
         ],
       ),
     );
