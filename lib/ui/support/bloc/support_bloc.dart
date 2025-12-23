@@ -55,22 +55,24 @@ class SupportBloc extends Bloc<SupportEvent, SupportState> {
   ) async {
     final Language language = event.language;
     if (language != state.language) {
-      final bool isSaved = await _settingsRepository
-          .saveLanguageIsoCode(language.isoLanguageCode);
+      final bool isSaved = await _settingsRepository.saveLanguageIsoCode(
+        language.isoLanguageCode,
+      );
       if (isSaved) {
-        emit(
-          switch (state) {
-            SupportInitial() =>
-              (state as SupportInitial).copyWith(language: language),
-            SupportFailure() => (state as SupportFailure).copyWith(
-                language: language,
-              ),
-            SupportLoading() =>
-              (state as SupportLoading).copyWith(language: language),
-            SupportSuccess() =>
-              (state as SupportSuccess).copyWith(language: language),
-          },
-        );
+        emit(switch (state) {
+          SupportInitial() => (state as SupportInitial).copyWith(
+            language: language,
+          ),
+          SupportFailure() => (state as SupportFailure).copyWith(
+            language: language,
+          ),
+          SupportLoading() => (state as SupportLoading).copyWith(
+            language: language,
+          ),
+          SupportSuccess() => (state as SupportSuccess).copyWith(
+            language: language,
+          ),
+        });
       } else {
         // If saving fails, revert to previous state.
         emit(SupportInitial(language: state.language));

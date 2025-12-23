@@ -19,14 +19,12 @@ class ChatRepositoryImpl implements ChatRepository {
   @override
   Stream<String> sendChat(Chat chat) {
     final ChatRequest request = ChatRequest(
-      messages: chat.messages.map(
-        (Message message) {
-          return MessageRequest(
-            role: message.role.name,
-            content: '${message.content}',
-          );
-        },
-      ).toList(),
+      messages: chat.messages.map((Message message) {
+        return MessageRequest(
+          role: message.role.name,
+          content: '${message.content}',
+        );
+      }).toList(),
     );
 
     if (kIsWeb) {
@@ -42,9 +40,7 @@ class ChatRepositoryImpl implements ChatRepository {
     } else if (Platform.isIOS) {
       return chat.usesEnglishLanguage
           ? _processResponse(_restClient.sendEnglishIosChatMessage(request))
-          : _processResponse(
-              _restClient.sendUkrainianIosChatMessage(request),
-            );
+          : _processResponse(_restClient.sendUkrainianIosChatMessage(request));
     } else {
       return _processResponse(
         _restClient.sendChatMessageOnUnknownPlatform(request),

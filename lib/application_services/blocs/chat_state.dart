@@ -37,10 +37,7 @@ sealed class ChatState {
 final class ChatInitial extends ChatState {
   const ChatInitial({required super.language, super.messages});
 
-  ChatInitial copyWith({
-    List<Message>? messages,
-    Language? language,
-  }) =>
+  ChatInitial copyWith({List<Message>? messages, Language? language}) =>
       ChatInitial(
         messages: messages ?? this.messages,
         language: language ?? this.language,
@@ -62,10 +59,7 @@ final class ChatInitial extends ChatState {
 final class LoadingHomeState extends ChatState {
   const LoadingHomeState({super.messages, super.language});
 
-  LoadingHomeState copyWith({
-    List<Message>? messages,
-    Language? language,
-  }) =>
+  LoadingHomeState copyWith({List<Message>? messages, Language? language}) =>
       LoadingHomeState(
         messages: messages ?? this.messages,
         language: language ?? this.language,
@@ -97,12 +91,11 @@ final class ChatError extends ChatState {
     String? errorMessage,
     List<Message>? messages,
     Language? language,
-  }) =>
-      ChatError(
-        errorMessage: errorMessage ?? this.errorMessage,
-        messages: messages ?? this.messages,
-        language: language ?? this.language,
-      );
+  }) => ChatError(
+    errorMessage: errorMessage ?? this.errorMessage,
+    messages: messages ?? this.messages,
+    language: language ?? this.language,
+  );
 
   @override
   bool operator ==(Object other) {
@@ -146,10 +139,7 @@ final class AiMessageUpdated extends ChatState {
   @override
   int get hashCode => Object.hash(language, messages);
 
-  AiMessageUpdated copyWith({
-    List<Message>? messages,
-    Language? language,
-  }) =>
+  AiMessageUpdated copyWith({List<Message>? messages, Language? language}) =>
       AiMessageUpdated(
         messages: messages ?? this.messages,
         language: language ?? this.language,
@@ -171,10 +161,7 @@ final class AiMessageUpdated extends ChatState {
 final class SentMessageState extends ChatState {
   const SentMessageState({required super.messages, required super.language});
 
-  SentMessageState copyWith({
-    List<Message>? messages,
-    Language? language,
-  }) =>
+  SentMessageState copyWith({List<Message>? messages, Language? language}) =>
       SentMessageState(
         messages: messages ?? this.messages,
         language: language ?? this.language,
@@ -194,15 +181,9 @@ final class SentMessageState extends ChatState {
 }
 
 final class FeedbackState extends ChatState {
-  const FeedbackState({
-    required super.messages,
-    required super.language,
-  });
+  const FeedbackState({required super.messages, required super.language});
 
-  FeedbackState copyWith({
-    List<Message>? messages,
-    Language? language,
-  }) =>
+  FeedbackState copyWith({List<Message>? messages, Language? language}) =>
       FeedbackState(
         messages: messages ?? this.messages,
         language: language ?? this.language,
@@ -224,10 +205,7 @@ final class FeedbackState extends ChatState {
 final class FeedbackSent extends ChatState {
   const FeedbackSent({required super.messages, required super.language});
 
-  FeedbackSent copyWith({
-    List<Message>? messages,
-    Language? language,
-  }) =>
+  FeedbackSent copyWith({List<Message>? messages, Language? language}) =>
       FeedbackSent(
         messages: messages ?? this.messages,
         language: language ?? this.language,

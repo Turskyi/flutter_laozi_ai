@@ -4,10 +4,7 @@ import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/router/app_route.dart';
 
 class HomeAppBarButton extends StatelessWidget {
-  const HomeAppBarButton({
-    required this.language,
-    super.key,
-  });
+  const HomeAppBarButton({required this.language, super.key});
 
   final Language language;
 
@@ -29,9 +26,7 @@ class HomeAppBarButton extends StatelessWidget {
         child: const ClipOval(
           child: CircleAvatar(
             radius: 25,
-            backgroundImage: AssetImage(
-              '${constants.imageAssetsPath}logo.png',
-            ),
+            backgroundImage: AssetImage('${constants.imageAssetsPath}logo.png'),
           ),
         ),
       ),

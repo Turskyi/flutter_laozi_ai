@@ -32,17 +32,13 @@ class SupportPage extends StatelessWidget {
           initialLanguage,
         );
       },
-      child: _SupportPage(
-        initialLanguage: initialLanguage,
-      ),
+      child: _SupportPage(initialLanguage: initialLanguage),
     );
   }
 }
 
 class _SupportPage extends StatefulWidget {
-  const _SupportPage({
-    required this.initialLanguage,
-  });
+  const _SupportPage({required this.initialLanguage});
 
   final Language initialLanguage;
 
@@ -70,12 +66,12 @@ class _SupportPageState extends State<_SupportPage> {
     final Language savedLanguage = widget.initialLanguage;
     if (currentLanguage != savedLanguage) {
       changeLocale(context, savedLanguage.isoLanguageCode)
-          // The returned value in `then` is always `null`.
-          .then((Object? _) {
+      // The returned value in `then` is always `null`.
+      .then((Object? _) {
         if (mounted) {
-          context
-              .read<SupportBloc>()
-              .add(ChangeSupportLanguageEvent(savedLanguage));
+          context.read<SupportBloc>().add(
+            ChangeSupportLanguageEvent(savedLanguage),
+          );
         }
       });
     }
@@ -103,8 +99,8 @@ class _SupportPageState extends State<_SupportPage> {
                   // change logic and update its state (which might also
                   // update this screen's language).
                   context.read<SupportBloc>().add(
-                        ChangeSupportLanguageEvent(newLanguage),
-                      );
+                    ChangeSupportLanguageEvent(newLanguage),
+                  );
                   // Force a rebuild of the current screen's state
                   // (`_SupportPageState`).
                   // This is necessary because the `AppBar`'s title `Text`
@@ -140,11 +136,9 @@ class _SupportPageState extends State<_SupportPage> {
             _emailController.clear();
             _messageController.clear();
           } else if (state is SupportFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-              ),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.error)));
           }
         },
         builder: (BuildContext context, SupportState state) {
@@ -219,12 +213,12 @@ class _SupportPageState extends State<_SupportPage> {
                         : () {
                             if (_formKey.currentState?.validate() ?? false) {
                               context.read<SupportBloc>().add(
-                                    SendSupportEmail(
-                                      name: _nameController.text,
-                                      email: _emailController.text,
-                                      message: _messageController.text,
-                                    ),
-                                  );
+                                SendSupportEmail(
+                                  name: _nameController.text,
+                                  email: _emailController.text,
+                                  message: _messageController.text,
+                                ),
+                              );
                             }
                           },
                     child: state is SupportLoading
@@ -252,7 +246,8 @@ class _SupportPageState extends State<_SupportPage> {
   }
 
   void _onFormChanged() {
-    final bool isPopulated = _nameController.text.isNotEmpty &&
+    final bool isPopulated =
+        _nameController.text.isNotEmpty &&
         _emailController.text.isNotEmpty &&
         _messageController.text.isNotEmpty;
     if (_isFormPopulated != isPopulated) {

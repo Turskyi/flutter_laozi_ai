@@ -6,9 +6,7 @@ import 'package:laozi_ai/res/constants.dart' as constants;
 
 @module
 abstract class RetrofitClientModule {
-  RetrofitClient getRestClient(
-    LoggingInterceptor loggingInterceptor,
-  ) {
+  RetrofitClient getRestClient(LoggingInterceptor loggingInterceptor) {
     final Dio dio = Dio()..interceptors.add(loggingInterceptor);
 
     return RetrofitClient(dio, baseUrl: constants.baseUrl);

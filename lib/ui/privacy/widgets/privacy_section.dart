@@ -27,8 +27,9 @@ class PrivacySection extends StatelessWidget {
       children: <Widget>[
         Text(
           translate('$pageKey.${sectionKey}_title'),
-          style:
-              theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 8),
         Text(

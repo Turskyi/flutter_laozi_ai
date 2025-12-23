@@ -24,10 +24,7 @@ class FaqItem extends StatelessWidget {
       children: paragraphKeys.map((String key) {
         return Padding(
           padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-          child: Text(
-            translate(key),
-            style: theme.textTheme.bodyLarge,
-          ),
+          child: Text(translate(key), style: theme.textTheme.bodyLarge),
         );
       }).toList(),
     );

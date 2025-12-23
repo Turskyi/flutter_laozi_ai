@@ -14,8 +14,9 @@ class LocalDataSource {
       (Language lang) => lang.isoLanguageCode == languageIsoCode,
     );
 
-    final String safeLanguageCode =
-        isSupported ? languageIsoCode : Language.en.isoLanguageCode;
+    final String safeLanguageCode = isSupported
+        ? languageIsoCode
+        : Language.en.isoLanguageCode;
 
     return _preferences.setString(
       Settings.languageIsoCode.key,
@@ -28,7 +29,8 @@ class LocalDataSource {
       Settings.languageIsoCode.key,
     );
 
-    final bool isSavedLanguageSupported = savedLanguageIsoCode != null &&
+    final bool isSavedLanguageSupported =
+        savedLanguageIsoCode != null &&
         Language.values.any(
           (Language lang) => lang.isoLanguageCode == savedLanguageIsoCode,
         );
@@ -36,9 +38,10 @@ class LocalDataSource {
     final String systemLanguageCode =
         PlatformDispatcher.instance.locale.languageCode;
 
-    String defaultLanguageCode = Language.values.any(
-      (Language lang) => lang.isoLanguageCode == systemLanguageCode,
-    )
+    String defaultLanguageCode =
+        Language.values.any(
+          (Language lang) => lang.isoLanguageCode == systemLanguageCode,
+        )
         ? systemLanguageCode
         : Language.en.isoLanguageCode;
 

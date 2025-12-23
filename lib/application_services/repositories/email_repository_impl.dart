@@ -21,7 +21,8 @@ class EmailRepositoryImpl {
   }) async {
     bool isEmailSent = false;
     final Email supportEmail = Email(
-      body: '${translate('support_page.support_email_body')}:\n\n '
+      body:
+          '${translate('support_page.support_email_body')}:\n\n '
           'Email: $userEmail\n\n'
           'Name: $name\n\n Message: $message.',
       subject: translate(
@@ -48,7 +49,8 @@ class EmailRepositoryImpl {
         await _launchEmailClient(supportEmail);
       } else {
         await _resend.sendEmail(
-          from: 'Do Not Reply ${constants.appName} '
+          from:
+              'Do Not Reply ${constants.appName} '
               '<no-reply@${constants.resendEmailDomain}>',
           to: <String>[constants.supportEmail],
           subject: supportEmail.subject,
@@ -56,7 +58,8 @@ class EmailRepositoryImpl {
         );
 
         await _resend.sendEmail(
-          from: 'Do Not Reply ${constants.appName} '
+          from:
+              'Do Not Reply ${constants.appName} '
               '<no-reply@${constants.resendEmailDomain}>',
           to: customerEmail.recipients,
           subject: customerEmail.subject,
@@ -84,7 +87,8 @@ class EmailRepositoryImpl {
       scheme: constants.mailToScheme,
       path: constants.supportEmail,
       queryParameters: <String, Object?>{
-        constants.subjectParameter: '${translate('feedback.app_feedback')}: '
+        constants.subjectParameter:
+            '${translate('feedback.app_feedback')}: '
             '${packageInfo.appName}',
         constants.bodyParameter: supportEmail.body,
       },
@@ -92,9 +96,7 @@ class EmailRepositoryImpl {
     try {
       if (await canLaunchUrl(emailLaunchUri)) {
         await launchUrl(emailLaunchUri);
-        debugPrint(
-          'Feedback email launched successfully via url_launcher.',
-        );
+        debugPrint('Feedback email launched successfully via url_launcher.');
       } else {
         throw const EmailLaunchException('error.launch_email_failed');
       }

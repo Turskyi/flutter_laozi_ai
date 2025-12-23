@@ -8,9 +8,7 @@ class FaqPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(translate('faq_page.title')),
-      ),
+      appBar: AppBar(title: Text(translate('faq_page.title'))),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: const <Widget>[

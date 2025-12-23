@@ -37,8 +37,8 @@ class _AIChatBoxState extends State<AIChatBox> {
         );
         if (currentLanguage != savedLanguage) {
           changeLocale(context, savedLanguage.isoLanguageCode)
-              // The returned value in `then` is always `null`.
-              .then((Object? _) {
+          // The returned value in `then` is always `null`.
+          .then((Object? _) {
             if (mounted) {
               context.read<ChatBloc>().add(ChangeLanguageEvent(savedLanguage));
             }
@@ -94,8 +94,8 @@ class _AIChatBoxState extends State<AIChatBox> {
                 onLanguageSelected: (Language newLanguage) {
                   _initialLanguage = newLanguage;
                   context.read<ChatBloc>().add(
-                        ChangeLanguageEvent(newLanguage),
-                      );
+                    ChangeLanguageEvent(newLanguage),
+                  );
                 },
               ),
             ],
@@ -154,18 +154,19 @@ class _AIChatBoxState extends State<AIChatBox> {
                           child: state is SentMessageState
                               ? const CircularProgressIndicator()
                               : const Icon(Icons.send),
-                          builder: (
-                            BuildContext _,
-                            TextEditingValue value,
-                            Widget? iconWidget,
-                          ) {
-                            return IconButton(
-                              icon: iconWidget ?? const SizedBox(),
-                              onPressed: value.text.isNotEmpty
-                                  ? _handleSendMessage
-                                  : null,
-                            );
-                          },
+                          builder:
+                              (
+                                BuildContext _,
+                                TextEditingValue value,
+                                Widget? iconWidget,
+                              ) {
+                                return IconButton(
+                                  icon: iconWidget ?? const SizedBox(),
+                                  onPressed: value.text.isNotEmpty
+                                      ? _handleSendMessage
+                                      : null,
+                                );
+                              },
                         ),
                       ],
                     ),
@@ -187,11 +188,9 @@ class _AIChatBoxState extends State<AIChatBox> {
   }
 
   void _showFeedbackUi() {
-    _feedbackController?.show(
-      (UserFeedback feedback) {
-        context.read<ChatBloc>().add(SubmitFeedbackEvent(feedback));
-      },
-    );
+    _feedbackController?.show((UserFeedback feedback) {
+      context.read<ChatBloc>().add(SubmitFeedbackEvent(feedback));
+    });
     _feedbackController?.addListener(_onFeedbackChanged);
   }
 

@@ -6,10 +6,7 @@ import 'package:laozi_ai/router/app_route.dart';
 import 'package:resend/resend.dart';
 
 class LaoziAiApp extends StatelessWidget {
-  const LaoziAiApp({
-    required this.routeMap,
-    super.key,
-  });
+  const LaoziAiApp({required this.routeMap, super.key});
 
   final Map<String, WidgetBuilder> routeMap;
 
@@ -55,8 +52,10 @@ class LaoziAiApp extends StatelessWidget {
             displayMedium: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
             displaySmall: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
             headlineLarge: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
-            headlineMedium:
-                TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            headlineMedium: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
             headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             titleLarge: TextStyle(fontSize: 16),
             titleMedium: TextStyle(fontSize: 14),

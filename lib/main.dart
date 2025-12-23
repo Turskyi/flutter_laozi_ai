@@ -49,8 +49,8 @@ void main() async {
 
   final Language savedLanguage = Language.fromIsoLanguageCode(savedIsoCode);
 
-  final LocalizationDelegate localizationDelegate =
-      await locale.getLocalizationDelegate();
+  final LocalizationDelegate localizationDelegate = await locale
+      .getLocalizationDelegate();
 
   final Language currentLanguage = Language.fromIsoLanguageCode(
     localizationDelegate.currentLocale.languageCode,
@@ -67,32 +67,32 @@ void main() async {
 
   Map<String, WidgetBuilder> routeMap = <String, WidgetBuilder>{
     AppRoute.home.path: (BuildContext _) => BlocProvider<ChatBloc>(
-          create: (BuildContext _) {
-            return GetIt.I.get<ChatBloc>()..add(const LoadHomeEvent());
-          },
-          child: BlocListener<ChatBloc, ChatState>(
-            listener: (BuildContext context, ChatState state) {
-              if (state is ChatInitial) {
-                final Language currentLanguage = Language.fromIsoLanguageCode(
-                  LocalizedApp.of(context).delegate.currentLocale.languageCode,
-                );
-                final Language savedLanguage = state.language;
-                if (currentLanguage != savedLanguage) {
-                  changeLocale(context, savedLanguage.isoLanguageCode)
-                      // The returned value in `then` is always `null`.
-                      .then((_) {
-                    if (context.mounted) {
-                      context
-                          .read<ChatBloc>()
-                          .add(ChangeLanguageEvent(savedLanguage));
-                    }
-                  });
+      create: (BuildContext _) {
+        return GetIt.I.get<ChatBloc>()..add(const LoadHomeEvent());
+      },
+      child: BlocListener<ChatBloc, ChatState>(
+        listener: (BuildContext context, ChatState state) {
+          if (state is ChatInitial) {
+            final Language currentLanguage = Language.fromIsoLanguageCode(
+              LocalizedApp.of(context).delegate.currentLocale.languageCode,
+            );
+            final Language savedLanguage = state.language;
+            if (currentLanguage != savedLanguage) {
+              changeLocale(context, savedLanguage.isoLanguageCode)
+              // The returned value in `then` is always `null`.
+              .then((_) {
+                if (context.mounted) {
+                  context.read<ChatBloc>().add(
+                    ChangeLanguageEvent(savedLanguage),
+                  );
                 }
-              }
-            },
-            child: const AIChatBox(),
-          ),
-        ),
+              });
+            }
+          }
+        },
+        child: const AIChatBox(),
+      ),
+    ),
     AppRoute.about.path: (BuildContext _) {
       return AboutPage(initialLanguage: savedLanguage);
     },
@@ -112,16 +112,17 @@ void main() async {
     LocalizedApp(
       localizationDelegate,
       BetterFeedback(
-        feedbackBuilder: (
-          BuildContext _,
-          OnSubmit onSubmit,
-          ScrollController? scrollController,
-        ) {
-          return FeedbackForm(
-            onSubmit: onSubmit,
-            scrollController: scrollController,
-          );
-        },
+        feedbackBuilder:
+            (
+              BuildContext _,
+              OnSubmit onSubmit,
+              ScrollController? scrollController,
+            ) {
+              return FeedbackForm(
+                onSubmit: onSubmit,
+                scrollController: scrollController,
+              );
+            },
         theme: FeedbackThemeData(feedbackSheetColor: Colors.grey.shade50),
         child: LaoziAiApp(routeMap: routeMap),
       ),
