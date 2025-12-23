@@ -21,17 +21,17 @@ class AIChatBox extends StatefulWidget {
 class _AIChatBoxState extends State<AIChatBox> {
   final TextEditingController _textEditingController = TextEditingController();
   FeedbackController? _feedbackController;
-  Object? initialLanguage;
+  Object? _initialLanguage;
 
   @override
   void didChangeDependencies() {
     _feedbackController = BetterFeedback.of(context);
     // Extract the arguments from the current ModalRoute
     // settings and cast them as `Language`.
-    if (initialLanguage == null) {
-      initialLanguage = ModalRoute.of(context)?.settings.arguments;
-      if (initialLanguage is Language) {
-        final Language savedLanguage = initialLanguage as Language;
+    if (_initialLanguage == null) {
+      _initialLanguage = ModalRoute.of(context)?.settings.arguments;
+      if (_initialLanguage is Language) {
+        final Language savedLanguage = _initialLanguage as Language;
         final Language currentLanguage = Language.fromIsoLanguageCode(
           LocalizedApp.of(context).delegate.currentLocale.languageCode,
         );
@@ -88,11 +88,11 @@ class _AIChatBoxState extends State<AIChatBox> {
                 ),
               // Use the `LanguageSelector` widget as an action.
               LanguageSelector(
-                currentLanguage: initialLanguage is Language
-                    ? (initialLanguage as Language)
+                currentLanguage: _initialLanguage is Language
+                    ? (_initialLanguage as Language)
                     : state.language,
                 onLanguageSelected: (Language newLanguage) {
-                  initialLanguage = newLanguage;
+                  _initialLanguage = newLanguage;
                   context.read<ChatBloc>().add(
                         ChangeLanguageEvent(newLanguage),
                       );

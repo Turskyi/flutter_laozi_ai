@@ -19,7 +19,7 @@ import 'package:laozi_ai/entities/enums/role.dart';
 import 'package:laozi_ai/entities/message.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart' as path;
 import 'package:url_launcher/url_launcher.dart';
 
 part 'chat_event.dart';
@@ -335,6 +335,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             : 'error.request_timeout_check_internet';
         break;
       case DioExceptionType.connectionError:
+        debugPrint('Connection error: ${error.error}');
         errorMessageKey = isSendMessage && kIsWeb && kDebugMode
             ? 'error.cors'
             : 'error.connection_error_check_internet';
@@ -345,9 +346,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       case DioExceptionType.unknown:
       default:
         if (error.error is SocketException) {
+          debugPrint('Socket error: ${error.error}');
           errorMessageKey = isSendMessage && kIsWeb && kDebugMode
               ? 'error.cors'
-              : 'error.connection_error_check_internet';
+              : 'error.socket_error_check_internet';
         } else {
           errorMessageKey = isSendMessage && kIsWeb && kDebugMode
               ? 'error.cors'
@@ -445,7 +447,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Future<String> _writeImageToStorage(Uint8List feedbackScreenshot) async {
-    final Directory output = await getTemporaryDirectory();
+    final Directory output = await path.getTemporaryDirectory();
     final String screenshotFilePath = '${output.path}/feedback.png';
     final File screenshotFile = File(screenshotFilePath);
     await screenshotFile.writeAsBytes(feedbackScreenshot);
