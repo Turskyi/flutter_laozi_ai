@@ -89,7 +89,7 @@
     "inconsistent_chapters_p3": "Šī pieeja var radīt neregulāras nekonsekvences nodaļu numerācijā, taču līdz šim šķiet, ka tā uzlabo kopējo atbilžu kvalitāti un dziļumu. Kamēr mēs nekonstatēsim, ka šī dažādība rada vairāk neskaidrību nekā skaidrības, mēs turpināsim ļaut AI pētīt gudrību no vairāk nekā viena avota.",
     "more_languages_title": "Vai pievienosiet citas valodas?",
     "more_languages_p1": "Tīmekļa versija pašlaik atbalsta tikai angļu valodu, bet nākotnē, kad laiks atļaus, var tikt pievienota ukraiņu valoda, jo pašlaik esmu koncentrējies uz ģimeni un pilnas slodzes darbu.",
-    "more_languages_p2": "Mobilā versija jau atbalsta gan angļu, gan ukraiņu valodu, un nav plānots pievienot citas valodas, jo precizitātes uzturēšanai nepieciešama valodas prasme un atbildība par iespējamām valodas kļūdām.",
+    "more_languages_p2": "Mobilā versija jau atbalsta angļu, ukraiņu un latviešu valodu, un nav plānots pievienot citas valodas, jo precizitātes uzturēšanai nepieciešama valodas prasme un atbildība par iespējamām valodas kļūdām.",
     "more_languages_p3": "Praksē AI bieži atbild tajā pašā valodā, kurā lietotājs raksta, atkarībā no AI nodrošinātāja, tāpēc lietotāji joprojām var saņemt atbildes citās valodās, pat ja saskarne ir angļu valodā.",
     "short_answers_title": "Kāpēc Laodzi pārtrauca atbildēt mana jautājuma vidū?",
     "short_answers_p1": "Dažkārt Laodzi AI sniedz īsāku atbildi vai šķietami ietur pauzi, pirms pilnībā atbild uz jūsu jautājumu. Tā nav kļūda — tas ir paredzēts, lai saruna būtu dabiska un lasāma, tieši tāpat kā reāls cilvēks varētu izteikt domu, ieturēt pauzi un gaidīt jūsu atbildi.",

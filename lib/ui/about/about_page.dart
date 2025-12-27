@@ -8,36 +8,17 @@ import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
 
 const double _kYinYangImageSize = 180.0;
 
-class AboutPage extends StatefulWidget {
+class AboutPage extends StatelessWidget {
   const AboutPage({required this.initialLanguage, super.key});
 
   final Language initialLanguage;
-
-  @override
-  State<AboutPage> createState() => _AboutPageState();
-}
-
-class _AboutPageState extends State<AboutPage> {
-  @override
-  void initState() {
-    super.initState();
-    final Language currentLanguage = Language.fromIsoLanguageCode(
-      LocalizedApp.of(context).delegate.currentLocale.languageCode,
-    );
-    final Language savedLanguage = widget.initialLanguage;
-    if (currentLanguage != savedLanguage) {
-      changeLocale(context, savedLanguage.isoLanguageCode);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        leading: kIsWeb
-            ? HomeAppBarButton(language: widget.initialLanguage)
-            : null,
+        leading: kIsWeb ? HomeAppBarButton(language: initialLanguage) : null,
         title: Text(translate('about_page.title')),
       ),
       body: SingleChildScrollView(
