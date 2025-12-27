@@ -30,25 +30,31 @@ class ChatRepositoryImpl implements ChatRepository {
       locale: _localDataSource.getLanguageIsoCode(),
     );
 
-    if (kIsWeb) {
-      return chat.usesEnglishLanguage
-          ? _processResponse(_restClient.sendEnglishWebChatMessage(request))
-          : _processResponse(_restClient.sendUkrainianWebChatMessage(request));
-    } else if (Platform.isAndroid) {
-      return chat.usesEnglishLanguage
-          ? _processResponse(_restClient.sendEnglishAndroidChatMessage(request))
-          : _processResponse(
-              _restClient.sendUkrainianAndroidChatMessage(request),
-            );
-    } else if (Platform.isIOS) {
-      return chat.usesEnglishLanguage
-          ? _processResponse(_restClient.sendEnglishIosChatMessage(request))
-          : _processResponse(_restClient.sendUkrainianIosChatMessage(request));
-    } else {
-      return _processResponse(
-        _restClient.sendChatMessageOnUnknownPlatform(request),
-      );
+    if (chat.language.isNotLatvian) {
+      if (kIsWeb) {
+        return chat.usesEnglishLanguage
+            ? _processResponse(_restClient.sendEnglishWebChatMessage(request))
+            : _processResponse(
+                _restClient.sendUkrainianWebChatMessage(request),
+              );
+      } else if (Platform.isAndroid) {
+        return chat.usesEnglishLanguage
+            ? _processResponse(
+                _restClient.sendEnglishAndroidChatMessage(request),
+              )
+            : _processResponse(
+                _restClient.sendUkrainianAndroidChatMessage(request),
+              );
+      } else if (Platform.isIOS || Platform.isMacOS) {
+        return chat.usesEnglishLanguage
+            ? _processResponse(_restClient.sendEnglishIosChatMessage(request))
+            : _processResponse(
+                _restClient.sendUkrainianIosChatMessage(request),
+              );
+      }
     }
+
+    return _processResponse(_restClient.sendChatMessage(request));
   }
 
   Stream<String> _processResponse(Stream<String> response) {

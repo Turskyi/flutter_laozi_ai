@@ -29,7 +29,5 @@ abstract class RetrofitClient {
   Stream<String> sendUkrainianWebChatMessage(@Body() ChatRequest chatRequest);
 
   @POST('chat')
-  Stream<String> sendChatMessageOnUnknownPlatform(
-    @Body() ChatRequest chatRequest,
-  );
+  Stream<String> sendChatMessage(@Body() ChatRequest chatRequest);
 }

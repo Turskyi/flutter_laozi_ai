@@ -33,6 +33,8 @@ enum Language {
 
   bool get isLatvian => this == Language.lv;
 
+  bool get isNotLatvian => !isLatvian;
+
   static Language fromIsoLanguageCode(String isoLanguageCode) {
     switch (isoLanguageCode.trim().toLowerCase()) {
       case _englishIsoLanguageCode:
