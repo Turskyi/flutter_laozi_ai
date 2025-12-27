@@ -50,6 +50,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i375.RetrofitClient>(
       () => retrofitClientModule.getRestClient(gh<_i908.LoggingInterceptor>()),
     );
+    gh.factory<_i451.LocalDataSource>(
+      () => _i451.LocalDataSource(gh<_i460.SharedPreferences>()),
+    );
     gh.factory<_i732.ChatRepository>(
       () => _i848.ChatRepositoryImpl(
         gh<_i375.RetrofitClient>(),

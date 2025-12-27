@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/enums/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@Injectable()
 class LocalDataSource {
   const LocalDataSource(this._preferences);
 
