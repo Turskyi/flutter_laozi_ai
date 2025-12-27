@@ -6,15 +6,17 @@ import 'package:injectable/injectable.dart';
 import 'package:laozi_ai/domain_services/chat_repository.dart';
 import 'package:laozi_ai/entities/chat.dart';
 import 'package:laozi_ai/entities/message.dart';
+import 'package:laozi_ai/infrastructure/data_sources/local/local_data_source.dart';
 import 'package:laozi_ai/infrastructure/data_sources/remote/models/chat_request/chat_request.dart';
 import 'package:laozi_ai/infrastructure/data_sources/remote/models/chat_request/message_request.dart';
 import 'package:laozi_ai/infrastructure/data_sources/remote/rest/retrofit_client/retrofit_client.dart';
 
 @Injectable(as: ChatRepository)
 class ChatRepositoryImpl implements ChatRepository {
-  const ChatRepositoryImpl(this._restClient);
+  const ChatRepositoryImpl(this._restClient, this._localDataSource);
 
   final RetrofitClient _restClient;
+  final LocalDataSource _localDataSource;
 
   @override
   Stream<String> sendChat(Chat chat) {
@@ -25,6 +27,7 @@ class ChatRepositoryImpl implements ChatRepository {
           content: '${message.content}',
         );
       }).toList(),
+      locale: _localDataSource.getLanguageIsoCode(),
     );
 
     if (kIsWeb) {

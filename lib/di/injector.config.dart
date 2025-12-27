@@ -20,6 +20,8 @@ import 'package:laozi_ai/di/preferences_module.dart' as _i475;
 import 'package:laozi_ai/di/retrofit_client_module.dart' as _i609;
 import 'package:laozi_ai/domain_services/chat_repository.dart' as _i732;
 import 'package:laozi_ai/domain_services/settings_repository.dart' as _i301;
+import 'package:laozi_ai/infrastructure/data_sources/local/local_data_source.dart'
+    as _i451;
 import 'package:laozi_ai/infrastructure/data_sources/remote/rest/logging_interceptor.dart'
     as _i908;
 import 'package:laozi_ai/infrastructure/data_sources/remote/rest/retrofit_client/retrofit_client.dart'
@@ -49,7 +51,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => retrofitClientModule.getRestClient(gh<_i908.LoggingInterceptor>()),
     );
     gh.factory<_i732.ChatRepository>(
-      () => _i848.ChatRepositoryImpl(gh<_i375.RetrofitClient>()),
+      () => _i848.ChatRepositoryImpl(
+        gh<_i375.RetrofitClient>(),
+        gh<_i451.LocalDataSource>(),
+      ),
     );
     gh.factory<_i841.ChatBloc>(
       () => _i841.ChatBloc(

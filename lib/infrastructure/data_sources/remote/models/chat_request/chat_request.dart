@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'message_request.dart';
@@ -7,21 +8,25 @@ part 'chat_request.g.dart';
 
 @JsonSerializable()
 class ChatRequest {
-  const ChatRequest({required this.messages});
+  const ChatRequest({required this.messages, required this.locale});
 
-  factory ChatRequest.fromJson(Map<String, dynamic> json) {
+  factory ChatRequest.fromJson(Map<String, Object?> json) {
     return _$ChatRequestFromJson(json);
   }
 
   final List<MessageRequest> messages;
 
-  @override
-  String toString() => 'ChatRequest(messages: $messages)';
+  /// The language code (e.g., 'en', 'uk', 'lv', 'es')
+  final String locale;
 
-  Map<String, dynamic> toJson() => _$ChatRequestToJson(this);
+  Map<String, Object?> toJson() => _$ChatRequestToJson(this);
 
-  ChatRequest copyWith({List<MessageRequest>? messages}) =>
-      ChatRequest(messages: messages ?? this.messages);
+  ChatRequest copyWith({List<MessageRequest>? messages, String? locale}) {
+    return ChatRequest(
+      messages: messages ?? this.messages,
+      locale: locale ?? this.locale,
+    );
+  }
 
   @override
   bool operator ==(Object other) {
@@ -33,5 +38,14 @@ class ChatRequest {
   }
 
   @override
-  int get hashCode => messages.hashCode;
+  int get hashCode => messages.hashCode ^ locale.hashCode;
+
+  @override
+  String toString() {
+    if (kDebugMode) {
+      return 'ChatRequest(messages: $messages, locale: $locale)';
+    } else {
+      return super.toString();
+    }
+  }
 }
