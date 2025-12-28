@@ -390,9 +390,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         break;
       case DioExceptionType.connectionError:
         debugPrint('Connection error: ${error.error}');
-        errorMessageKey = isSendMessage && kIsWeb && kDebugMode
-            ? 'error.cors'
-            : 'error.connection_error_check_internet';
+        if (isSendMessage && kIsWeb && kDebugMode) {
+          errorMessageKey = 'error.cors';
+        } else if (isSendMessage && kReleaseMode && kIsWeb) {
+          errorMessageKey = 'error.server_maintenance_visit_other_site';
+        } else {
+          errorMessageKey = 'error.connection_error_check_internet';
+        }
         break;
       case DioExceptionType.cancel:
         errorMessageKey = 'error.request_cancelled';
