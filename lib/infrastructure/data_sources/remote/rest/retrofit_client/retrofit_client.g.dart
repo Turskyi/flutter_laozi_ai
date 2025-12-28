@@ -8,7 +8,7 @@ part of 'retrofit_client.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter,avoid_unused_constructor_parameters,unreachable_from_main
 
 class _RetrofitClient implements RetrofitClient {
   _RetrofitClient(this._dio, {this.baseUrl, this.errorLogger});
@@ -29,11 +29,11 @@ class _RetrofitClient implements RetrofitClient {
     final _options = _setStreamType<String>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        'chat-android-en',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            'chat-android-en',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<String>(_options);
@@ -41,7 +41,7 @@ class _RetrofitClient implements RetrofitClient {
     try {
       _value = _result.data!;
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     yield _value;
@@ -49,7 +49,8 @@ class _RetrofitClient implements RetrofitClient {
 
   @override
   Stream<String> sendUkrainianAndroidChatMessage(
-      ChatRequest chatRequest,) async* {
+    ChatRequest chatRequest,
+  ) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -58,11 +59,11 @@ class _RetrofitClient implements RetrofitClient {
     final _options = _setStreamType<String>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        'chat-android-ua',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            'chat-android-ua',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<String>(_options);
@@ -70,7 +71,7 @@ class _RetrofitClient implements RetrofitClient {
     try {
       _value = _result.data!;
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     yield _value;
@@ -86,11 +87,11 @@ class _RetrofitClient implements RetrofitClient {
     final _options = _setStreamType<String>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        'chat-ios-en',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            'chat-ios-en',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<String>(_options);
@@ -98,7 +99,7 @@ class _RetrofitClient implements RetrofitClient {
     try {
       _value = _result.data!;
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     yield _value;
@@ -114,11 +115,11 @@ class _RetrofitClient implements RetrofitClient {
     final _options = _setStreamType<String>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        'chat-ios-ua',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            'chat-ios-ua',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<String>(_options);
@@ -126,7 +127,7 @@ class _RetrofitClient implements RetrofitClient {
     try {
       _value = _result.data!;
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     yield _value;
@@ -142,11 +143,11 @@ class _RetrofitClient implements RetrofitClient {
     final _options = _setStreamType<String>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        'chat-web-app-en',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            'chat-web-app-en',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<String>(_options);
@@ -154,7 +155,7 @@ class _RetrofitClient implements RetrofitClient {
     try {
       _value = _result.data!;
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     yield _value;
@@ -170,11 +171,11 @@ class _RetrofitClient implements RetrofitClient {
     final _options = _setStreamType<String>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        'chat-web-app-ua',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            'chat-web-app-ua',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<String>(_options);
@@ -182,7 +183,7 @@ class _RetrofitClient implements RetrofitClient {
     try {
       _value = _result.data!;
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     yield _value;
@@ -198,11 +199,11 @@ class _RetrofitClient implements RetrofitClient {
     final _options = _setStreamType<String>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        'chat',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            'chat',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<String>(_options);
@@ -210,7 +211,7 @@ class _RetrofitClient implements RetrofitClient {
     try {
       _value = _result.data!;
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     yield _value;
@@ -230,9 +231,7 @@ class _RetrofitClient implements RetrofitClient {
   }
 
   String _combineBaseUrls(String dioBaseUrl, String? baseUrl) {
-    if (baseUrl == null || baseUrl
-        .trim()
-        .isEmpty) {
+    if (baseUrl == null || baseUrl.trim().isEmpty) {
       return dioBaseUrl;
     }
 

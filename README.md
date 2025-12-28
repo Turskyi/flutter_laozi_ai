@@ -4,15 +4,25 @@
 [![Code Quality](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/code_quality_tests.yml/badge.svg)](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/code_quality_tests.yml)
 [![Upload Android build to App Tester.](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/flutter_android_ci.yml/badge.svg?branch=master)](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/flutter_android_ci.yml)
 [![Codemagic build status](https://api.codemagic.io/apps/667a310740730af77f00b920/667a310740730af77f00b91f/status_badge.svg)](https://codemagic.io/app/667a310740730af77f00b920/667a310740730af77f00b91f/latest_build)
+[![Deploy to Firebase Hosting on PR](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/firebase-hosting-pull-request.yml/badge.svg)](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/firebase-hosting-pull-request.yml)
+[![Deploy to Firebase Hosting on merge](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/firebase-hosting-merge.yml/badge.svg)](https://github.com/Turskyi/flutter_laozi_ai/actions/workflows/firebase-hosting-merge.yml)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Turskyi/flutter_laozi_ai)
+[![wakatime](https://wakatime.com/badge/user/f9df5074-b4ea-4c17-b001-fff428ab82aa/project/a7d9d97b-45c8-4504-93b2-12eea75df734.svg)](https://wakatime.com/badge/user/f9df5074-b4ea-4c17-b001-fff428ab82aa/project/a7d9d97b-45c8-4504-93b2-12eea75df734)
 <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/Turskyi/flutter_laozi_ai">
 
-# Daoism - Laozi AI (Flutter Version)
+# Daoism • Laozi AI (Flutter Version)
 
 This project is a Flutter-based mobile application that brings the wisdom of
 Laozi and Daoist teachings to users' fingertips. It is designed with a focus on
 user experience, leveraging the Flutter framework for a smooth and responsive
 interface.
+
+### Testing the App:
+
+Join our testing program and provide valuable feedback:
+
+- [Android App Distribution Tester Invite](https://appdistribution.firebase.dev/i/fa9deb62ac3a884b)
+- [iOS TestFlight Tester Invite](https://testflight.apple.com/join/Yw8SqhUw)
 
 ## Getting Started
 
@@ -22,13 +32,6 @@ interface.
 - An [IDE with Flutter support](https://docs.flutter.dev/tools) (
   e.g., [Android Studio](https://developer.android.com/studio), [VS Code](https://code.visualstudio.com/download)).
 - [Familiarity with Dart and Flutter development](https://docs.flutter.dev/get-started/codelab).
-
-### Testing the App:
-
-Join our testing program and provide valuable feedback:
-
-- [Android App Distribution Tester Invite](https://appdistribution.firebase.dev/i/fa9deb62ac3a884b)
-- [iOS TestFlight Tester Invite](https://testflight.apple.com/join/Yw8SqhUw)
 
 ### Clone the Repository:
 
@@ -45,6 +48,47 @@ flutter pub get
 ```
 
 This will install all the necessary Flutter packages for the project.
+
+### Environment Setup:
+
+The app relies on environmental files that are not available in the repository and have to be added manually. Here are these files:
+
+1. `.env` with content:
+
+```
+RESEND_API_KEY="re_abc123example"
+```
+
+This API key can be taken from [https://resend.com/api-keys](https://resend.com/api-keys).
+After creating the file, run the following commands to generate `lib/env/env.g.dart`:
+
+```bash
+dart run build_runner clean
+dart run build_runner build --delete-conflicting-outputs
+```
+
+2. `android/key.properties` with the following content (fill values as needed):
+
+```properties
+# dev debug environment variables
+dev.SIGNING_KEY_DEBUG_PATH=../keystore/laozi_ai_debug.keystore
+dev.SIGNING_KEY_DEBUG_PASSWORD=
+dev.SIGNING_KEY_DEBUG_KEY=laozi_ai_debug
+dev.SIGNING_KEY_DEBUG_KEY_PASSWORD=
+# production release environment variables
+production.SIGNING_KEY_RELEASE_PATH=../keystore/laozi_ai_release.keystore
+production.SIGNING_KEY_RELEASE_PASSWORD=
+production.SIGNING_KEY_RELEASE_KEY=laozi_ai_release
+production.SIGNING_KEY_RELEASE_KEY_PASSWORD=
+
+FIREBASE_ANDROID_APP_ID=
+
+FIREBASE_TOKEN=
+```
+
+3. `android/keystore/laozi_ai_debug.keystore` (create or obtain the debug keystore).
+4. `android/keystore/laozi_ai_release.keystore` (create or obtain the release keystore).
+5. `android/app/google-services.json` (Firebase Android configuration file).
 
 ## Running the App:
 
