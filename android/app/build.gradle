@@ -59,7 +59,7 @@ android {
     defaultConfig {
         applicationId rootProject.application_id
 
-        minSdkVersion = flutter.minSdkVersion
+        minSdkVersion flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
@@ -129,6 +129,7 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.google.firebase:firebase-crashlytics:20.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics:20.0.3'
+    implementation 'com.google.firebase:firebase-analytics:23.0.0'
 }
 
