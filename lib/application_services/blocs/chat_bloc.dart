@@ -392,8 +392,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         debugPrint('Connection error: ${error.error}');
         if (isSendMessage && kIsWeb && kDebugMode) {
           errorMessageKey = 'error.cors';
-        } else if (isSendMessage && kReleaseMode && kIsWeb) {
-          errorMessageKey = 'error.server_maintenance_visit_other_site';
+        } else if (kIsWeb) {
+          errorMessageKey = 'error.server_connection_error_visit_other_site';
         } else {
           errorMessageKey = 'error.connection_error_check_internet';
         }

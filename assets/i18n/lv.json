@@ -57,7 +57,8 @@
     "unexpected_network_error": "Radās neparedzēta tīkla kļūda. Lūdzu, mēģiniet vēlre.",
     "unexpected_error_sending_feedback": "Sūtot atsauksmes, radās neparedzēta kļūda. Lūdzu, mēģiniet vēlre.",
     "unexpected_error_preparing_feedback": "Sagatavojot atsauksmes, radās neparedzēta kļūda. Lūdzu, mēģiniet vēlre.",
-    "no_messages_to_share": "Nav ziņojumu, ko kopīgot"
+    "no_messages_to_share": "Nav ziņojumu, ko kopīgot",
+    "server_connection_error_visit_other_site": "Servera savienojuma kļūda. Lūdzu, apmeklējiet citu šīs lietotnes tīmekļa versiju vietnē https://daoizm.online"
   },
   "about_page": {
     "title": "Par daoismu un Laodzi AI",
