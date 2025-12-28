@@ -30,6 +30,7 @@ class PrivacyPage extends StatelessWidget {
             isAndroid ? 'privacy_page_android.title' : 'privacy_page.title',
             args: <String, Object?>{'appName': appName},
           ),
+          maxLines: 2,
         ),
       ),
       body: SingleChildScrollView(
