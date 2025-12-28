@@ -71,3 +71,7 @@ final class LaunchUrlEvent extends ChatEvent {
 
   final String url;
 }
+
+final class ShareConversationEvent extends ChatEvent {
+  const ShareConversationEvent();
+}

@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/enums/settings.dart';
+import 'package:laozi_ai/router/app_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @Injectable()
@@ -47,20 +48,29 @@ class LocalDataSource {
         ? systemLanguageCode
         : Language.en.isoLanguageCode;
 
+    // Retrieves the host name (e.g., "localhost" or "uk.daoizm.online").
     final String host = Uri.base.host;
-    if (host.startsWith('${Language.uk.isoLanguageCode}.')) {
-      try {
-        Intl.defaultLocale = Language.uk.isoLanguageCode;
-      } catch (e, stackTrace) {
-        debugPrint(
-          'Failed to set Intl.defaultLocale to '
-          '"${Language.uk.isoLanguageCode}".\n'
-          'Error: $e\n'
-          'StackTrace: $stackTrace\n'
-          'Proceeding with previously set default locale or system default.',
-        );
+    // Retrieves the fragment (e.g., "/en" or "/uk").
+    final String fragment = Uri.base.fragment;
+    for (final Language language in Language.values) {
+      final String currentLanguageCode = language.isoLanguageCode;
+
+      if (host.startsWith('$currentLanguageCode.') ||
+          fragment.contains('${AppRoute.home.path}$currentLanguageCode')) {
+        try {
+          Intl.defaultLocale = currentLanguageCode;
+        } catch (e, stackTrace) {
+          debugPrint(
+            'Failed to set Intl.defaultLocale to "$currentLanguageCode".\n'
+            'Error: $e\n'
+            'StackTrace: $stackTrace\n'
+            'Proceeding with previously set default locale or system default.',
+          );
+        }
+        defaultLanguageCode = currentLanguageCode;
+        // Exit the loop once a match is found and processed.
+        break;
       }
-      defaultLanguageCode = Language.uk.isoLanguageCode;
     }
 
     return isSavedLanguageSupported

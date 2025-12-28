@@ -65,8 +65,8 @@ dependencies:
   path_provider: ^2.1.5
   resend: ^1.0.0
   retrofit: ^4.9.1
-  # Tried to use ^10.0.0, but it did not compile.
-  retrofit_generator: any
+  retrofit_generator: ^10.2.1
+  share_plus: ^12.0.1
   shared_preferences: ^2.5.4
   url_launcher: ^6.3.2
 

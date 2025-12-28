@@ -11,6 +11,8 @@
   "support": "Atbalsts",
   "report_bug": "Ziņot par kļūdu",
   "language": "Valoda",
+  "seeker": "Meklētājs",
+  "laozi": "Laodzi",
   "chat": {
     "askSomething": "Jautājiet kaut ko par daoismu...",
     "sendMessageToStartChat": "Nosūtiet ziņu, lai sāktu tērzēšanu ar Laodzi AI!",
@@ -52,7 +54,8 @@
     "request_cancelled": "Pieprasījums tika atcelts.",
     "unexpected_network_error": "Radās neparedzēta tīkla kļūda. Lūdzu, mēģiniet vēlre.",
     "unexpected_error_sending_feedback": "Sūtot atsauksmes, radās neparedzēta kļūda. Lūdzu, mēģiniet vēlre.",
-    "unexpected_error_preparing_feedback": "Sagatavojot atsauksmes, radās neparedzēta kļūda. Lūdzu, mēģiniet vēlre."
+    "unexpected_error_preparing_feedback": "Sagatavojot atsauksmes, radās neparedzēta kļūda. Lūdzu, mēģiniet vēlre.",
+    "no_messages_to_share": "Nav ziņojumu, ko kopīgot"
   },
   "about_page": {
     "title": "Par daoismu un Laodzi AI",

@@ -2,10 +2,7 @@ part of 'chat_bloc.dart';
 
 @immutable
 sealed class ChatState {
-  const ChatState({
-    this.messages = const <Message>[],
-    this.language = Language.en,
-  });
+  const ChatState({required this.language, required this.messages});
 
   final Language language;
   final List<Message> messages;
@@ -35,7 +32,7 @@ sealed class ChatState {
 }
 
 final class ChatInitial extends ChatState {
-  const ChatInitial({required super.language, super.messages});
+  const ChatInitial({required super.language, required super.messages});
 
   ChatInitial copyWith({List<Message>? messages, Language? language}) =>
       ChatInitial(
@@ -57,7 +54,7 @@ final class ChatInitial extends ChatState {
 }
 
 final class LoadingHomeState extends ChatState {
-  const LoadingHomeState({super.messages, super.language});
+  const LoadingHomeState({required super.messages, required super.language});
 
   LoadingHomeState copyWith({List<Message>? messages, Language? language}) =>
       LoadingHomeState(
@@ -82,7 +79,7 @@ final class ChatError extends ChatState {
   const ChatError({
     required this.errorMessage,
     required super.language,
-    super.messages,
+    required super.messages,
   });
 
   final String errorMessage;

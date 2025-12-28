@@ -81,11 +81,16 @@ class _AIChatBoxState extends State<AIChatBox> {
           appBar: WaveAppBar(
             title: translate('title'),
             actions: <Widget>[
-              if (state.messages.isNotEmpty)
+              if (state.messages.isNotEmpty) ...<Widget>[
+                IconButton(
+                  icon: const Icon(Icons.share),
+                  onPressed: _onShareConversationPressed,
+                ),
                 IconButton(
                   icon: const Icon(Icons.bug_report_outlined),
                   onPressed: _onBugReportPressed,
                 ),
+              ],
               // Use the `LanguageSelector` widget as an action.
               LanguageSelector(
                 currentLanguage: _initialLanguage is Language
@@ -209,6 +214,10 @@ class _AIChatBoxState extends State<AIChatBox> {
 
   void _onBugReportPressed() {
     context.read<ChatBloc>().add(const BugReportPressedEvent());
+  }
+
+  void _onShareConversationPressed() {
+    context.read<ChatBloc>().add(const ShareConversationEvent());
   }
 
   void _submitChatMessage(String value) {

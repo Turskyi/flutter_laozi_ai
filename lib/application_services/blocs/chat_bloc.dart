@@ -20,6 +20,7 @@ import 'package:laozi_ai/entities/message.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart' as path;
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'chat_event.dart';
@@ -28,7 +29,12 @@ part 'chat_state.dart';
 @injectable
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc(this._chatRepository, this._settingsRepository)
-    : super(const LoadingHomeState()) {
+    : super(
+        LoadingHomeState(
+          messages: const <Message>[],
+          language: _settingsRepository.getLanguage(),
+        ),
+      ) {
     on<LoadHomeEvent>(_onLoadHomeEvent);
 
     on<SendMessageEvent>(_onSendMessageEvent);
@@ -48,10 +54,45 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ErrorEvent>(_onErrorEvent);
 
     on<LaunchUrlEvent>(_onLaunchUrlEvent);
+
+    on<ShareConversationEvent>(_onShareConversationEvent);
   }
 
   final ChatRepository _chatRepository;
   final SettingsRepository _settingsRepository;
+
+  FutureOr<void> _onShareConversationEvent(
+    ShareConversationEvent event,
+    Emitter<ChatState> emit,
+  ) async {
+    if (state.messages.isNotEmpty) {
+      final StringBuffer buffer = StringBuffer();
+      for (final Message message in state.messages) {
+        final String roleName = message.role.value;
+        buffer.writeln('$roleName:');
+        buffer.writeln(
+          message.content
+              .toString()
+              .replaceAll(r'\n', '\n')
+              .replaceAll('**', '')
+              .replaceAll(r'\"', '"'),
+        );
+        buffer.writeln();
+      }
+
+      try {
+        await SharePlus.instance.share(ShareParams(text: buffer.toString()));
+      } catch (e, stackTrace) {
+        debugPrint(
+          'Error in $runtimeType sharing conversation: $e.\n'
+          'Stacktrace: $stackTrace',
+        );
+        add(ErrorEvent(translate('error.unexpected_error')));
+      }
+    } else {
+      add(ErrorEvent(translate('error.no_messages_to_share')));
+    }
+  }
 
   FutureOr<void> _onLaunchUrlEvent(
     LaunchUrlEvent event,

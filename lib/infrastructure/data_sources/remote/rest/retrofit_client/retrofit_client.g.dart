@@ -189,8 +189,7 @@ class _RetrofitClient implements RetrofitClient {
   }
 
   @override
-  Stream<String> sendChatMessageOnUnknownPlatform(
-      ChatRequest chatRequest,) async* {
+  Stream<String> sendChatMessage(ChatRequest chatRequest) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
