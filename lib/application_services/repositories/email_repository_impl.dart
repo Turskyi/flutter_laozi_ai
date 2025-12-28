@@ -84,7 +84,7 @@ class EmailRepositoryImpl {
   Future<void> _launchEmailClient(Email supportEmail) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final Uri emailLaunchUri = Uri(
-      scheme: constants.mailToScheme,
+      scheme: constants.kMailToScheme,
       path: constants.supportEmail,
       queryParameters: <String, Object?>{
         constants.subjectParameter:

@@ -108,7 +108,10 @@
     "gateway_timeout_p2": "If you see this error, please try rephrasing your question to be more concise. If you believe the prompt should be supported, we would appreciate it if you would use the ‘Report Bug’ feature. Please include a screenshot of the prompt and the error, as this will help us improve the AI’s performance.",
     "chat_history_title": "Why are my past chat sessions not saved?",
     "chat_history_p1": "Yes, you’re right — the app doesn’t currently save past sessions. That’s quite a complex feature to implement, and honestly, I’m not sure if I’ll ever have the time to add it. Sorry about that.",
-    "chat_history_p2": "On the positive side, this simplicity also means that every conversation is completely private. You can ask anything you like, and there’s absolutely no way for me (or anyone else) to see or store those chats. Compared to other apps that require accounts or credentials to sync conversations — which makes them far from truly private — I think this approach offers a nice balance of freedom and anonymity."
+    "chat_history_p2": "On the positive side, this simplicity also means that every conversation is completely private. You can ask anything you like, and there’s absolutely no way for me (or anyone else) to see or store those chats. Compared to other apps that require accounts or credentials to sync conversations — which makes them far from truly private — I think this approach offers a nice balance of freedom and anonymity.",
+    "slow_responses_title": "Why the responses are so slow?",
+    "slow_responses_p1": "Speed depends on internet connection, but mainly on the fact that this app is free and we try to keep it this way, by using free or the cheapest services where possilbe to maintain this project and this approach comes with the expense of the speed of the response.",
+    "slow_responses_p2": "I am not looking for sponsor, but if one decides to discuss with me performance improvement colaboration options that I can implement they can contact me by using support page or send an email to dmytro@turskyi.com."
   },
   "privacy_page": {
     "title": "Privacy Policy for \"{appName}\" Website and Mobile App",
