@@ -82,15 +82,9 @@ class _AIChatBoxState extends State<AIChatBox> {
             title: translate('title'),
             actions: <Widget>[
               if (state.messages.isNotEmpty) ...<Widget>[
-                Builder(
-                  builder: (BuildContext context) {
-                    return IconButton(
-                      icon: const Icon(Icons.share),
-                      onPressed: () {
-                        _onShareConversationPressed(context);
-                      },
-                    );
-                  },
+                IconButton(
+                  icon: const Icon(Icons.share),
+                  onPressed: _onShareConversationPressed,
                 ),
                 IconButton(
                   icon: const Icon(Icons.bug_report_outlined),
@@ -222,7 +216,7 @@ class _AIChatBoxState extends State<AIChatBox> {
     context.read<ChatBloc>().add(const BugReportPressedEvent());
   }
 
-  void _onShareConversationPressed(BuildContext context) {
+  void _onShareConversationPressed() {
     final RenderObject? renderObject = context.findRenderObject();
     if (renderObject is RenderBox?) {
       final RenderBox? box = renderObject;
@@ -232,6 +226,8 @@ class _AIChatBoxState extends State<AIChatBox> {
       context.read<ChatBloc>().add(
         ShareConversationEvent(sharePositionOrigin: sharePositionOrigin),
       );
+    } else {
+      context.read<ChatBloc>().add(const ShareConversationEvent());
     }
   }
 
