@@ -40,6 +40,7 @@
     "oops": "Oops! Something went wrong. Please try again later.",
     "cors": "Error: Local Environment Setup Required\nTo run this application locally on web, please use the following command:\nflutter run -d chrome --web-browser-flag \"--disable-web-security\"\nThis step is necessary to bypass CORS restrictions during local development. Please note that this flag should only be used in a development environment and never in production.",
     "server_error_please_try_later": "Server error. Please try again later.",
+    "server_maintenance_visit_other_site": "This web version is currently under maintenance. Please visit another web version of this app at https://daoizm.online.",
     "gateway_timeout": "The server took too long to respond. This might be due to a very complex question. Please try asking something simpler. If you believe this is an error, please report the prompt to the developer.",
     "bad_request": "Bad request. Please check your input.",
     "unauthorized": "Unauthorized. Please check your credentials.",

@@ -40,6 +40,7 @@
     "oops": "Ups! Kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz vēlāk.",
     "cors": "Kļūda: Nepieciešama vietējās vides iestatīšana\nLai palaistu šo lietojumprogrammu lokāli tīmeklī, lūdzu, izmantojiet šādu komandu:\nflutter run -d chrome --web-browser-flag \"--disable-web-security\"\nŠis solis ir nepieciešams, lai apietu CORS ierobežojumus vietējās izstrādes laikā. Lūdzu, ņemiet vērā, ka šo karodziņu drīkst izmantot tikai izstrādes vidē un nekad ražošanā.",
     "server_error_please_try_later": "Servera kļūda. Lūdzu, mēģiniet vēlreiz vēlāk.",
+    "server_maintenance_visit_other_site": "Šī tīmekļa versija pašlaik tiek uzturēta. Lūdzu, apmeklējiet citu šīs lietotnes tīmekļa versiju vietnē https://daoizm.online.",
     "gateway_timeout": "Serveris pārāk ilgi neatbildēja. Iespējams, jautājums ir pārāk sarežģīts. Lūdzu, mēģiniet uzdot vienkāršāku jautājumu. Ja uzskatāt, ka tā ir kļūda, lūdzu, ziņojiet par uzvedni izstrādātājam.",
     "bad_request": "Slikts pieprasījums. Lūdzu, pārbaudiet ievadi.",
     "unauthorized": "Neautorizēts. Lūdzu, pārbaudiet savus akreditācijas datus.",

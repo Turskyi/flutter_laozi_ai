@@ -353,7 +353,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           } else if (statusCode == HttpStatus.gatewayTimeout) {
             errorMessageKey = 'error.gateway_timeout';
           } else if (statusCode >= HttpStatus.internalServerError) {
-            errorMessageKey = 'error.server_error_please_try_later';
+            if (kReleaseMode &&
+                statusCode == HttpStatus.internalServerError &&
+                kIsWeb) {
+              errorMessageKey = 'error.server_maintenance_visit_other_site';
+            } else {
+              errorMessageKey = 'error.server_error_please_try_later';
+            }
           } else if (statusCode == HttpStatus.badRequest) {
             errorMessageKey = 'error.bad_request';
           } else if (statusCode == HttpStatus.unauthorized) {
