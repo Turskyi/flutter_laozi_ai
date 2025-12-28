@@ -36,6 +36,7 @@
     "launch_email_failed": "Neizdevās palaist e-pasta lietojumprogrammu.",
     "pleaseCheckInternet": "Radās kļūda. Lūdzu, pārbaudiet interneta savienojumu un mēģiniet vēlre.",
     "unexpectedError": "Radās neparedzēta kļūda. Lūdzu, mēģiniet vēlre.",
+    "unexpected_error": "Radās neparedzēta kļūda. Lūdzu, mēģiniet vēlre.",
     "oops": "Ups! Kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz vēlāk.",
     "cors": "Kļūda: Nepieciešama vietējās vides iestatīšana\nLai palaistu šo lietojumprogrammu lokāli tīmeklī, lūdzu, izmantojiet šādu komandu:\nflutter run -d chrome --web-browser-flag \"--disable-web-security\"\nŠis solis ir nepieciešams, lai apietu CORS ierobežojumus vietējās izstrādes laikā. Lūdzu, ņemiet vērā, ka šo karodziņu drīkst izmantot tikai izstrādes vidē un nekad ražošanā.",
     "server_error_please_try_later": "Servera kļūda. Lūdzu, mēģiniet vēlreiz vēlāk.",

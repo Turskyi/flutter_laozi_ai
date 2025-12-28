@@ -220,3 +220,61 @@ final class FeedbackSent extends ChatState {
     }
   }
 }
+
+final class ShareError extends ChatState {
+  const ShareError({
+    required this.errorMessage,
+    required super.language,
+    required super.messages,
+    required this.timestamp,
+  });
+
+  final String errorMessage;
+  final DateTime timestamp;
+
+  ShareError copyWith({
+    String? errorMessage,
+    List<Message>? messages,
+    Language? language,
+    DateTime? timestamp,
+  }) {
+    return ShareError(
+      errorMessage: errorMessage ?? this.errorMessage,
+      messages: messages ?? this.messages,
+      language: language ?? this.language,
+      timestamp: timestamp ?? this.timestamp,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ShareError &&
+        other.errorMessage == errorMessage &&
+        other.language == language &&
+        other.messages == messages &&
+        other.timestamp == timestamp;
+  }
+
+  @override
+  int get hashCode =>
+      errorMessage.hashCode ^
+      language.hashCode ^
+      messages.hashCode ^
+      timestamp.hashCode;
+
+  @override
+  String toString() {
+    if (kDebugMode) {
+      return 'ShareError('
+          'errorMessage: $errorMessage, '
+          'messages: $messages, '
+          'language: $language,'
+          'timestamp: $timestamp,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
+}

@@ -73,5 +73,7 @@ final class LaunchUrlEvent extends ChatEvent {
 }
 
 final class ShareConversationEvent extends ChatEvent {
-  const ShareConversationEvent();
+  const ShareConversationEvent({this.sharePositionOrigin});
+
+  final Rect? sharePositionOrigin;
 }

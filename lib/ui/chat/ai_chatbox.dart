@@ -82,9 +82,15 @@ class _AIChatBoxState extends State<AIChatBox> {
             title: translate('title'),
             actions: <Widget>[
               if (state.messages.isNotEmpty) ...<Widget>[
-                IconButton(
-                  icon: const Icon(Icons.share),
-                  onPressed: _onShareConversationPressed,
+                Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      icon: const Icon(Icons.share),
+                      onPressed: () {
+                        _onShareConversationPressed(context);
+                      },
+                    );
+                  },
                 ),
                 IconButton(
                   icon: const Icon(Icons.bug_report_outlined),
@@ -216,8 +222,17 @@ class _AIChatBoxState extends State<AIChatBox> {
     context.read<ChatBloc>().add(const BugReportPressedEvent());
   }
 
-  void _onShareConversationPressed() {
-    context.read<ChatBloc>().add(const ShareConversationEvent());
+  void _onShareConversationPressed(BuildContext context) {
+    final RenderObject? renderObject = context.findRenderObject();
+    if (renderObject is RenderBox?) {
+      final RenderBox? box = renderObject;
+      final Rect? sharePositionOrigin = box != null
+          ? box.localToGlobal(Offset.zero) & box.size
+          : null;
+      context.read<ChatBloc>().add(
+        ShareConversationEvent(sharePositionOrigin: sharePositionOrigin),
+      );
+    }
   }
 
   void _submitChatMessage(String value) {
@@ -231,6 +246,13 @@ class _AIChatBoxState extends State<AIChatBox> {
       _showFeedbackUi();
     } else if (state is FeedbackSent) {
       _notifyFeedbackSent();
+    } else if (state is ShareError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(state.errorMessage),
+          duration: const Duration(seconds: 3),
+        ),
+      );
     }
   }
 

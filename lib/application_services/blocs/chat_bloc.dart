@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -81,16 +82,35 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       }
 
       try {
-        await SharePlus.instance.share(ShareParams(text: buffer.toString()));
+        await SharePlus.instance.share(
+          ShareParams(
+            text: buffer.toString(),
+            sharePositionOrigin: event.sharePositionOrigin,
+          ),
+        );
       } catch (e, stackTrace) {
         debugPrint(
           'Error in $runtimeType sharing conversation: $e.\n'
           'Stacktrace: $stackTrace',
         );
-        add(ErrorEvent(translate('error.unexpected_error')));
+        emit(
+          ShareError(
+            errorMessage: translate('error.unexpected_error'),
+            messages: state.messages,
+            language: state.language,
+            timestamp: DateTime.now(),
+          ),
+        );
       }
     } else {
-      add(ErrorEvent(translate('error.no_messages_to_share')));
+      emit(
+        ShareError(
+          errorMessage: translate('error.no_messages_to_share'),
+          messages: state.messages,
+          language: state.language,
+          timestamp: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -392,7 +412,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     UpdateAiMessageEvent event,
     Emitter<ChatState> emit,
   ) {
-    if (state.messages.isNotEmpty && state.messages.last.isAi) {
+    if (state.messages.isNotEmpty && state.messages.last.isAiAssistant) {
       // Copy the last message and update its content.
       final List<Message> updatedMessages = List<Message>.from(state.messages);
       final Message lastMessage = updatedMessages.removeLast();
@@ -415,7 +435,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             content: StringBuffer(event.pieceOfMessage),
           ),
         );
-
       emit(
         AiMessageUpdated(messages: updatedMessages, language: state.language),
       );
@@ -450,6 +469,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           FeedbackSent() => (state as FeedbackSent).copyWith(
             language: language,
           ),
+          ShareError() => (state as ShareError).copyWith(language: language),
         });
       } else {
         // If saving fails, revert to previous state or reload home,

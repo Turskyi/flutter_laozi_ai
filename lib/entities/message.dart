@@ -10,6 +10,8 @@ class Message {
 
   bool get isAi => role.isAiAssistant;
 
+  bool get isAiAssistant => role.isAiAssistant;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
