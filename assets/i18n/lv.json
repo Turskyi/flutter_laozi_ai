@@ -1,10 +1,12 @@
 {
-  "title": "Daoisms • Laodzi AI",
+  "title": "Daoisms • Laodzi MI",
   "submit": "iesniegt",
   "appId": "Lietotnes ID",
   "app_id": "Lietotnes ID",
   "appVersion": "Lietotnes versija",
+  "app_version": "Lietotnes versija",
   "buildNumber": "Būvējuma numurs",
+  "build_number": "Būvējuma numurs",
   "about": "Par lietotni",
   "faq": "BUJ",
   "privacy": "Privātums",
