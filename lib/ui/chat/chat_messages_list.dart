@@ -28,11 +28,7 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
           const double laoziSize = 300.0;
           return Container(
             alignment: Alignment.center,
-            padding: const EdgeInsets.only(
-              left: 32.0,
-              right: 32.0,
-              top: 32.0,
-            ),
+            padding: const EdgeInsets.only(left: 32.0, right: 32.0, top: 32.0),
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(bottom: 12),
               child: Column(
@@ -100,9 +96,9 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
                   ),
                   trailing: IconButton(
                     icon: const Icon(Icons.refresh, color: Colors.white),
-                    onPressed: () => context
-                        .read<ChatBloc>()
-                        .add(const RetrySendMessageEvent()),
+                    onPressed: () => context.read<ChatBloc>().add(
+                      const RetrySendMessageEvent(),
+                    ),
                   ),
                 ),
               );

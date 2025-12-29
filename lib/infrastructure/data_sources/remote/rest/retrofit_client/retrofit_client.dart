@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart' hide Headers;
-import 'package:laozi_ai/infrastructure/web_services/models/chat_request/chat_request.dart';
+import 'package:laozi_ai/infrastructure/data_sources/remote/models/chat_request/chat_request.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'retrofit_client.g.dart';
@@ -29,7 +29,5 @@ abstract class RetrofitClient {
   Stream<String> sendUkrainianWebChatMessage(@Body() ChatRequest chatRequest);
 
   @POST('chat')
-  Stream<String> sendChatMessageOnUnknownPlatform(
-    @Body() ChatRequest chatRequest,
-  );
+  Stream<String> sendChatMessage(@Body() ChatRequest chatRequest);
 }

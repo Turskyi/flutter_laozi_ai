@@ -2,10 +2,7 @@ part of 'chat_bloc.dart';
 
 @immutable
 sealed class ChatState {
-  const ChatState({
-    this.messages = const <Message>[],
-    this.language = Language.en,
-  });
+  const ChatState({required this.language, required this.messages});
 
   final Language language;
   final List<Message> messages;
@@ -22,47 +19,67 @@ sealed class ChatState {
   int get hashCode => language.hashCode ^ messages.hashCode;
 
   @override
-  String toString() => 'ChatState(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'ChatState('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class ChatInitial extends ChatState {
-  const ChatInitial({required super.language, super.messages});
+  const ChatInitial({required super.language, required super.messages});
 
-  ChatInitial copyWith({
-    List<Message>? messages,
-    Language? language,
-  }) =>
+  ChatInitial copyWith({List<Message>? messages, Language? language}) =>
       ChatInitial(
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );
 
   @override
-  String toString() => 'ChatInitial(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'ChatInitial('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class LoadingHomeState extends ChatState {
-  const LoadingHomeState({super.messages, super.language});
+  const LoadingHomeState({required super.messages, required super.language});
 
-  LoadingHomeState copyWith({
-    List<Message>? messages,
-    Language? language,
-  }) =>
+  LoadingHomeState copyWith({List<Message>? messages, Language? language}) =>
       LoadingHomeState(
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );
 
   @override
-  String toString() =>
-      'LoadingHomeState(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'LoadingHomeState('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class ChatError extends ChatState {
   const ChatError({
     required this.errorMessage,
     required super.language,
-    super.messages,
+    required super.messages,
   });
 
   final String errorMessage;
@@ -71,12 +88,11 @@ final class ChatError extends ChatState {
     String? errorMessage,
     List<Message>? messages,
     Language? language,
-  }) =>
-      ChatError(
-        errorMessage: errorMessage ?? this.errorMessage,
-        messages: messages ?? this.messages,
-        language: language ?? this.language,
-      );
+  }) => ChatError(
+    errorMessage: errorMessage ?? this.errorMessage,
+    messages: messages ?? this.messages,
+    language: language ?? this.language,
+  );
 
   @override
   bool operator ==(Object other) {
@@ -93,9 +109,17 @@ final class ChatError extends ChatState {
       errorMessage.hashCode ^ language.hashCode ^ messages.hashCode;
 
   @override
-  String toString() => 'ChatError(errorMessage: $errorMessage, '
-      'messages: $messages, '
-      'language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'ChatError('
+          'errorMessage: $errorMessage, '
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class AiMessageUpdated extends ChatState {
@@ -112,69 +136,145 @@ final class AiMessageUpdated extends ChatState {
   @override
   int get hashCode => Object.hash(language, messages);
 
-  AiMessageUpdated copyWith({
-    List<Message>? messages,
-    Language? language,
-  }) =>
+  AiMessageUpdated copyWith({List<Message>? messages, Language? language}) =>
       AiMessageUpdated(
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );
 
   @override
-  String toString() =>
-      'AiMessageUpdated(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'AiMessageUpdated('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class SentMessageState extends ChatState {
   const SentMessageState({required super.messages, required super.language});
 
-  SentMessageState copyWith({
-    List<Message>? messages,
-    Language? language,
-  }) =>
+  SentMessageState copyWith({List<Message>? messages, Language? language}) =>
       SentMessageState(
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );
 
   @override
-  String toString() =>
-      'SentMessageState(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'SentMessageState('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class FeedbackState extends ChatState {
-  const FeedbackState({
-    required super.messages,
-    required super.language,
-  });
+  const FeedbackState({required super.messages, required super.language});
 
-  FeedbackState copyWith({
-    List<Message>? messages,
-    Language? language,
-  }) =>
+  FeedbackState copyWith({List<Message>? messages, Language? language}) =>
       FeedbackState(
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );
 
   @override
-  String toString() =>
-      'FeedbackState(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'FeedbackState('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }
 
 final class FeedbackSent extends ChatState {
   const FeedbackSent({required super.messages, required super.language});
 
-  FeedbackSent copyWith({
-    List<Message>? messages,
-    Language? language,
-  }) =>
+  FeedbackSent copyWith({List<Message>? messages, Language? language}) =>
       FeedbackSent(
         messages: messages ?? this.messages,
         language: language ?? this.language,
       );
 
   @override
-  String toString() => 'FeedbackSent(messages: $messages, language: $language)';
+  String toString() {
+    if (kDebugMode) {
+      return 'FeedbackSent('
+          'messages: $messages, '
+          'language: $language,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
+}
+
+final class ShareError extends ChatState {
+  const ShareError({
+    required this.errorMessage,
+    required super.language,
+    required super.messages,
+    required this.timestamp,
+  });
+
+  final String errorMessage;
+  final DateTime timestamp;
+
+  ShareError copyWith({
+    String? errorMessage,
+    List<Message>? messages,
+    Language? language,
+    DateTime? timestamp,
+  }) {
+    return ShareError(
+      errorMessage: errorMessage ?? this.errorMessage,
+      messages: messages ?? this.messages,
+      language: language ?? this.language,
+      timestamp: timestamp ?? this.timestamp,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ShareError &&
+        other.errorMessage == errorMessage &&
+        other.language == language &&
+        other.messages == messages &&
+        other.timestamp == timestamp;
+  }
+
+  @override
+  int get hashCode =>
+      errorMessage.hashCode ^
+      language.hashCode ^
+      messages.hashCode ^
+      timestamp.hashCode;
+
+  @override
+  String toString() {
+    if (kDebugMode) {
+      return 'ShareError('
+          'errorMessage: $errorMessage, '
+          'messages: $messages, '
+          'language: $language,'
+          'timestamp: $timestamp,'
+          ')';
+    } else {
+      return super.toString();
+    }
+  }
 }

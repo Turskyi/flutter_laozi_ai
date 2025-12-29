@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
+import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/ui/chat/app_bar/wave_app_bar.dart';
@@ -20,10 +21,31 @@ class AIChatBox extends StatefulWidget {
 class _AIChatBoxState extends State<AIChatBox> {
   final TextEditingController _textEditingController = TextEditingController();
   FeedbackController? _feedbackController;
+  Object? _initialLanguage;
 
   @override
   void didChangeDependencies() {
     _feedbackController = BetterFeedback.of(context);
+    // Extract the arguments from the current ModalRoute
+    // settings and cast them as `Language`.
+    if (_initialLanguage == null) {
+      _initialLanguage = ModalRoute.of(context)?.settings.arguments;
+      if (_initialLanguage is Language) {
+        final Language savedLanguage = _initialLanguage as Language;
+        final Language currentLanguage = Language.fromIsoLanguageCode(
+          LocalizedApp.of(context).delegate.currentLocale.languageCode,
+        );
+        if (currentLanguage != savedLanguage) {
+          changeLocale(context, savedLanguage.isoLanguageCode)
+          // The returned value in `then` is always `null`.
+          .then((Object? _) {
+            if (mounted) {
+              context.read<ChatBloc>().add(ChangeLanguageEvent(savedLanguage));
+            }
+          });
+        }
+      }
+    }
     super.didChangeDependencies();
   }
 
@@ -44,6 +66,10 @@ class _AIChatBoxState extends State<AIChatBox> {
                   title: Text(translate('privacy')),
                   onTap: _openPrivacy,
                 ),
+                ListTile(
+                  title: Text(translate('support')),
+                  onTap: _openSupport,
+                ),
                 const Divider(),
                 ListTile(
                   title: Text(translate('report_bug')),
@@ -55,13 +81,28 @@ class _AIChatBoxState extends State<AIChatBox> {
           appBar: WaveAppBar(
             title: translate('title'),
             actions: <Widget>[
-              if (state.messages.isNotEmpty)
+              if (state.messages.isNotEmpty) ...<Widget>[
+                IconButton(
+                  icon: const Icon(Icons.share),
+                  onPressed: _onShareConversationPressed,
+                ),
                 IconButton(
                   icon: const Icon(Icons.bug_report_outlined),
                   onPressed: _onBugReportPressed,
                 ),
+              ],
               // Use the `LanguageSelector` widget as an action.
-              const LanguageSelector(),
+              LanguageSelector(
+                currentLanguage: _initialLanguage is Language
+                    ? (_initialLanguage as Language)
+                    : state.language,
+                onLanguageSelected: (Language newLanguage) {
+                  _initialLanguage = newLanguage;
+                  context.read<ChatBloc>().add(
+                    ChangeLanguageEvent(newLanguage),
+                  );
+                },
+              ),
             ],
           ),
           body: DecoratedBox(
@@ -118,18 +159,19 @@ class _AIChatBoxState extends State<AIChatBox> {
                           child: state is SentMessageState
                               ? const CircularProgressIndicator()
                               : const Icon(Icons.send),
-                          builder: (
-                            BuildContext _,
-                            TextEditingValue value,
-                            Widget? iconWidget,
-                          ) {
-                            return IconButton(
-                              icon: iconWidget ?? const SizedBox(),
-                              onPressed: value.text.isNotEmpty
-                                  ? _handleSendMessage
-                                  : null,
-                            );
-                          },
+                          builder:
+                              (
+                                BuildContext _,
+                                TextEditingValue value,
+                                Widget? iconWidget,
+                              ) {
+                                return IconButton(
+                                  icon: iconWidget ?? const SizedBox(),
+                                  onPressed: value.text.isNotEmpty
+                                      ? _handleSendMessage
+                                      : null,
+                                );
+                              },
                         ),
                       ],
                     ),
@@ -146,16 +188,14 @@ class _AIChatBoxState extends State<AIChatBox> {
   @override
   void dispose() {
     _textEditingController.dispose();
-    _feedbackController?.dispose();
+    _feedbackController?.removeListener(_onFeedbackChanged);
     super.dispose();
   }
 
   void _showFeedbackUi() {
-    _feedbackController?.show(
-      (UserFeedback feedback) {
-        context.read<ChatBloc>().add(SubmitFeedbackEvent(feedback));
-      },
-    );
+    _feedbackController?.show((UserFeedback feedback) {
+      context.read<ChatBloc>().add(SubmitFeedbackEvent(feedback));
+    });
     _feedbackController?.addListener(_onFeedbackChanged);
   }
 
@@ -176,6 +216,21 @@ class _AIChatBoxState extends State<AIChatBox> {
     context.read<ChatBloc>().add(const BugReportPressedEvent());
   }
 
+  void _onShareConversationPressed() {
+    final RenderObject? renderObject = context.findRenderObject();
+    if (renderObject is RenderBox?) {
+      final RenderBox? box = renderObject;
+      final Rect? sharePositionOrigin = box != null
+          ? box.localToGlobal(Offset.zero) & box.size
+          : null;
+      context.read<ChatBloc>().add(
+        ShareConversationEvent(sharePositionOrigin: sharePositionOrigin),
+      );
+    } else {
+      context.read<ChatBloc>().add(const ShareConversationEvent());
+    }
+  }
+
   void _submitChatMessage(String value) {
     if (value.isNotEmpty) {
       _handleSendMessage();
@@ -187,6 +242,13 @@ class _AIChatBoxState extends State<AIChatBox> {
       _showFeedbackUi();
     } else if (state is FeedbackSent) {
       _notifyFeedbackSent();
+    } else if (state is ShareError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(state.errorMessage),
+          duration: const Duration(seconds: 3),
+        ),
+      );
     }
   }
 
@@ -211,5 +273,9 @@ class _AIChatBoxState extends State<AIChatBox> {
 
   void _openPrivacy() {
     Navigator.of(context).pushNamed(AppRoute.privacy.path);
+  }
+
+  void _openSupport() {
+    Navigator.of(context).pushNamed(AppRoute.support.path);
   }
 }

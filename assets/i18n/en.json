@@ -1,7 +1,8 @@
 {
-  "title": "Daoism - Laozi AI Chatbot",
+  "title": "Daoism • Laozi AI",
   "submit": "submit",
   "appId": "App id",
+  "app_id": "App id",
   "appVersion": "App version",
   "buildNumber": "Build number",
   "about": "About",
@@ -10,13 +11,15 @@
   "support": "Support",
   "report_bug": "Report Bug",
   "language": "Language",
+  "seeker": "Seeker",
+  "laozi": "Laozi",
   "chat": {
     "askSomething": "Ask something about Daoism...",
     "sendMessageToStartChat": "Send a message to start the chat with Laozi AI!",
     "youCanAskAnyQuestionAbout": "You can ask Laozi Chatbot any question about Daoism and he will find the relevant information."
   },
   "feedback": {
-    "appFeedback": "App Feedback",
+    "app_feedback": "App Feedback",
     "whatKind": "What kind of feedback do you want to give?",
     "whatIsYourFeedback": "What is your feedback?",
     "howDoesThisFeel": "How does this make you feel?",
@@ -30,11 +33,15 @@
     "good": "Good"
   },
   "error": {
+    "launch_email_failed": "Could not launch the email application.",
     "pleaseCheckInternet": "An error occurred. Please check your internet connection and try again.",
     "unexpectedError": "An unexpected error occurred. Please try again.",
+    "unexpected_error": "An unexpected error occurred. Please try again.",
     "oops": "Oops! Something went wrong. Please try again later.",
     "cors": "Error: Local Environment Setup Required\nTo run this application locally on web, please use the following command:\nflutter run -d chrome --web-browser-flag \"--disable-web-security\"\nThis step is necessary to bypass CORS restrictions during local development. Please note that this flag should only be used in a development environment and never in production.",
     "server_error_please_try_later": "Server error. Please try again later.",
+    "server_maintenance_visit_other_site": "This web version is currently under maintenance. Please visit another web version of this app at https://daoizm.online.",
+    "server_connection_error_visit_other_site": "Server connection error. Please visit another web version of this app at https://daoizm.online.",
     "gateway_timeout": "The server took too long to respond. This might be due to a very complex question. Please try asking something simpler. If you believe this is an error, please report the prompt to the developer.",
     "bad_request": "Bad request. Please check your input.",
     "unauthorized": "Unauthorized. Please check your credentials.",
@@ -46,10 +53,12 @@
     "bad_response_no_status": "Bad response from the server, with no status code.",
     "request_timeout_check_internet": "Request timeout. Please check your internet connection.",
     "connection_error_check_internet": "Connection error. Please check your internet connection.",
+    "socket_error_check_internet": "Socket error. Please check your internet connection.",
     "request_cancelled": "The request was cancelled.",
     "unexpected_network_error": "An unexpected network error occurred. Please try again.",
     "unexpected_error_sending_feedback": "An unexpected error occurred while sending feedback. Please try again.",
-    "unexpected_error_preparing_feedback": "An unexpected error occurred while preparing feedback. Please try again."
+    "unexpected_error_preparing_feedback": "An unexpected error occurred while preparing feedback. Please try again.",
+    "no_messages_to_share": "There are no messages to share."
   },
   "about_page": {
     "title": "About Daoism and Laozi AI",
@@ -85,8 +94,8 @@
     "inconsistent_chapters_p2": "While it might seem logical to restrict the AI to a single, authoritative “source of truth,” at this stage we’ve found it more beneficial to allow flexibility. Drawing from multiple translations and commentaries helps the AI form more nuanced and expanded answers that reflect the richness and diversity of Daoist thought.",
     "inconsistent_chapters_p3": "This approach may introduce occasional inconsistencies in chapter numbering, but so far it seems to enhance the overall quality and depth of responses. Unless we find that this variety causes more confusion than clarity, we’ll continue to let the AI explore wisdom from more than one source.",
     "more_languages_title": "Will you add more languages?",
-    "more_languages_p1": "The web version currently supports only English, but Ukrainian might be added in the future when time allows, as I am currently focused on parenting and a full-time job.",
-    "more_languages_p2": "The mobile version already supports both English and Ukrainian, and there are no plans to add more languages because maintaining accuracy requires fluency and responsibility for potential language mistakes.",
+    "more_languages_p1": "The web version currently supports only English, but other languages might be added in the future when time allows, as I am currently focused on parenting and a full-time job.",
+    "more_languages_p2": "The mobile version already supports English, Ukrainian and Latvian, and there are no plans to add more languages because maintaining accuracy requires fluency and responsibility for potential language mistakes.",
     "more_languages_p3": "In practice, the AI often responds in the same language the user writes in, depending on the AI provider, so users might still get answers in other languages even if the interface is English.",
     "short_answers_title": "Why did Laozi stop answering in the middle of my question?",
     "short_answers_p1": "Sometimes, Laozi AI will give a shorter response or seem to pause before fully addressing your question. This isn’t a mistake - it’s designed to keep the conversation natural and readable, just as a real person might offer a thought, pause, and wait for your reply.",
@@ -98,7 +107,13 @@
     "different_answers_p3": "On the other hand, the mobile versions rely solely on the AI model’s internal knowledge, which can lead to slightly different or more conversational responses.",
     "gateway_timeout_title": "Why did I get a ‘gateway timeout’ error?",
     "gateway_timeout_p1": "A ‘gateway timeout’ error (504) is a rare issue that can occur if your question is too complex for the AI to answer within the server’s time limit (10 seconds). While we aim to handle all prompts, some very demanding questions can cause this issue.",
-    "gateway_timeout_p2": "If you see this error, please try rephrasing your question to be more concise. If you believe the prompt should be supported, we would appreciate it if you would use the ‘Report Bug’ feature. Please include a screenshot of the prompt and the error, as this will help us improve the AI’s performance."
+    "gateway_timeout_p2": "If you see this error, please try rephrasing your question to be more concise. If you believe the prompt should be supported, we would appreciate it if you would use the ‘Report Bug’ feature. Please include a screenshot of the prompt and the error, as this will help us improve the AI’s performance.",
+    "chat_history_title": "Why are my past chat sessions not saved?",
+    "chat_history_p1": "Yes, you’re right — the app doesn’t currently save past sessions. That’s quite a complex feature to implement, and honestly, I’m not sure if I’ll ever have the time to add it. Sorry about that.",
+    "chat_history_p2": "On the positive side, this simplicity also means that every conversation is completely private. You can ask anything you like, and there’s absolutely no way for me (or anyone else) to see or store those chats. Compared to other apps that require accounts or credentials to sync conversations — which makes them far from truly private — I think this approach offers a nice balance of freedom and anonymity.",
+    "slow_responses_title": "Why the responses are so slow?",
+    "slow_responses_p1": "Speed depends on internet connection, but mainly on the fact that this app is free and we try to keep it this way, by using free or the cheapest services where possilbe to maintain this project and this approach comes with the expense of the speed of the response.",
+    "slow_responses_p2": "I am not looking for sponsor, but if one decides to discuss with me performance improvement colaboration options that I can implement they can contact me by using support page or send an email to dmytro@turskyi.com."
   },
   "privacy_page": {
     "title": "Privacy Policy for \"{appName}\" Website and Mobile App",
@@ -144,5 +159,27 @@
     "changes_to_this_privacy_policy_body": "This Privacy Policy is effective as of {date} and will remain in effect except with respect to any changes in its provisions in the future, which will be in effect immediately after being posted on this page. We reserve the right to update or change our Privacy Policy at any time, and you should check this Privacy Policy periodically.",
     "contact_us_title": "Contact Us",
     "contact_us_body": "If you have any questions about this Privacy Policy, please contact us at {email}."
+  },
+  "support_page": {
+    "title": "Support",
+    "description": "If you have any questions, feedback, or need assistance, please fill out the form below. We will get back to you as soon as possible.",
+    "email_direct": "You can also reach us directly at {email}.",
+    "privacy_notice": "Your information will only be used to respond to your inquiry and will not be shared.",
+    "full_name": "Full Name",
+    "full_name_hint": "John Doe",
+    "email_address": "Email Address",
+    "email_address_hint": "example@something.something",
+    "message": "Message",
+    "message_hint": "Your message",
+    "send": "Send",
+    "sending": "Sending...",
+    "sent": "Sent.",
+    "fill_out_all_fields": "Please fill out all fields.",
+    "email_sent_successfully": "Email sent successfully!",
+    "failed_to_send_email": "Failed to send your message. Please try again.",
+    "customer_email_body": "Thank you for reaching out to us! Your support message has been received and will be reviewed promptly. We appreciate your feedback and will get back to you soon.\n\nBest regards,\nThe {appName} Team.",
+    "customer_email_subject": "Thank You! Your Support Message Has Been Sent to {appName}",
+    "support_email_subject": "New Message Received from {appName}",
+    "support_email_body": "New support message received"
   }
 }

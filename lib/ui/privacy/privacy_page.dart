@@ -1,29 +1,36 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/ui/privacy/widgets/privacy_section.dart';
+import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
 
 class PrivacyPage extends StatelessWidget {
-  const PrivacyPage({super.key});
+  const PrivacyPage({required this.initialLanguage, super.key});
+
+  final Language initialLanguage;
 
   @override
   Widget build(BuildContext context) {
     final bool isAndroid =
         !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
-    final String privacyKey =
-        isAndroid ? 'privacy_page_android' : 'privacy_page';
+    final String privacyKey = isAndroid
+        ? 'privacy_page_android'
+        : 'privacy_page';
     final String appName = constants.appName;
     const String date = 'June 2024';
     const String email = 'support@${constants.primaryDomain}';
 
     return Scaffold(
       appBar: AppBar(
+        leading: kIsWeb ? HomeAppBarButton(language: initialLanguage) : null,
         title: Text(
           translate(
             isAndroid ? 'privacy_page_android.title' : 'privacy_page.title',
             args: <String, Object?>{'appName': appName},
           ),
+          maxLines: 2,
         ),
       ),
       body: SingleChildScrollView(
@@ -71,19 +78,16 @@ class PrivacyPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      '• ${translate(
-                        '$privacyKey.use_of_information_list_item_1',
-                      )}',
+                      '• ${translate('$privacyKey.'
+                      'use_of_information_list_item_1')}',
                     ),
                     Text(
-                      '• ${translate(
-                        '$privacyKey.use_of_information_list_item_2',
-                      )}',
+                      '• ${translate('$privacyKey.'
+                      'use_of_information_list_item_2')}',
                     ),
                     Text(
-                      '• ${translate(
-                        '$privacyKey.use_of_information_list_item_3',
-                      )}',
+                      '• ${translate('$privacyKey.'
+                      'use_of_information_list_item_3')}',
                     ),
                   ],
                 ),

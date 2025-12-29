@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -19,7 +20,8 @@ import 'package:laozi_ai/entities/enums/role.dart';
 import 'package:laozi_ai/entities/message.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart' as path;
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'chat_event.dart';
@@ -27,10 +29,13 @@ part 'chat_state.dart';
 
 @injectable
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  ChatBloc(
-    this._chatRepository,
-    this._settingsRepository,
-  ) : super(const LoadingHomeState()) {
+  ChatBloc(this._chatRepository, this._settingsRepository)
+    : super(
+        LoadingHomeState(
+          messages: const <Message>[],
+          language: _settingsRepository.getLanguage(),
+        ),
+      ) {
     on<LoadHomeEvent>(_onLoadHomeEvent);
 
     on<SendMessageEvent>(_onSendMessageEvent);
@@ -50,10 +55,64 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ErrorEvent>(_onErrorEvent);
 
     on<LaunchUrlEvent>(_onLaunchUrlEvent);
+
+    on<ShareConversationEvent>(_onShareConversationEvent);
   }
 
   final ChatRepository _chatRepository;
   final SettingsRepository _settingsRepository;
+
+  FutureOr<void> _onShareConversationEvent(
+    ShareConversationEvent event,
+    Emitter<ChatState> emit,
+  ) async {
+    if (state.messages.isNotEmpty) {
+      final StringBuffer buffer = StringBuffer();
+      for (final Message message in state.messages) {
+        final String roleName = message.role.value;
+        buffer.writeln('$roleName:');
+        buffer.writeln(
+          message.content
+              .toString()
+              .replaceAll(r'\n', '\n')
+              .replaceAll('**', '')
+              .replaceAll(r'\"', '"'),
+        );
+        buffer.writeln();
+      }
+
+      try {
+        await SharePlus.instance.share(
+          ShareParams(
+            text: buffer.toString(),
+            sharePositionOrigin: event.sharePositionOrigin,
+          ),
+        );
+      } catch (e, stackTrace) {
+        debugPrint(
+          'Error in $runtimeType sharing conversation: $e.\n'
+          'Stacktrace: $stackTrace',
+        );
+        emit(
+          ShareError(
+            errorMessage: translate('error.unexpected_error'),
+            messages: state.messages,
+            language: state.language,
+            timestamp: DateTime.now(),
+          ),
+        );
+      }
+    } else {
+      emit(
+        ShareError(
+          errorMessage: translate('error.no_messages_to_share'),
+          messages: state.messages,
+          language: state.language,
+          timestamp: DateTime.now(),
+        ),
+      );
+    }
+  }
 
   FutureOr<void> _onLaunchUrlEvent(
     LaunchUrlEvent event,
@@ -113,47 +172,41 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     final List<Message> currentMessages = List<Message>.from(state.messages);
-    emit(
-      SentMessageState(
-        messages: currentMessages,
-        language: state.language,
-      ),
-    );
+    emit(SentMessageState(messages: currentMessages, language: state.language));
     _chatRepository
         .sendChat(Chat(messages: currentMessages, language: state.language))
         .listen(
-      (String line) => add(UpdateAiMessageEvent(line)),
-      onError: (Object error, StackTrace stackTrace) {
-        if (error is DioException) {
-          _handleDioError(
-            error: error,
-            stackTrace: stackTrace,
-            isSendMessage: false,
-          );
-        } else {
-          // General error handling for non-DioExceptions.
-          debugPrint(
-            'Error in $runtimeType in `onError` (RetrySendMessageEvent): '
-            '$error.\n'
-            'Stacktrace: $stackTrace',
-          );
-          add(ErrorEvent(translate('error.unexpected_error')));
-        }
-      },
-    );
+          (String line) => add(UpdateAiMessageEvent(line)),
+          onError: (Object error, StackTrace stackTrace) {
+            if (error is DioException) {
+              _handleDioError(
+                error: error,
+                stackTrace: stackTrace,
+                isSendMessage: false,
+              );
+            } else {
+              // General error handling for non-DioExceptions.
+              debugPrint(
+                'Error in $runtimeType in `onError` (RetrySendMessageEvent): '
+                '$error.\n'
+                'Stacktrace: $stackTrace',
+              );
+              add(ErrorEvent(translate('error.unexpected_error')));
+            }
+          },
+        );
   }
 
   FutureOr<void> _onSubmitFeedbackEvent(
     SubmitFeedbackEvent event,
     Emitter<ChatState> emit,
   ) async {
-    emit(
-      LoadingHomeState(messages: state.messages, language: state.language),
-    );
+    emit(LoadingHomeState(messages: state.messages, language: state.language));
     final UserFeedback feedback = event.feedback;
     try {
-      final String screenshotFilePath =
-          await _writeImageToStorage(feedback.screenshot);
+      final String screenshotFilePath = await _writeImageToStorage(
+        feedback.screenshot,
+      );
 
       final PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
@@ -163,8 +216,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       // Construct the feedback text with details from `extra'.
       final StringBuffer feedbackBody = StringBuffer()
-        ..writeln('${type is FeedbackType ? translate('feedback.type') : ''}:'
-            ' ${type is FeedbackType ? type.value : ''}')
+        ..writeln(
+          '${type is FeedbackType ? translate('feedback.type') : ''}:'
+          ' ${type is FeedbackType ? type.value : ''}',
+        )
         ..writeln()
         ..writeln(feedback.text)
         ..writeln()
@@ -173,13 +228,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         ..writeln('${translate('build_number')}: ${packageInfo.buildNumber}')
         ..writeln()
         ..writeln(
-            '${rating is FeedbackRating ? translate('feedback.rating') : ''}'
-            '${rating is FeedbackRating ? ':' : ''}'
-            ' ${rating is FeedbackRating ? rating.value : ''}');
+          '${rating is FeedbackRating ? translate('feedback.rating') : ''}'
+          '${rating is FeedbackRating ? ':' : ''}'
+          ' ${rating is FeedbackRating ? rating.value : ''}',
+        );
 
       final Email email = Email(
         body: feedbackBody.toString(),
-        subject: '${translate('feedback.app_feedback')}: '
+        subject:
+            '${translate('feedback.app_feedback')}: '
             '${packageInfo.appName}',
         recipients: <String>[constants.supportEmail],
         attachmentPaths: <String>[screenshotFilePath],
@@ -200,18 +257,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       );
       add(ErrorEvent(translate('error.unexpected_error_preparing_feedback')));
     }
-    emit(
-      AiMessageUpdated(messages: state.messages, language: state.language),
-    );
+    emit(AiMessageUpdated(messages: state.messages, language: state.language));
   }
 
   FutureOr<void> _onClosingFeedbackEvent(
     ClosingFeedbackEvent _,
     Emitter<ChatState> emit,
   ) {
-    emit(
-      AiMessageUpdated(messages: state.messages, language: state.language),
-    );
+    emit(AiMessageUpdated(messages: state.messages, language: state.language));
   }
 
   FutureOr<void> _onLoadHomeEvent(LoadHomeEvent _, Emitter<ChatState> emit) {
@@ -228,38 +281,35 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     final List<Message> updatedMessages = List<Message>.from(state.messages)
       ..add(Message(role: Role.user, content: StringBuffer(event.message)));
     // Emit a new state with the updated list of messages.
-    emit(
-      SentMessageState(messages: updatedMessages, language: state.language),
-    );
+    emit(SentMessageState(messages: updatedMessages, language: state.language));
     try {
       _chatRepository
           .sendChat(Chat(messages: updatedMessages, language: state.language))
           .listen(
-        (String line) => add(UpdateAiMessageEvent(line)),
-        onError: (Object error, StackTrace stackTrace) {
-          if (error is DioException) {
-            _handleDioError(
-              error: error,
-              stackTrace: stackTrace,
-              isSendMessage: true,
-            );
-          } else {
-            debugPrint(
-              'Error in $runtimeType in `onError` (SendMessageEvent): $error.\n'
-              'Stacktrace: $stackTrace',
-            );
-            add(ErrorEvent(translate('error.unexpected_error')));
-          }
-        },
-      );
+            (String line) => add(UpdateAiMessageEvent(line)),
+            onError: (Object error, StackTrace stackTrace) {
+              if (error is DioException) {
+                _handleDioError(
+                  error: error,
+                  stackTrace: stackTrace,
+                  isSendMessage: true,
+                );
+              } else {
+                debugPrint(
+                  'Error in $runtimeType in `onError` (SendMessageEvent): '
+                  '$error.\n'
+                  'Stacktrace: $stackTrace',
+                );
+                add(ErrorEvent(translate('error.unexpected_error')));
+              }
+            },
+          );
     } catch (error, stackTrace) {
       debugPrint(
         'Error in $runtimeType in `catch` (SendMessageEvent): $error.\n'
         'Stacktrace: $stackTrace',
       );
-      add(
-        ErrorEvent(translate('error.oops_something_went_wrong')),
-      );
+      add(ErrorEvent(translate('error.oops_something_went_wrong')));
     }
   }
 
@@ -284,9 +334,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       buffer.writeln('    Data: ${error.response?.data}');
       buffer.writeln('    Headers: ${error.response?.headers}');
       buffer.writeln('    Status Code: ${error.response?.statusCode}');
-      buffer.writeln(
-        '    Status Message: ${error.response?.statusMessage}',
-      );
+      buffer.writeln('    Status Message: ${error.response?.statusMessage}');
     }
     if (error.error != null) {
       buffer.writeln('  Underlying error: ${error.error}');
@@ -305,7 +353,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           } else if (statusCode == HttpStatus.gatewayTimeout) {
             errorMessageKey = 'error.gateway_timeout';
           } else if (statusCode >= HttpStatus.internalServerError) {
-            errorMessageKey = 'error.server_error_please_try_later';
+            if (kReleaseMode &&
+                statusCode == HttpStatus.internalServerError &&
+                kIsWeb) {
+              errorMessageKey = 'error.server_maintenance_visit_other_site';
+            } else {
+              errorMessageKey = 'error.server_error_please_try_later';
+            }
           } else if (statusCode == HttpStatus.badRequest) {
             errorMessageKey = 'error.bad_request';
           } else if (statusCode == HttpStatus.unauthorized) {
@@ -335,9 +389,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             : 'error.request_timeout_check_internet';
         break;
       case DioExceptionType.connectionError:
-        errorMessageKey = isSendMessage && kIsWeb && kDebugMode
-            ? 'error.cors'
-            : 'error.connection_error_check_internet';
+        debugPrint('Connection error: ${error.error}');
+        if (isSendMessage && kIsWeb && kDebugMode) {
+          errorMessageKey = 'error.cors';
+        } else if (kIsWeb) {
+          errorMessageKey = 'error.server_connection_error_visit_other_site';
+        } else {
+          errorMessageKey = 'error.connection_error_check_internet';
+        }
         break;
       case DioExceptionType.cancel:
         errorMessageKey = 'error.request_cancelled';
@@ -345,9 +404,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       case DioExceptionType.unknown:
       default:
         if (error.error is SocketException) {
+          debugPrint('Socket error: ${error.error}');
           errorMessageKey = isSendMessage && kIsWeb && kDebugMode
               ? 'error.cors'
-              : 'error.connection_error_check_internet';
+              : 'error.socket_error_check_internet';
         } else {
           errorMessageKey = isSendMessage && kIsWeb && kDebugMode
               ? 'error.cors'
@@ -362,7 +422,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     UpdateAiMessageEvent event,
     Emitter<ChatState> emit,
   ) {
-    if (state.messages.isNotEmpty && state.messages.last.isAi) {
+    if (state.messages.isNotEmpty && state.messages.last.isAiAssistant) {
       // Copy the last message and update its content.
       final List<Message> updatedMessages = List<Message>.from(state.messages);
       final Message lastMessage = updatedMessages.removeLast();
@@ -374,10 +434,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       updatedMessages.add(updatedLastMessage);
 
       emit(
-        AiMessageUpdated(
-          messages: updatedMessages,
-          language: state.language,
-        ),
+        AiMessageUpdated(messages: updatedMessages, language: state.language),
       );
     } else {
       // Add a new AI message.
@@ -388,12 +445,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             content: StringBuffer(event.pieceOfMessage),
           ),
         );
-
       emit(
-        AiMessageUpdated(
-          messages: updatedMessages,
-          language: state.language,
-        ),
+        AiMessageUpdated(messages: updatedMessages, language: state.language),
       );
     }
   }
@@ -404,26 +457,30 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ) async {
     final Language language = event.language;
     if (language != state.language) {
-      final bool isSaved = await _settingsRepository
-          .saveLanguageIsoCode(language.isoLanguageCode);
+      final bool isSaved = await _settingsRepository.saveLanguageIsoCode(
+        language.isoLanguageCode,
+      );
       if (isSaved) {
-        emit(
-          switch (state) {
-            ChatInitial() =>
-              (state as ChatInitial).copyWith(language: language),
-            ChatError() => (state as ChatError).copyWith(language: language),
-            SentMessageState() =>
-              (state as SentMessageState).copyWith(language: language),
-            AiMessageUpdated() =>
-              (state as AiMessageUpdated).copyWith(language: language),
-            LoadingHomeState() =>
-              (state as LoadingHomeState).copyWith(language: language),
-            FeedbackState() =>
-              (state as FeedbackState).copyWith(language: language),
-            FeedbackSent() =>
-              (state as FeedbackSent).copyWith(language: language),
-          },
-        );
+        emit(switch (state) {
+          ChatInitial() => (state as ChatInitial).copyWith(language: language),
+          ChatError() => (state as ChatError).copyWith(language: language),
+          SentMessageState() => (state as SentMessageState).copyWith(
+            language: language,
+          ),
+          AiMessageUpdated() => (state as AiMessageUpdated).copyWith(
+            language: language,
+          ),
+          LoadingHomeState() => (state as LoadingHomeState).copyWith(
+            language: language,
+          ),
+          FeedbackState() => (state as FeedbackState).copyWith(
+            language: language,
+          ),
+          FeedbackSent() => (state as FeedbackSent).copyWith(
+            language: language,
+          ),
+          ShareError() => (state as ShareError).copyWith(language: language),
+        });
       } else {
         // If saving fails, revert to previous state or reload home,
         // here it reloads home which re-fetches saved language.
@@ -436,16 +493,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     BugReportPressedEvent _,
     Emitter<ChatState> emit,
   ) {
-    emit(
-      FeedbackState(
-        messages: state.messages,
-        language: state.language,
-      ),
-    );
+    emit(FeedbackState(messages: state.messages, language: state.language));
   }
 
   Future<String> _writeImageToStorage(Uint8List feedbackScreenshot) async {
-    final Directory output = await getTemporaryDirectory();
+    final Directory output = await path.getTemporaryDirectory();
     final String screenshotFilePath = '${output.path}/feedback.png';
     final File screenshotFile = File(screenshotFilePath);
     await screenshotFile.writeAsBytes(feedbackScreenshot);

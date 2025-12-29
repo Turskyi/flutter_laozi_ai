@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:laozi_ai/env/env.dart';
 import 'package:laozi_ai/res/resources.dart';
 import 'package:laozi_ai/router/app_route.dart';
-import 'package:laozi_ai/router/routes.dart' as routes;
+import 'package:resend/resend.dart';
 
 class LaoziAiApp extends StatelessWidget {
-  const LaoziAiApp({super.key});
+  const LaoziAiApp({required this.routeMap, super.key});
+
+  final Map<String, WidgetBuilder> routeMap;
 
   @override
   Widget build(BuildContext context) {
+    Resend(apiKey: Env.resendApiKey);
     return Resources(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: translate('title'),
         initialRoute: AppRoute.home.path,
-        routes: routes.routeMap,
+        routes: routeMap,
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
@@ -48,8 +52,10 @@ class LaoziAiApp extends StatelessWidget {
             displayMedium: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
             displaySmall: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
             headlineLarge: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
-            headlineMedium:
-                TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            headlineMedium: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
             headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             titleLarge: TextStyle(fontSize: 16),
             titleMedium: TextStyle(fontSize: 14),

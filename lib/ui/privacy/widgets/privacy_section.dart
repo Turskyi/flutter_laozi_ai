@@ -22,29 +22,31 @@ class PrivacySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          translate('$pageKey.${sectionKey}_title'),
-          style:
-              theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          translate(
-            '$pageKey.${sectionKey}_body',
-            args: <String, dynamic>{
-              if (appName != null) 'appName': appName,
-              if (date != null) 'date': date,
-              if (email != null) 'email': email,
-              if (aiModelName != null) 'ai_model_name': aiModelName,
-            },
+    final TextTheme textTheme = theme.textTheme;
+    return SelectionArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            translate('$pageKey.${sectionKey}_title'),
+            style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
-          style: theme.textTheme.bodyLarge,
-        ),
-        const SizedBox(height: 16),
-      ],
+          const SizedBox(height: 8),
+          Text(
+            translate(
+              '$pageKey.${sectionKey}_body',
+              args: <String, Object?>{
+                if (appName != null) 'appName': appName,
+                if (date != null) 'date': date,
+                if (email != null) 'email': email,
+                if (aiModelName != null) 'ai_model_name': aiModelName,
+              },
+            ),
+            style: textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 16),
+        ],
+      ),
     );
   }
 }

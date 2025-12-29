@@ -22,8 +22,10 @@ class _AnimatedWaveState extends State<AnimatedWave>
       duration: const Duration(seconds: 8),
       vsync: this,
     );
-    final CurvedAnimation curvedAnimation =
-        CurvedAnimation(parent: _animationController, curve: Curves.linear);
+    final CurvedAnimation curvedAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.linear,
+    );
     _animation =
         Tween<double>(begin: 0, end: 2 * math.pi).animate(curvedAnimation)
           ..addListener(() {

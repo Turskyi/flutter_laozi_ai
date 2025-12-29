@@ -1,18 +1,24 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/ui/about/widgets/bullet_point.dart';
+import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
 
 const double _kYinYangImageSize = 180.0;
 
 class AboutPage extends StatelessWidget {
-  const AboutPage({super.key});
+  const AboutPage({required this.initialLanguage, super.key});
+
+  final Language initialLanguage;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
+        leading: kIsWeb ? HomeAppBarButton(language: initialLanguage) : null,
         title: Text(translate('about_page.title')),
       ),
       body: SingleChildScrollView(
@@ -69,25 +75,16 @@ class AboutPage extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               translate('about_page.core_principles_title'),
-              style: theme.textTheme.titleMedium
-                  ?.copyWith(fontWeight: FontWeight.w600),
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(height: 8),
-            BulletPoint(
-              text: translate('about_page.wu_wei'),
-            ),
-            BulletPoint(
-              text: translate('about_page.ziran'),
-            ),
-            BulletPoint(
-              text: translate('about_page.three_treasures'),
-            ),
-            BulletPoint(
-              text: translate('about_page.yin_yang'),
-            ),
-            BulletPoint(
-              text: translate('about_page.practices'),
-            ),
+            BulletPoint(text: translate('about_page.wu_wei')),
+            BulletPoint(text: translate('about_page.ziran')),
+            BulletPoint(text: translate('about_page.three_treasures')),
+            BulletPoint(text: translate('about_page.yin_yang')),
+            BulletPoint(text: translate('about_page.practices')),
             const SizedBox(height: 16),
             Center(
               child: ClipRRect(

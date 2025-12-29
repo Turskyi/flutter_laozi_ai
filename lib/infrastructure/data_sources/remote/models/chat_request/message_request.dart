@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'message_request.g.dart';
@@ -7,28 +8,21 @@ part 'message_request.g.dart';
 class MessageRequest {
   const MessageRequest({required this.role, required this.content});
 
-  factory MessageRequest.fromJson(Map<String, dynamic> json) {
+  factory MessageRequest.fromJson(Map<String, Object?> json) {
     return _$MessageRequestFromJson(json);
   }
 
   final String role;
   final String content;
 
-  @override
-  String toString() {
-    return '${toJson()}';
+  Map<String, Object?> toJson() => _$MessageRequestToJson(this);
+
+  MessageRequest copyWith({String? role, String? content}) {
+    return MessageRequest(
+      role: role ?? this.role,
+      content: content ?? this.content,
+    );
   }
-
-  Map<String, dynamic> toJson() => _$MessageRequestToJson(this);
-
-  MessageRequest copyWith({
-    String? role,
-    String? content,
-  }) =>
-      MessageRequest(
-        role: role ?? this.role,
-        content: content ?? this.content,
-      );
 
   @override
   bool operator ==(Object other) {
@@ -41,4 +35,13 @@ class MessageRequest {
 
   @override
   int get hashCode => role.hashCode ^ content.hashCode;
+
+  @override
+  String toString() {
+    if (kDebugMode) {
+      return '${toJson()}';
+    } else {
+      return super.toString();
+    }
+  }
 }

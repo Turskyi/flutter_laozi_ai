@@ -16,8 +16,9 @@ class ChatMessage extends StatelessWidget {
     // Accessing the color scheme from the theme.
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Row(
-      mainAxisAlignment:
-          message.isAi ? MainAxisAlignment.start : MainAxisAlignment.end,
+      mainAxisAlignment: message.isAi
+          ? MainAxisAlignment.start
+          : MainAxisAlignment.end,
       children: <Widget>[
         if (message.isAi)
           Image.asset(
@@ -49,9 +50,7 @@ class ChatMessage extends StatelessWidget {
                       : colorScheme.onPrimary,
                 ),
                 strong: const TextStyle(fontWeight: FontWeight.bold),
-                em: const TextStyle(
-                  fontStyle: FontStyle.italic,
-                ),
+                em: const TextStyle(fontStyle: FontStyle.italic),
                 listBullet: TextStyle(
                   color: message.isAi
                       ? colorScheme.onSecondaryContainer
@@ -59,7 +58,7 @@ class ChatMessage extends StatelessWidget {
                 ),
               ),
               selectable: true,
-              onTapLink: (String _, String? href, String __) {
+              onTapLink: (String _, String? href, String _) {
                 context.read<ChatBloc>().add(LaunchUrlEvent(href ?? ''));
               },
             ),

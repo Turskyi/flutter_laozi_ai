@@ -29,10 +29,7 @@ void main() {
       // Set up the mock method calls
       when(() => mockSettingsRepository.getLanguage()).thenReturn(Language.en);
       // Return the ChatBloc with the mocked dependencies
-      return ChatBloc(
-        mockChatRepository,
-        mockSettingsRepository,
-      );
+      return ChatBloc(mockChatRepository, mockSettingsRepository);
     },
     act: (ChatBloc bloc) => bloc.add(const LoadHomeEvent()),
     expect: () => <TypeMatcher<ChatInitial>>[
