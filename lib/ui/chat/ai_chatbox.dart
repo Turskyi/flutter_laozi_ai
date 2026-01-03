@@ -9,7 +9,6 @@ import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/ui/chat/app_bar/wave_app_bar.dart';
 import 'package:laozi_ai/ui/chat/chat_messages_list.dart';
-import 'package:laozi_ai/ui/widgets/language_selector.dart';
 
 class AIChatBox extends StatefulWidget {
   const AIChatBox({super.key});
@@ -54,6 +53,9 @@ class _AIChatBoxState extends State<AIChatBox> {
     return BlocConsumer<ChatBloc, ChatState>(
       listener: _chatStateListener,
       builder: (BuildContext context, ChatState state) {
+        final Language currentLanguage = _initialLanguage is Language
+            ? (_initialLanguage as Language)
+            : state.language;
         return Scaffold(
           extendBodyBehindAppBar: true,
           drawer: Drawer(
@@ -75,6 +77,18 @@ class _AIChatBoxState extends State<AIChatBox> {
                   title: Text(translate('report_bug')),
                   onTap: _onBugReportPressed,
                 ),
+                ExpansionTile(
+                  leading: const Icon(Icons.language),
+                  title: Text(translate('language')),
+                  children: Language.values.map((Language language) {
+                    return ListTile(
+                      leading: Text(language.flag),
+                      title: Text(language.name),
+                      selected: currentLanguage == language,
+                      onTap: () => _onLanguageSelected(language),
+                    );
+                  }).toList(),
+                ),
               ],
             ),
           ),
@@ -91,18 +105,6 @@ class _AIChatBoxState extends State<AIChatBox> {
                   onPressed: _onBugReportPressed,
                 ),
               ],
-              // Use the `LanguageSelector` widget as an action.
-              LanguageSelector(
-                currentLanguage: _initialLanguage is Language
-                    ? (_initialLanguage as Language)
-                    : state.language,
-                onLanguageSelected: (Language newLanguage) {
-                  _initialLanguage = newLanguage;
-                  context.read<ChatBloc>().add(
-                    ChangeLanguageEvent(newLanguage),
-                  );
-                },
-              ),
             ],
           ),
           body: DecoratedBox(
@@ -277,5 +279,16 @@ class _AIChatBoxState extends State<AIChatBox> {
 
   void _openSupport() {
     Navigator.of(context).pushNamed(AppRoute.support.path);
+  }
+
+  void _onLanguageSelected(Language newLanguage) {
+    changeLocale(context, newLanguage.isoLanguageCode)
+    // The returned value in `then` is always `null`.
+    .then((Object? _) {
+      if (mounted) {
+        _initialLanguage = newLanguage;
+        context.read<ChatBloc>().add(ChangeLanguageEvent(newLanguage));
+      }
+    });
   }
 }
