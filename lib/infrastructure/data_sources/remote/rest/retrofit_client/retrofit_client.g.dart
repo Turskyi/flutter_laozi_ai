@@ -20,35 +20,7 @@ class _RetrofitClient implements RetrofitClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Stream<String> sendEnglishAndroidChatMessage(ChatRequest chatRequest) async* {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<String>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            'chat-android-en',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<String>(_options);
-    late String _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    yield _value;
-  }
-
-  @override
-  Stream<String> sendUkrainianAndroidChatMessage(
+  Stream<List<int>> sendEnglishAndroidChatMessage(
     ChatRequest chatRequest,
   ) async* {
     final _extra = <String, dynamic>{};
@@ -56,165 +28,185 @@ class _RetrofitClient implements RetrofitClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<String>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            'chat-android-ua',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    final _options = _setStreamType<List<int>>(
+      Options(
+        method: 'POST',
+        headers: _headers,
+        extra: _extra,
+        responseType: ResponseType.stream,
+      )
+      .compose(
+        _dio.options,
+        'chat-android-en',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+      .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<String>(_options);
-    late String _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    yield _value;
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    yield* _result.data!.stream;
   }
 
   @override
-  Stream<String> sendEnglishIosChatMessage(ChatRequest chatRequest) async* {
+  Stream<List<int>> sendUkrainianAndroidChatMessage(
+    ChatRequest chatRequest,
+  ) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<String>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            'chat-ios-en',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    final _options = _setStreamType<List<int>>(
+      Options(
+        method: 'POST',
+        headers: _headers,
+        extra: _extra,
+        responseType: ResponseType.stream,
+      )
+      .compose(
+        _dio.options,
+        'chat-android-ua',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+      .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<String>(_options);
-    late String _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    yield _value;
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    yield* _result.data!.stream;
   }
 
   @override
-  Stream<String> sendUkrainianIosChatMessage(ChatRequest chatRequest) async* {
+  Stream<List<int>> sendEnglishIosChatMessage(ChatRequest chatRequest) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<String>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            'chat-ios-ua',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    final _options = _setStreamType<List<int>>(
+      Options(
+        method: 'POST',
+        headers: _headers,
+        extra: _extra,
+        responseType: ResponseType.stream,
+      )
+      .compose(
+        _dio.options,
+        'chat-ios-en',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+      .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<String>(_options);
-    late String _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    yield _value;
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    yield* _result.data!.stream;
   }
 
   @override
-  Stream<String> sendEnglishWebChatMessage(ChatRequest chatRequest) async* {
+  Stream<List<int>> sendUkrainianIosChatMessage(
+    ChatRequest chatRequest,
+  ) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<String>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            'chat-web-app-en',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    final _options = _setStreamType<List<int>>(
+      Options(
+        method: 'POST',
+        headers: _headers,
+        extra: _extra,
+        responseType: ResponseType.stream,
+      )
+      .compose(
+        _dio.options,
+        'chat-ios-ua',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+      .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<String>(_options);
-    late String _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    yield _value;
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    yield* _result.data!.stream;
   }
 
   @override
-  Stream<String> sendUkrainianWebChatMessage(ChatRequest chatRequest) async* {
+  Stream<List<int>> sendEnglishWebChatMessage(ChatRequest chatRequest) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<String>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            'chat-web-app-ua',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    final _options = _setStreamType<List<int>>(
+      Options(
+        method: 'POST',
+        headers: _headers,
+        extra: _extra,
+        responseType: ResponseType.stream,
+      )
+      .compose(
+        _dio.options,
+        'chat-web-app-en',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+      .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<String>(_options);
-    late String _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    yield _value;
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    yield* _result.data!.stream;
   }
 
   @override
-  Stream<String> sendChatMessage(ChatRequest chatRequest) async* {
+  Stream<List<int>> sendUkrainianWebChatMessage(
+    ChatRequest chatRequest,
+  ) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<String>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            'chat',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    final _options = _setStreamType<List<int>>(
+      Options(
+        method: 'POST',
+        headers: _headers,
+        extra: _extra,
+        responseType: ResponseType.stream,
+      )
+      .compose(
+        _dio.options,
+        'chat-web-app-ua',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+      .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<String>(_options);
-    late String _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    yield _value;
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    yield* _result.data!.stream;
+  }
+
+  @override
+  Stream<List<int>> sendChatMessage(ChatRequest chatRequest) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(chatRequest.toJson());
+    final _options = _setStreamType<List<int>>(
+      Options(
+        method: 'POST',
+        headers: _headers,
+        extra: _extra,
+        responseType: ResponseType.stream,
+      )
+      .compose(
+        _dio.options,
+        'chat',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+      .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    yield* _result.data!.stream;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

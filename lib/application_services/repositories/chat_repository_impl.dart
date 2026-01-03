@@ -57,13 +57,16 @@ class ChatRepositoryImpl implements ChatRepository {
     return _processResponse(_restClient.sendChatMessage(request));
   }
 
-  Stream<String> _processResponse(Stream<String> response) {
-    return response.transform(const LineSplitter()).map((String line) {
-      // Use a regular expression to match lines that start with an index
-      // and extract the actual content.
-      final RegExp regex = RegExp(r'^\d+:"(.+)"$');
-      final RegExpMatch? match = regex.firstMatch(line);
-      return match?.group(1) ?? '';
-    });
+  Stream<String> _processResponse(Stream<List<int>> response) {
+    return response
+        .transform(const Utf8Decoder())
+        .transform(const LineSplitter())
+        .map((String line) {
+          // Use a regular expression to match lines that start with an index
+          // and extract the actual content.
+          final RegExp regex = RegExp(r'^\d+:"(.+)"$');
+          final RegExpMatch? match = regex.firstMatch(line);
+          return match?.group(1) ?? '';
+        });
   }
 }
