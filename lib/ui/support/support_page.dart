@@ -13,14 +13,9 @@ import 'package:resend/resend.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SupportPage extends StatefulWidget {
-  const SupportPage({
-    required this.preferences,
-    required this.initialLanguage,
-    super.key,
-  });
+  const SupportPage({required this.preferences, super.key});
 
   final SharedPreferences preferences;
-  final Language initialLanguage;
 
   @override
   State<SupportPage> createState() => _SupportPageState();
@@ -48,7 +43,6 @@ class _SupportPageState extends State<SupportPage> {
         return SupportBloc(
           EmailRepositoryImpl(Resend.instance),
           SettingsRepositoryImpl(widget.preferences),
-          widget.initialLanguage,
         );
       },
       child: Scaffold(

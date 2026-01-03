@@ -101,10 +101,7 @@ void main() async {
       return PrivacyPage(initialLanguage: savedLanguage);
     },
     AppRoute.support.path: (BuildContext _) {
-      return SupportPage(
-        preferences: preferences,
-        initialLanguage: savedLanguage,
-      );
+      return SupportPage(preferences: preferences);
     },
   };
 
