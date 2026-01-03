@@ -6,9 +6,9 @@ import 'package:laozi_ai/application_services/repositories/email_repository_impl
 import 'package:laozi_ai/application_services/repositories/settings_repository_impl.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
-import 'package:laozi_ai/ui/chat/language_selector.dart';
 import 'package:laozi_ai/ui/support/bloc/support_bloc.dart';
 import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
+import 'package:laozi_ai/ui/widgets/language_selector.dart';
 import 'package:resend/resend.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -9,7 +9,7 @@ import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/ui/chat/app_bar/wave_app_bar.dart';
 import 'package:laozi_ai/ui/chat/chat_messages_list.dart';
-import 'package:laozi_ai/ui/chat/language_selector.dart';
+import 'package:laozi_ai/ui/widgets/language_selector.dart';
 
 class AIChatBox extends StatefulWidget {
   const AIChatBox({super.key});
