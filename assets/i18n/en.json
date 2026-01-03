@@ -15,6 +15,9 @@
   "language": "Language",
   "seeker": "Seeker",
   "laozi": "Laozi",
+  "english": "English",
+  "ukrainian": "Ukrainian",
+  "latvian": "Latvian",
   "chat": {
     "askSomething": "Ask something about Daoism...",
     "sendMessageToStartChat": "Send a message to start the chat with Laozi AI!",

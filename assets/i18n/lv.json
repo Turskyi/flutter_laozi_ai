@@ -15,6 +15,9 @@
   "language": "Valoda",
   "seeker": "Meklētājs",
   "laozi": "Laodzi",
+  "english": "Angliskais",
+  "ukrainian": "Ukraienskais",
+  "latvian": "Latviešu",
   "chat": {
     "askSomething": "Jautājiet kaut ko par daoismu...",
     "sendMessageToStartChat": "Nosūtiet ziņu, lai sāktu tērzēšanu ar Laodzi AI!",

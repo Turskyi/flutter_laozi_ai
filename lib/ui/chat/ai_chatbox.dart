@@ -83,7 +83,7 @@ class _AIChatBoxState extends State<AIChatBox> {
                   children: Language.values.map((Language language) {
                     return ListTile(
                       leading: Text(language.flag),
-                      title: Text(language.name),
+                      title: Text(translate(language.key)),
                       selected: currentLanguage == language,
                       onTap: () => _onLanguageSelected(language),
                     );
