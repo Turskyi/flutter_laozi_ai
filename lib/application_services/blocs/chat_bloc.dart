@@ -57,10 +57,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<LaunchUrlEvent>(_onLaunchUrlEvent);
 
     on<ShareConversationEvent>(_onShareConversationEvent);
+
+    on<ClearConversationEvent>(_onClearConversationEvent);
   }
 
   final ChatRepository _chatRepository;
   final SettingsRepository _settingsRepository;
+
+  FutureOr<void> _onClearConversationEvent(
+    ClearConversationEvent _,
+    Emitter<ChatState> emit,
+  ) {
+    emit(ChatInitial(messages: const <Message>[], language: state.language));
+  }
 
   FutureOr<void> _onShareConversationEvent(
     ShareConversationEvent event,

@@ -96,6 +96,13 @@ class _AIChatBoxState extends State<AIChatBox> {
                     ],
                   ),
                 ),
+                if (state.messages.isNotEmpty) ...<Widget>[
+                  ListTile(
+                    title: Text(translate('chat.startNewConversation')),
+                    onTap: _onDrawerStartNewConversation,
+                  ),
+                  const Divider(),
+                ],
                 ListTile(title: Text(translate('about')), onTap: _openAbout),
                 ListTile(title: Text(translate('faq')), onTap: _openFaq),
                 ListTile(
@@ -130,6 +137,11 @@ class _AIChatBoxState extends State<AIChatBox> {
             title: translate('title'),
             actions: <Widget>[
               if (state.messages.isNotEmpty) ...<Widget>[
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: _onStartNewConversation,
+                  tooltip: translate('chat.startNewConversation'),
+                ),
                 IconButton(
                   icon: const Icon(Icons.share),
                   onPressed: _onShareConversationPressed,
@@ -324,5 +336,14 @@ class _AIChatBoxState extends State<AIChatBox> {
         context.read<ChatBloc>().add(ChangeLanguageEvent(newLanguage));
       }
     });
+  }
+
+  void _onDrawerStartNewConversation() {
+    Navigator.of(context).pop();
+    _onStartNewConversation();
+  }
+
+  void _onStartNewConversation() {
+    context.read<ChatBloc>().add(const ClearConversationEvent());
   }
 }
