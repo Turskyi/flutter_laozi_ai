@@ -71,7 +71,7 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
         return ListView.builder(
           controller: _scrollController,
           itemCount: itemCount,
-          itemBuilder: (_, int index) {
+          itemBuilder: (BuildContext context, int index) {
             // Check if the current item is the last one and the state
             // is `ChatError`.
             if (index == state.messages.length && state is ChatError) {
