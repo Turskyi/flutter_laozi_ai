@@ -9,6 +9,7 @@ import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/ui/chat/app_bar/wave_app_bar.dart';
 import 'package:laozi_ai/ui/chat/chat_messages_list.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AIChatBox extends StatefulWidget {
   const AIChatBox({super.key});
@@ -19,6 +20,7 @@ class AIChatBox extends StatefulWidget {
 
 class _AIChatBoxState extends State<AIChatBox> {
   final TextEditingController _textEditingController = TextEditingController();
+  final Future<PackageInfo> _packageInfo = PackageInfo.fromPlatform();
   FeedbackController? _feedbackController;
   Object? _initialLanguage;
 
@@ -56,12 +58,44 @@ class _AIChatBoxState extends State<AIChatBox> {
         final Language currentLanguage = _initialLanguage is Language
             ? (_initialLanguage as Language)
             : state.language;
+        final ThemeData themeData = Theme.of(context);
         return Scaffold(
           extendBodyBehindAppBar: true,
           drawer: Drawer(
             child: ListView(
               children: <Widget>[
-                DrawerHeader(child: Text(translate('title'))),
+                DrawerHeader(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(translate('title')),
+                      FutureBuilder<PackageInfo>(
+                        future: _packageInfo,
+                        builder:
+                            (
+                              BuildContext context,
+                              AsyncSnapshot<PackageInfo> snapshot,
+                            ) {
+                              if (snapshot.hasData) {
+                                final PackageInfo? data = snapshot.data;
+                                if (data != null) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Text(
+                                      '${translate('app_version')} '
+                                      '${data.version}',
+                                      textAlign: TextAlign.center,
+                                      style: themeData.textTheme.bodySmall,
+                                    ),
+                                  );
+                                }
+                              }
+                              return const SizedBox.shrink();
+                            },
+                      ),
+                    ],
+                  ),
+                ),
                 ListTile(title: Text(translate('about')), onTap: _openAbout),
                 ListTile(title: Text(translate('faq')), onTap: _openFaq),
                 ListTile(
@@ -126,7 +160,7 @@ class _AIChatBoxState extends State<AIChatBox> {
                           children: <Widget>[
                             const ChatMessagesList(),
                             SpinKitFadingCircle(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: themeData.colorScheme.primary,
                               size: 200.0,
                             ),
                           ],
