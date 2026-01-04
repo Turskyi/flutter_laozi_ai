@@ -10,37 +10,41 @@ abstract class RetrofitClient {
 
   @POST('chat-android-en')
   @DioResponseType(ResponseType.stream)
-  Stream<List<int>> sendEnglishAndroidChatMessage(
+  Future<HttpResponse<Object>> sendEnglishAndroidChatMessage(
     @Body() ChatRequest chatRequest,
   );
 
   @POST('chat-android-ua')
   @DioResponseType(ResponseType.stream)
-  Stream<List<int>> sendUkrainianAndroidChatMessage(
+  Future<HttpResponse<Object>> sendUkrainianAndroidChatMessage(
     @Body() ChatRequest chatRequest,
   );
 
   @POST('chat-ios-en')
   @DioResponseType(ResponseType.stream)
-  Stream<List<int>> sendEnglishIosChatMessage(@Body() ChatRequest chatRequest);
+  Future<HttpResponse<Object>> sendEnglishIosChatMessage(
+    @Body() ChatRequest chatRequest,
+  );
 
   @POST('chat-ios-ua')
   @DioResponseType(ResponseType.stream)
-  Stream<List<int>> sendUkrainianIosChatMessage(
+  Future<HttpResponse<Object>> sendUkrainianIosChatMessage(
     @Body() ChatRequest chatRequest,
   );
 
   @POST('chat-web-app-en')
   @DioResponseType(ResponseType.stream)
-  Stream<List<int>> sendEnglishWebChatMessage(@Body() ChatRequest chatRequest);
+  Future<HttpResponse<Object>> sendEnglishWebChatMessage(
+    @Body() ChatRequest chatRequest,
+  );
 
   @POST('chat-web-app-ua')
   @DioResponseType(ResponseType.stream)
-  Stream<List<int>> sendUkrainianWebChatMessage(
+  Future<HttpResponse<Object>> sendUkrainianWebChatMessage(
     @Body() ChatRequest chatRequest,
   );
 
   @POST('chat')
   @DioResponseType(ResponseType.stream)
-  Stream<List<int>> sendChatMessage(@Body() ChatRequest chatRequest);
+  Future<HttpResponse<Object>> sendChatMessage(@Body() ChatRequest chatRequest);
 }

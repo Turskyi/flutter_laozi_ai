@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:laozi_ai/domain_services/chat_repository.dart';
@@ -10,6 +11,7 @@ import 'package:laozi_ai/infrastructure/data_sources/local/local_data_source.dar
 import 'package:laozi_ai/infrastructure/data_sources/remote/models/chat_request/chat_request.dart';
 import 'package:laozi_ai/infrastructure/data_sources/remote/models/chat_request/message_request.dart';
 import 'package:laozi_ai/infrastructure/data_sources/remote/rest/retrofit_client/retrofit_client.dart';
+import 'package:retrofit/retrofit.dart';
 
 @Injectable(as: ChatRepository)
 class ChatRepositoryImpl implements ChatRepository {
@@ -57,16 +59,26 @@ class ChatRepositoryImpl implements ChatRepository {
     return _processResponse(_restClient.sendChatMessage(request));
   }
 
-  Stream<String> _processResponse(Stream<List<int>> response) {
-    return response
-        .transform(const Utf8Decoder())
-        .transform(const LineSplitter())
-        .map((String line) {
-          // Use a regular expression to match lines that start with an index
-          // and extract the actual content.
-          final RegExp regex = RegExp(r'^\d+:"(.+)"$');
-          final RegExpMatch? match = regex.firstMatch(line);
-          return match?.group(1) ?? '';
-        });
+  Stream<String> _processResponse(
+    Future<HttpResponse<Object>> responseFuture,
+  ) async* {
+    final HttpResponse<Object> response = await responseFuture;
+    final Object object = response.data;
+    if (object is ResponseBody) {
+      final ResponseBody responseBody = object;
+      yield* responseBody.stream
+          .cast<List<int>>()
+          .transform(const Utf8Decoder())
+          .transform(const LineSplitter())
+          .map((String line) {
+            // Use a regular expression to match lines that start with an index
+            // and extract the actual content.
+            final RegExp regex = RegExp(r'^\d+:"(.+)"$');
+            final RegExpMatch? match = regex.firstMatch(line);
+            return match?.group(1) ?? '';
+          });
+    } else {
+      throw StateError('Unexpected response type: ${object.runtimeType}');
+    }
   }
 }
