@@ -62,6 +62,7 @@
     "socket_error_check_internet": "Socket error. Please check your internet connection.",
     "request_cancelled": "The request was cancelled.",
     "unexpected_network_error": "An unexpected network error occurred. Please try again.",
+    "unexpected_unknown_network_error": "An unexpected unknown network error occurred. Please try again.",
     "unexpected_error_sending_feedback": "An unexpected error occurred while sending feedback. Please try again.",
     "unexpected_error_preparing_feedback": "An unexpected error occurred while preparing feedback. Please try again.",
     "no_messages_to_share": "There are no messages to share."

@@ -61,6 +61,7 @@
     "socket_error_check_internet": "Ligzdas kļūda. Lūdzu, pārbaudiet interneta savienojumu.",
     "request_cancelled": "Pieprasījums tika atcelts.",
     "unexpected_network_error": "Radās neparedzēta tīkla kļūda. Lūdzu, mēģiniet vēlre.",
+    "unexpected_unknown_network_error": "Radās neparedzēta nezināma tīkla kļūda. Lūdzu, mēģiniet vēlreiz.",
     "unexpected_error_sending_feedback": "Sūtot atsauksmes, radās neparedzēta kļūda. Lūdzu, mēģiniet vēlre.",
     "unexpected_error_preparing_feedback": "Sagatavojot atsauksmes, radās neparedzēta kļūda. Lūdzu, mēģiniet vēlre.",
     "no_messages_to_share": "Nav ziņojumu, ko kopīgot",

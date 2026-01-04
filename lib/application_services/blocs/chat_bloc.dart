@@ -420,7 +420,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         } else {
           errorMessageKey = isSendMessage && kIsWeb && kDebugMode
               ? 'error.cors'
-              : 'error.unexpected_network_error';
+              : 'error.unexpected_unknown_network_error';
         }
         break;
     }
