@@ -4,7 +4,9 @@
   "appId": "App id",
   "app_id": "App id",
   "appVersion": "App version",
+  "app_version": "App version",
   "buildNumber": "Build number",
+  "build_number": "Build number",
   "about": "About",
   "faq": "FAQ",
   "privacy": "Privacy",
@@ -13,10 +15,14 @@
   "language": "Language",
   "seeker": "Seeker",
   "laozi": "Laozi",
+  "english": "English",
+  "ukrainian": "Ukrainian",
+  "latvian": "Latvian",
   "chat": {
     "askSomething": "Ask something about Daoism...",
     "sendMessageToStartChat": "Send a message to start the chat with Laozi AI!",
-    "youCanAskAnyQuestionAbout": "You can ask Laozi Chatbot any question about Daoism and he will find the relevant information."
+    "youCanAskAnyQuestionAbout": "You can ask Laozi Chatbot any question about Daoism and he will find the relevant information.",
+    "startNewConversation": "Start new conversation"
   },
   "feedback": {
     "app_feedback": "App Feedback",

@@ -48,12 +48,15 @@ def signing_key_release_key_password = keyProperties.getProperty('production.SIG
 android {
     namespace = rootProject.application_id
     compileSdk = flutter.compileSdkVersion
-    //TODO: change back to dynamic "flutter.ndkVersion" version, when the error "One or more plugins require a higher Android NDK version." is gone.
-    ndkVersion = "27.0.12077973"
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    kotlinOptions {
+        jvmTarget = "21"
     }
 
     defaultConfig {
@@ -131,5 +134,5 @@ flutter {
 dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:20.0.3'
     implementation 'com.google.firebase:firebase-analytics:23.0.0'
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
 }
-

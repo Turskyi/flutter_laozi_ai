@@ -77,3 +77,7 @@ final class ShareConversationEvent extends ChatEvent {
 
   final Rect? sharePositionOrigin;
 }
+
+final class ClearConversationEvent extends ChatEvent {
+  const ClearConversationEvent();
+}

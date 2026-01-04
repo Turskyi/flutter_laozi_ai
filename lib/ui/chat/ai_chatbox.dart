@@ -9,7 +9,7 @@ import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/ui/chat/app_bar/wave_app_bar.dart';
 import 'package:laozi_ai/ui/chat/chat_messages_list.dart';
-import 'package:laozi_ai/ui/chat/language_selector.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AIChatBox extends StatefulWidget {
   const AIChatBox({super.key});
@@ -20,6 +20,7 @@ class AIChatBox extends StatefulWidget {
 
 class _AIChatBoxState extends State<AIChatBox> {
   final TextEditingController _textEditingController = TextEditingController();
+  final Future<PackageInfo> _packageInfo = PackageInfo.fromPlatform();
   FeedbackController? _feedbackController;
   Object? _initialLanguage;
 
@@ -54,12 +55,54 @@ class _AIChatBoxState extends State<AIChatBox> {
     return BlocConsumer<ChatBloc, ChatState>(
       listener: _chatStateListener,
       builder: (BuildContext context, ChatState state) {
+        final Language currentLanguage = _initialLanguage is Language
+            ? (_initialLanguage as Language)
+            : state.language;
+        final ThemeData themeData = Theme.of(context);
         return Scaffold(
           extendBodyBehindAppBar: true,
           drawer: Drawer(
             child: ListView(
               children: <Widget>[
-                DrawerHeader(child: Text(translate('title'))),
+                DrawerHeader(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(translate('title')),
+                      FutureBuilder<PackageInfo>(
+                        future: _packageInfo,
+                        builder:
+                            (
+                              BuildContext context,
+                              AsyncSnapshot<PackageInfo> snapshot,
+                            ) {
+                              if (snapshot.hasData) {
+                                final PackageInfo? data = snapshot.data;
+                                if (data != null) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Text(
+                                      '${translate('app_version')} '
+                                      '${data.version}',
+                                      textAlign: TextAlign.center,
+                                      style: themeData.textTheme.bodySmall,
+                                    ),
+                                  );
+                                }
+                              }
+                              return const SizedBox.shrink();
+                            },
+                      ),
+                    ],
+                  ),
+                ),
+                if (state.messages.isNotEmpty) ...<Widget>[
+                  ListTile(
+                    title: Text(translate('chat.startNewConversation')),
+                    onTap: _onDrawerStartNewConversation,
+                  ),
+                  const Divider(),
+                ],
                 ListTile(title: Text(translate('about')), onTap: _openAbout),
                 ListTile(title: Text(translate('faq')), onTap: _openFaq),
                 ListTile(
@@ -75,6 +118,18 @@ class _AIChatBoxState extends State<AIChatBox> {
                   title: Text(translate('report_bug')),
                   onTap: _onBugReportPressed,
                 ),
+                ExpansionTile(
+                  leading: const Icon(Icons.language),
+                  title: Text(translate('language')),
+                  children: Language.values.map((Language language) {
+                    return ListTile(
+                      leading: Text(language.flag),
+                      title: Text(translate(language.key)),
+                      selected: currentLanguage == language,
+                      onTap: () => _onLanguageSelected(language),
+                    );
+                  }).toList(),
+                ),
               ],
             ),
           ),
@@ -82,6 +137,11 @@ class _AIChatBoxState extends State<AIChatBox> {
             title: translate('title'),
             actions: <Widget>[
               if (state.messages.isNotEmpty) ...<Widget>[
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: _onStartNewConversation,
+                  tooltip: translate('chat.startNewConversation'),
+                ),
                 IconButton(
                   icon: const Icon(Icons.share),
                   onPressed: _onShareConversationPressed,
@@ -91,18 +151,6 @@ class _AIChatBoxState extends State<AIChatBox> {
                   onPressed: _onBugReportPressed,
                 ),
               ],
-              // Use the `LanguageSelector` widget as an action.
-              LanguageSelector(
-                currentLanguage: _initialLanguage is Language
-                    ? (_initialLanguage as Language)
-                    : state.language,
-                onLanguageSelected: (Language newLanguage) {
-                  _initialLanguage = newLanguage;
-                  context.read<ChatBloc>().add(
-                    ChangeLanguageEvent(newLanguage),
-                  );
-                },
-              ),
             ],
           ),
           body: DecoratedBox(
@@ -124,7 +172,7 @@ class _AIChatBoxState extends State<AIChatBox> {
                           children: <Widget>[
                             const ChatMessagesList(),
                             SpinKitFadingCircle(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: themeData.colorScheme.primary,
                               size: 200.0,
                             ),
                           ],
@@ -277,5 +325,25 @@ class _AIChatBoxState extends State<AIChatBox> {
 
   void _openSupport() {
     Navigator.of(context).pushNamed(AppRoute.support.path);
+  }
+
+  void _onLanguageSelected(Language newLanguage) {
+    changeLocale(context, newLanguage.isoLanguageCode)
+    // The returned value in `then` is always `null`.
+    .then((Object? _) {
+      if (mounted) {
+        _initialLanguage = newLanguage;
+        context.read<ChatBloc>().add(ChangeLanguageEvent(newLanguage));
+      }
+    });
+  }
+
+  void _onDrawerStartNewConversation() {
+    Navigator.of(context).pop();
+    _onStartNewConversation();
+  }
+
+  void _onStartNewConversation() {
+    context.read<ChatBloc>().add(const ClearConversationEvent());
   }
 }

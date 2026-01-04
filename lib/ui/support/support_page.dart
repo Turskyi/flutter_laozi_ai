@@ -6,21 +6,16 @@ import 'package:laozi_ai/application_services/repositories/email_repository_impl
 import 'package:laozi_ai/application_services/repositories/settings_repository_impl.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
-import 'package:laozi_ai/ui/chat/language_selector.dart';
 import 'package:laozi_ai/ui/support/bloc/support_bloc.dart';
 import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
+import 'package:laozi_ai/ui/widgets/language_selector.dart';
 import 'package:resend/resend.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SupportPage extends StatefulWidget {
-  const SupportPage({
-    required this.preferences,
-    required this.initialLanguage,
-    super.key,
-  });
+  const SupportPage({required this.preferences, super.key});
 
   final SharedPreferences preferences;
-  final Language initialLanguage;
 
   @override
   State<SupportPage> createState() => _SupportPageState();
@@ -48,7 +43,6 @@ class _SupportPageState extends State<SupportPage> {
         return SupportBloc(
           EmailRepositoryImpl(Resend.instance),
           SettingsRepositoryImpl(widget.preferences),
-          widget.initialLanguage,
         );
       },
       child: Scaffold(

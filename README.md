@@ -128,7 +128,7 @@ resources:
   accessible alternative to `daoizm.online` as it's hosted on Vercel's free
   tier.
 
-3. **Flutter Web Deployment (Demo):**
+3. **Flutter Web Deployment:**
 
 - **URL:** [https://laozi-ai.web.app](https://laozi-ai.web.app)
 - **Description:** This is a **web deployment of this exact Flutter application
@@ -542,7 +542,7 @@ or reach out to me directly at
   </a>
 </p>
 
-## [[Video] Daoism - Laozi AI Chatbot: App Demo & Development with Google Gemini](https://www.youtube.com/watch?v=wyVk3TPaE7c)
+## [[Video] Daoism • Laozi AI: App Demo & Development with Google Gemini](https://www.youtube.com/watch?v=wyVk3TPaE7c)
 
 [![Watch the video](https://img.youtube.com/vi/wyVk3TPaE7c/maxresdefault.jpg)](https://www.youtube.com/watch?v=wyVk3TPaE7c)
 

@@ -2,28 +2,28 @@
 /// project.
 enum Language {
   en(
-    name: _englishLanguage,
+    key: _englishLanguage,
     isoLanguageCode: _englishIsoLanguageCode,
     flag: '🇬🇧',
   ),
   uk(
-    name: _ukrainianLanguage,
+    key: _ukrainianLanguage,
     isoLanguageCode: _ukrainianIsoLanguageCode,
     flag: '🇺🇦',
   ),
   lv(
-    name: _latvianLanguage,
+    key: _latvianLanguage,
     isoLanguageCode: _latvianIsoLanguageCode,
     flag: '🇱🇻',
   );
 
   const Language({
-    required this.name,
+    required this.key,
     required this.isoLanguageCode,
     required this.flag,
   });
 
-  final String name;
+  final String key;
   final String isoLanguageCode;
   final String flag;
 
@@ -52,6 +52,6 @@ enum Language {
 const String _englishIsoLanguageCode = 'en';
 const String _ukrainianIsoLanguageCode = 'uk';
 const String _latvianIsoLanguageCode = 'lv';
-const String _englishLanguage = 'English';
-const String _ukrainianLanguage = 'Ukrainian';
-const String _latvianLanguage = 'Latvian';
+const String _englishLanguage = 'english';
+const String _ukrainianLanguage = 'ukrainian';
+const String _latvianLanguage = 'latvian';

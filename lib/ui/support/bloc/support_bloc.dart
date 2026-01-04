@@ -11,11 +11,8 @@ part 'support_event.dart';
 part 'support_state.dart';
 
 class SupportBloc extends Bloc<SupportEvent, SupportState> {
-  SupportBloc(
-    this._emailRepository,
-    this._settingsRepository,
-    Language initialLanguage,
-  ) : super(SupportInitial(language: initialLanguage)) {
+  SupportBloc(this._emailRepository, this._settingsRepository)
+    : super(SupportInitial(language: _settingsRepository.getLanguage())) {
     on<SendSupportEmail>(_onSendSupportEmail);
     on<ChangeSupportLanguageEvent>(_onChangeLanguageEvent);
   }
