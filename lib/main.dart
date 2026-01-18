@@ -70,27 +70,9 @@ void main() async {
       create: (BuildContext _) {
         return GetIt.I.get<ChatBloc>()..add(const LoadHomeEvent());
       },
-      child: BlocListener<ChatBloc, ChatState>(
-        listener: (BuildContext context, ChatState state) {
-          if (state is ChatInitial) {
-            final Language currentLanguage = Language.fromIsoLanguageCode(
-              LocalizedApp.of(context).delegate.currentLocale.languageCode,
-            );
-            final Language savedLanguage = state.language;
-            if (currentLanguage != savedLanguage) {
-              changeLocale(context, savedLanguage.isoLanguageCode)
-              // The returned value in `then` is always `null`.
-              .then((_) {
-                if (context.mounted) {
-                  context.read<ChatBloc>().add(
-                    ChangeLanguageEvent(savedLanguage),
-                  );
-                }
-              });
-            }
-          }
-        },
-        child: const AIChatBox(),
+      child: const BlocListener<ChatBloc, ChatState>(
+        listener: _onChatStateChanged,
+        child: AIChatBox(),
       ),
     ),
     AppRoute.about.path: (BuildContext _) {
@@ -125,4 +107,22 @@ void main() async {
       ),
     ),
   );
+}
+
+void _onChatStateChanged(BuildContext context, ChatState state) {
+  if (state is ChatInitial) {
+    final Language currentLanguage = Language.fromIsoLanguageCode(
+      LocalizedApp.of(context).delegate.currentLocale.languageCode,
+    );
+    final Language savedLanguage = state.language;
+    if (currentLanguage != savedLanguage) {
+      changeLocale(context, savedLanguage.isoLanguageCode)
+      // The returned value in `then` is always `null`.
+      .then((Object? _) {
+        if (context.mounted) {
+          context.read<ChatBloc>().add(ChangeLanguageEvent(savedLanguage));
+        }
+      });
+    }
+  }
 }

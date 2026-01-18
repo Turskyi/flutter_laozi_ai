@@ -30,18 +30,26 @@ class MainActivity : FlutterActivity() {
 
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo: AppUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+                appUpdateInfo.isUpdateTypeAllowed(
+                    AppUpdateType.IMMEDIATE,
+                )
             ) {
                 try {
                     appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
                         this,
-                        AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
+                        AppUpdateOptions.newBuilder(
+                            AppUpdateType.IMMEDIATE,
+                        )
                             .build(),
                         UPDATE_REQUEST_CODE
                     )
                 } catch (e: Exception) {
-                    Log.e("MainActivity", "Failed to start update flow", e)
+                    Log.e(
+                        "MainActivity",
+                        "Failed to start update flow",
+                        e,
+                    )
                 }
             } else if (appUpdateInfo.updateAvailability()
                 == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
@@ -53,10 +61,14 @@ class MainActivity : FlutterActivity() {
                         this,
                         AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
                             .build(),
-                        UPDATE_REQUEST_CODE
+                        UPDATE_REQUEST_CODE,
                     )
                 } catch (e: Exception) {
-                    Log.e("MainActivity", "Failed to resume update flow", e)
+                    Log.e(
+                        "MainActivity",
+                        "Failed to resume update flow",
+                        e,
+                    )
                 }
             }
         }
