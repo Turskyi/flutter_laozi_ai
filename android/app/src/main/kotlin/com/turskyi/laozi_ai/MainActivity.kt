@@ -12,6 +12,19 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import io.flutter.embedding.android.FlutterActivity
 
+/**
+ * [MainActivity] is the main entry point for the Android side of the Flutter
+ * application.
+ *
+ * It includes an implementation of in-app updates using the Play Core library,
+ * allowing the app to prompt users to update when a new version is available
+ * on the Play Store.
+ *
+ * This implementation follows the guidelines from the official Android
+ * documentation:
+ * @see <a href="https://developer.android.com/guide/playcore/in-app-updates">
+ *     In-app updates</a>
+ */
 class MainActivity : FlutterActivity() {
     companion object {
         private const val UPDATE_REQUEST_CODE = 500
@@ -59,7 +72,9 @@ class MainActivity : FlutterActivity() {
                     appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
                         this,
-                        AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
+                        AppUpdateOptions.newBuilder(
+                            AppUpdateType.IMMEDIATE,
+                        )
                             .build(),
                         UPDATE_REQUEST_CODE,
                     )
