@@ -49,6 +49,13 @@ class FaqPage extends StatelessWidget {
             ],
           ),
           const FaqItem(
+            titleKey: 'faq_page.clarify_rephrase_title',
+            paragraphKeys: <String>[
+              'faq_page.clarify_rephrase_p1',
+              'faq_page.clarify_rephrase_p2',
+            ],
+          ),
+          const FaqItem(
             titleKey: 'faq_page.different_answers_title',
             paragraphKeys: <String>[
               'faq_page.different_answers_p1',
