@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/ui/privacy/widgets/privacy_section.dart';
+import 'package:laozi_ai/ui/widgets/app_bar/wave_app_bar.dart';
 import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
 
 class PrivacyPage extends StatelessWidget {
@@ -20,18 +21,21 @@ class PrivacyPage extends StatelessWidget {
     const String email = 'support@${constants.primaryDomain}';
 
     return Scaffold(
-      appBar: AppBar(
+      extendBodyBehindAppBar: true,
+      appBar: WaveAppBar(
         leading: kIsWeb ? const HomeAppBarButton() : null,
-        title: Text(
-          translate(
-            isAndroid ? 'privacy_page_android.title' : 'privacy_page.title',
-            args: <String, Object?>{'appName': appName},
-          ),
-          maxLines: 2,
+        title: translate(
+          isAndroid ? 'privacy_page_android.title' : 'privacy_page.title',
+          args: <String, Object?>{'appName': appName},
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.fromLTRB(
+          16.0,
+          kToolbarHeight * 1.5,
+          16.0,
+          16.0,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

@@ -1,8 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/ui/faq/faq_item.dart';
+import 'package:laozi_ai/ui/widgets/app_bar/wave_app_bar.dart';
+import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FaqPage extends StatelessWidget {
@@ -11,9 +14,18 @@ class FaqPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(translate('faq_page.title'))),
+      extendBodyBehindAppBar: true,
+      appBar: WaveAppBar(
+        leading: kIsWeb ? const HomeAppBarButton() : null,
+        title: translate('faq_page.title'),
+      ),
       body: ListView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.fromLTRB(
+          16.0,
+          kToolbarHeight * 1.5,
+          16.0,
+          16.0,
+        ),
         children: <Widget>[
           const FaqItem(
             titleKey: 'faq_page.why_laozi_ai_title',

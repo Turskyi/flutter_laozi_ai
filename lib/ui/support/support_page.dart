@@ -7,6 +7,7 @@ import 'package:laozi_ai/application_services/repositories/settings_repository_i
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/ui/support/bloc/support_bloc.dart';
+import 'package:laozi_ai/ui/widgets/app_bar/wave_app_bar.dart';
 import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
 import 'package:laozi_ai/ui/widgets/language_selector.dart';
 import 'package:resend/resend.dart';
@@ -46,9 +47,10 @@ class _SupportPageState extends State<SupportPage> {
         );
       },
       child: Scaffold(
-        appBar: AppBar(
+        extendBodyBehindAppBar: true,
+        appBar: WaveAppBar(
           leading: kIsWeb ? const HomeAppBarButton() : null,
-          title: Text(translate('support_page.title')),
+          title: translate('support_page.title'),
           actions: <Widget>[
             BlocBuilder<SupportBloc, SupportState>(
               builder: (BuildContext context, SupportState state) {
@@ -103,7 +105,12 @@ class _SupportPageState extends State<SupportPage> {
           },
           builder: (BuildContext context, SupportState state) {
             return SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.fromLTRB(
+                16.0,
+                kToolbarHeight * 1.5,
+                16.0,
+                16.0,
+              ),
               child: Form(
                 key: _formKey,
                 child: Column(

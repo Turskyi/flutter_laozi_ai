@@ -7,11 +7,13 @@ class WaveAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title = '',
     this.height = kToolbarHeight * 1.2,
     this.actions = const <Widget>[],
+    this.leading,
   });
 
   final String title;
   final double height;
   final List<Widget> actions;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class WaveAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       flexibleSpace: const AnimatedWave(),
       actions: actions,
+      leading: leading,
     );
   }
 
