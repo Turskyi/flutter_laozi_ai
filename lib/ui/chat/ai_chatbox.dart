@@ -7,8 +7,8 @@ import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/router/app_route.dart';
-import 'package:laozi_ai/ui/chat/app_bar/wave_app_bar.dart';
-import 'package:laozi_ai/ui/chat/chat_messages_list.dart';
+import 'package:laozi_ai/ui/chat/widgets/app_bar/wave_app_bar.dart';
+import 'package:laozi_ai/ui/chat/widgets/chat_messages_list.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AIChatBox extends StatefulWidget {
