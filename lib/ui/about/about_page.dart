@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/ui/about/widgets/bullet_point.dart';
 import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
@@ -9,16 +8,14 @@ import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
 const double _kYinYangImageSize = 180.0;
 
 class AboutPage extends StatelessWidget {
-  const AboutPage({required this.initialLanguage, super.key});
-
-  final Language initialLanguage;
+  const AboutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        leading: kIsWeb ? HomeAppBarButton(language: initialLanguage) : null,
+        leading: kIsWeb ? const HomeAppBarButton() : null,
         title: Text(translate('about_page.title')),
       ),
       body: SingleChildScrollView(

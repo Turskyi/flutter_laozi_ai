@@ -47,13 +47,7 @@ class _SupportPageState extends State<SupportPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          leading: kIsWeb
-              ? BlocBuilder<SupportBloc, SupportState>(
-                  builder: (BuildContext _, SupportState state) {
-                    return HomeAppBarButton(language: state.language);
-                  },
-                )
-              : null,
+          leading: kIsWeb ? const HomeAppBarButton() : null,
           title: Text(translate('support_page.title')),
           actions: <Widget>[
             BlocBuilder<SupportBloc, SupportState>(

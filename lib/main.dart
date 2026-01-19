@@ -66,22 +66,16 @@ void main() async {
   }
 
   Map<String, WidgetBuilder> routeMap = <String, WidgetBuilder>{
-    AppRoute.home.path: (BuildContext _) => BlocProvider<ChatBloc>(
-      create: (BuildContext _) {
-        return GetIt.I.get<ChatBloc>()..add(const LoadHomeEvent());
-      },
-      child: const BlocListener<ChatBloc, ChatState>(
+    AppRoute.home.path: (BuildContext _) => const BlocProvider<ChatBloc>(
+      create: _createChatBloc,
+      child: BlocListener<ChatBloc, ChatState>(
         listener: _onChatStateChanged,
         child: AIChatBox(),
       ),
     ),
-    AppRoute.about.path: (BuildContext _) {
-      return AboutPage(initialLanguage: savedLanguage);
-    },
+    AppRoute.about.path: (BuildContext _) => const AboutPage(),
     AppRoute.faq.path: (BuildContext _) => const FaqPage(),
-    AppRoute.privacy.path: (BuildContext _) {
-      return PrivacyPage(initialLanguage: savedLanguage);
-    },
+    AppRoute.privacy.path: (BuildContext _) => const PrivacyPage(),
     AppRoute.support.path: (BuildContext _) {
       return SupportPage(preferences: preferences);
     },
@@ -107,6 +101,10 @@ void main() async {
       ),
     ),
   );
+}
+
+ChatBloc _createChatBloc(BuildContext _) {
+  return GetIt.I.get<ChatBloc>()..add(const LoadHomeEvent());
 }
 
 void _onChatStateChanged(BuildContext context, ChatState state) {
