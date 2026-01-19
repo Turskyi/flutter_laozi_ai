@@ -1,8 +1,10 @@
 import 'package:feedback/feedback.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
 import 'package:laozi_ai/di/injector.dart' as di;
 import 'package:laozi_ai/di/injector.dart';
@@ -45,9 +47,36 @@ void main() async {
 
   final LocalDataSource localDataSource = LocalDataSource(preferences);
 
-  final String savedIsoCode = localDataSource.getLanguageIsoCode();
+  Language initialLanguage = localDataSource.getSavedLanguage();
 
-  final Language savedLanguage = Language.fromIsoLanguageCode(savedIsoCode);
+  if (kIsWeb) {
+    // Retrieves the host name (e.g., "localhost" or "uk.daoizm.online").
+    final String host = Uri.base.host;
+    // Retrieves the fragment (e.g., "/en" or "/uk").
+    final String fragment = Uri.base.fragment;
+
+    for (final Language language in Language.values) {
+      final String currentLanguageCode = language.isoLanguageCode;
+
+      if (host.startsWith('$currentLanguageCode.') ||
+          fragment.contains('${AppRoute.home.path}$currentLanguageCode')) {
+        try {
+          Intl.defaultLocale = currentLanguageCode;
+        } catch (e, stackTrace) {
+          debugPrint(
+            'Failed to set Intl.defaultLocale to "$currentLanguageCode".\n'
+            'Error: $e\n'
+            'StackTrace: $stackTrace\n'
+            'Proceeding with previously set default locale or system default.',
+          );
+        }
+        initialLanguage = language;
+        // We save it so the rest of the app uses this language.
+        await localDataSource.saveLanguageIsoCode(currentLanguageCode);
+        break;
+      }
+    }
+  }
 
   final LocalizationDelegate localizationDelegate = await locale
       .getLocalizationDelegate();
@@ -56,8 +85,10 @@ void main() async {
     localizationDelegate.currentLocale.languageCode,
   );
 
-  if (savedLanguage != currentLanguage) {
-    final Locale savedLocale = localeFromString(savedLanguage.isoLanguageCode);
+  if (initialLanguage != currentLanguage) {
+    final Locale savedLocale = localeFromString(
+      initialLanguage.isoLanguageCode,
+    );
 
     localizationDelegate.changeLocale(savedLocale);
 
