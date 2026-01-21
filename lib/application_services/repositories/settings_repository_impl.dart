@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:laozi_ai/domain_services/settings_repository.dart';
@@ -73,5 +74,26 @@ class SettingsRepositoryImpl implements SettingsRepository {
       Settings.languageIsoCode.key,
       languageIsoCode,
     );
+  }
+
+  @override
+  ThemeMode getThemeMode() {
+    final String? savedThemeMode = _preferences.getString(
+      Settings.themeMode.key,
+    );
+
+    if (savedThemeMode == null) {
+      return ThemeMode.dark;
+    }
+
+    return ThemeMode.values.firstWhere(
+      (ThemeMode mode) => mode.name == savedThemeMode,
+      orElse: () => ThemeMode.dark,
+    );
+  }
+
+  @override
+  Future<bool> saveThemeMode(ThemeMode themeMode) {
+    return _preferences.setString(Settings.themeMode.key, themeMode.name);
   }
 }

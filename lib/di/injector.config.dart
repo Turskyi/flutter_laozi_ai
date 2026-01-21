@@ -12,6 +12,8 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:laozi_ai/application_services/blocs/chat_bloc.dart' as _i841;
+import 'package:laozi_ai/application_services/blocs/settings_bloc.dart'
+    as _i1032;
 import 'package:laozi_ai/application_services/repositories/chat_repository_impl.dart'
     as _i848;
 import 'package:laozi_ai/application_services/repositories/settings_repository_impl.dart'
@@ -59,11 +61,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i451.LocalDataSource>(),
       ),
     );
+    gh.factory<_i1032.SettingsBloc>(
+      () => _i1032.SettingsBloc(gh<_i301.SettingsRepository>()),
+    );
     gh.factory<_i841.ChatBloc>(
-      () => _i841.ChatBloc(
-        gh<_i732.ChatRepository>(),
-        gh<_i301.SettingsRepository>(),
-      ),
+      () => _i841.ChatBloc(gh<_i732.ChatRepository>()),
     );
     return this;
   }

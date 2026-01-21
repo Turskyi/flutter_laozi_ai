@@ -18,6 +18,10 @@
   "english": "Angliskais",
   "ukrainian": "Ukraienskais",
   "latvian": "Latviešu",
+  "theme": {
+    "light": "Gaišā tēma",
+    "dark": "Tumšā tēma"
+  },
   "chat": {
     "askSomething": "Jautājiet kaut ko par daoismu...",
     "sendMessageToStartChat": "Nosūtiet ziņu, lai sāktu tērzēšanu ar Laodzi AI!",
@@ -109,12 +113,12 @@
     "short_answers_p2": "Ja atbilde šķiet nogriezta vai nepilnīga, vienkārši sakiet ‘lūdzu, turpiniet’. Laodzi AI atceras jūsu sarunas kontekstu un turpinās tieši tur, kur pārtrauca.",
     "short_answers_p3": "Lai iegūtu autentiskāko pieredzi, mēģiniet runāt ar Laodzi tā, it kā jūs sarunātos ar reālu cilvēku. Pat vēsturiskais Laodzi neatbildētu uz katru jautājumu vienā bezgalīgā runā — gudrība bieži nāk pa vienai domai.",
     "clarify_rephrase_title": "Vai es varu lūgt Laodzi precizēt vai pārfrāzēt savu atbildi?",
-    "clarify_rephrase_p1": "Pilnīgi noteikti! Jūs varat mijiedarboties ar Laodzi AI tieši tāpat kā ar reālu personu. Ja atbilde šķiet nekonkrēta, pārāk sarežģīta vai ne visai uzrunā jūs, vienkārši lūdziet pārfrāzēt vai precizēt to savā nākamajā ziņā.",
+    "clarify_rephrase_p1": "Pilnīgi noteikti! Jūs varat mijiedarboties ar Laodzi AI tieši tāpat kā ar reālu personu. Ja atbilde šķiet nekonkrēta, pārāk sarežēta vai ne visai uzrunā jūs, vienkārši lūdziet pārfrāzēt vai precizēt to savā nākamajā ziā.",
     "clarify_rephrase_p2": "Mēģiniet teikt tādas lietas kā: \"Vai varat to paskaidrot vienkāršāk?\", \"Es ne visai saprotu, vai varat to pateikt citādāk?\" vai \"Vai jūs varētu tam pieiet no cita leņķa?\". Šī sarunvalodas apmaiņa bieži noved pie atziņām, kuras sākotnējā atbilde nesniedza. Pat vēsturiskais Laodzi būtu iesaistījies dialogā ar saviem skolēniem — lūgums pēc paskaidrojuma ir patiesas ziņkārības un iesaistes pazīme.",
     "different_answers_title": "Kāpēc atbildes atšķiras tīmeklī un mobilajā ierīcē?",
     "different_answers_p1": "Laodzi AI izmanto dažādus AI iestatījumus atkarībā no platformas, kuru izmantojat.",
     "different_answers_p2": "Tīmekļa versija ietver izguves sistēmu, kas izmanto tīmekļa vietnes saturu, lai sniegtu kontekstuālākas un detalizētākas atbildes.",
-    "different_answers_p3": "No otras puses, mobilās versijas paļaujas tikai uz AI modeļa iekšējām zināšanām, kas var novest pie nedaudz atšķirīgām vai sarunvalodas atbildēm.",
+    "different_answers_p3": "No otras puses, mobilās versijas paļaujas tikai uz AI modeļa iekšējām ziāšanām, kas var novest pie nedaudz atšķirīgām vai sarunvalodas atbildēm.",
     "gateway_timeout_title": "Kāpēc es saņēmu ‘vārtejas noildzes’ kļūdu?",
     "gateway_timeout_p1": "‘Vārtejas noildzes’ kļūda (504) ir reta problēma, kas var rasties, ja jūsu jautājums ir pārāk sarežģīts, lai AI uz to atbildētu servera laika limitā (10 sekundes). Lai gan mēs cenšamies apstrādāt visus pieprasījumus, daži ļoti prasīgi jautājumi var izraisīt šo problēmu.",
     "gateway_timeout_p2": "Ja redzat šo kļūdu, lūdzu, mēģiniet pārformulēt savu jautājumu, lai tas būtu kodolīgāks. Ja uzskatāt, ka uzvednei vajadzētu tikt atbalstītai, mēs būtu pateicīgi, ja izmantotu funkciju ‘Ziņot par kļūdu’. Lūdzu, pievienojiet uzvednes un kļūdas ekrānuzņēmumu, jo tas palīdzēs mums uzlabot AI veiktspēju.",

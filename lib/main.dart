@@ -6,8 +6,8 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
+import 'package:laozi_ai/application_services/blocs/settings_bloc.dart';
 import 'package:laozi_ai/di/injector.dart' as di;
-import 'package:laozi_ai/di/injector.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/infrastructure/data_sources/local/local_data_source.dart';
 import 'package:laozi_ai/localization/localization_delelegate_getter.dart'
@@ -99,10 +99,7 @@ void main() async {
   Map<String, WidgetBuilder> routeMap = <String, WidgetBuilder>{
     AppRoute.home.path: (BuildContext _) => const BlocProvider<ChatBloc>(
       create: _createChatBloc,
-      child: BlocListener<ChatBloc, ChatState>(
-        listener: _onChatStateChanged,
-        child: AIChatBox(),
-      ),
+      child: AIChatBox(),
     ),
     AppRoute.about.path: (BuildContext _) => const AboutPage(),
     AppRoute.faq.path: (BuildContext _) => const FaqPage(),
@@ -128,7 +125,13 @@ void main() async {
               );
             },
         theme: FeedbackThemeData(feedbackSheetColor: Colors.grey.shade50),
-        child: LaoziAiApp(routeMap: routeMap),
+        child: BlocProvider<SettingsBloc>(
+          create: (BuildContext _) => GetIt.I.get<SettingsBloc>(),
+          child: BlocListener<SettingsBloc, SettingsState>(
+            listener: _onSettingsStateChanged,
+            child: LaoziAiApp(routeMap: routeMap),
+          ),
+        ),
       ),
     ),
   );
@@ -138,20 +141,20 @@ ChatBloc _createChatBloc(BuildContext _) {
   return GetIt.I.get<ChatBloc>()..add(const LoadHomeEvent());
 }
 
-void _onChatStateChanged(BuildContext context, ChatState state) {
-  if (state is ChatInitial) {
-    final Language currentLanguage = Language.fromIsoLanguageCode(
-      LocalizedApp.of(context).delegate.currentLocale.languageCode,
-    );
-    final Language savedLanguage = state.language;
-    if (currentLanguage != savedLanguage) {
-      changeLocale(context, savedLanguage.isoLanguageCode)
-      // The returned value in `then` is always `null`.
-      .then((Object? _) {
-        if (context.mounted) {
-          context.read<ChatBloc>().add(ChangeLanguageEvent(savedLanguage));
-        }
-      });
-    }
+void _onSettingsStateChanged(BuildContext context, SettingsState state) {
+  final Language currentLanguage = Language.fromIsoLanguageCode(
+    LocalizedApp.of(context).delegate.currentLocale.languageCode,
+  );
+  final Language savedLanguage = state.language;
+  if (currentLanguage != savedLanguage) {
+    changeLocale(context, savedLanguage.isoLanguageCode)
+    // The returned value in `then` is always `null`.
+    .then((Object? _) {
+      if (context.mounted) {
+        context.read<SettingsBloc>().add(
+          ChangeLanguageSettingsEvent(savedLanguage),
+        );
+      }
+    });
   }
 }

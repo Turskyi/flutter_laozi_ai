@@ -2,9 +2,8 @@ part of 'chat_bloc.dart';
 
 @immutable
 sealed class ChatState {
-  const ChatState({required this.language, required this.messages});
+  const ChatState({required this.messages});
 
-  final Language language;
   final List<Message> messages;
 
   @override
@@ -12,19 +11,15 @@ sealed class ChatState {
       identical(this, other) ||
       other is ChatState &&
           runtimeType == other.runtimeType &&
-          language == other.language &&
           messages == other.messages;
 
   @override
-  int get hashCode => language.hashCode ^ messages.hashCode;
+  int get hashCode => messages.hashCode;
 
   @override
   String toString() {
     if (kDebugMode) {
-      return 'ChatState('
-          'messages: $messages, '
-          'language: $language,'
-          ')';
+      return 'ChatState(messages: $messages)';
     } else {
       return super.toString();
     }
@@ -32,21 +27,15 @@ sealed class ChatState {
 }
 
 final class ChatInitial extends ChatState {
-  const ChatInitial({required super.language, required super.messages});
+  const ChatInitial({required super.messages});
 
-  ChatInitial copyWith({List<Message>? messages, Language? language}) =>
-      ChatInitial(
-        messages: messages ?? this.messages,
-        language: language ?? this.language,
-      );
+  ChatInitial copyWith({List<Message>? messages}) =>
+      ChatInitial(messages: messages ?? this.messages);
 
   @override
   String toString() {
     if (kDebugMode) {
-      return 'ChatInitial('
-          'messages: $messages, '
-          'language: $language,'
-          ')';
+      return 'ChatInitial(messages: $messages)';
     } else {
       return super.toString();
     }
@@ -54,21 +43,15 @@ final class ChatInitial extends ChatState {
 }
 
 final class LoadingHomeState extends ChatState {
-  const LoadingHomeState({required super.messages, required super.language});
+  const LoadingHomeState({required super.messages});
 
-  LoadingHomeState copyWith({List<Message>? messages, Language? language}) =>
-      LoadingHomeState(
-        messages: messages ?? this.messages,
-        language: language ?? this.language,
-      );
+  LoadingHomeState copyWith({List<Message>? messages}) =>
+      LoadingHomeState(messages: messages ?? this.messages);
 
   @override
   String toString() {
     if (kDebugMode) {
-      return 'LoadingHomeState('
-          'messages: $messages, '
-          'language: $language,'
-          ')';
+      return 'LoadingHomeState(messages: $messages)';
     } else {
       return super.toString();
     }
@@ -76,23 +59,15 @@ final class LoadingHomeState extends ChatState {
 }
 
 final class ChatError extends ChatState {
-  const ChatError({
-    required this.errorMessage,
-    required super.language,
-    required super.messages,
-  });
+  const ChatError({required this.errorMessage, required super.messages});
 
   final String errorMessage;
 
-  ChatError copyWith({
-    String? errorMessage,
-    List<Message>? messages,
-    Language? language,
-  }) => ChatError(
-    errorMessage: errorMessage ?? this.errorMessage,
-    messages: messages ?? this.messages,
-    language: language ?? this.language,
-  );
+  ChatError copyWith({String? errorMessage, List<Message>? messages}) =>
+      ChatError(
+        errorMessage: errorMessage ?? this.errorMessage,
+        messages: messages ?? this.messages,
+      );
 
   @override
   bool operator ==(Object other) {
@@ -100,22 +75,16 @@ final class ChatError extends ChatState {
 
     return other is ChatError &&
         other.errorMessage == errorMessage &&
-        other.language == language &&
         other.messages == messages;
   }
 
   @override
-  int get hashCode =>
-      errorMessage.hashCode ^ language.hashCode ^ messages.hashCode;
+  int get hashCode => errorMessage.hashCode ^ messages.hashCode;
 
   @override
   String toString() {
     if (kDebugMode) {
-      return 'ChatError('
-          'errorMessage: $errorMessage, '
-          'messages: $messages, '
-          'language: $language,'
-          ')';
+      return 'ChatError(errorMessage: $errorMessage, messages: $messages)';
     } else {
       return super.toString();
     }
@@ -123,32 +92,25 @@ final class ChatError extends ChatState {
 }
 
 final class AiMessageUpdated extends ChatState {
-  const AiMessageUpdated({required super.messages, required super.language});
+  const AiMessageUpdated({required super.messages});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is AiMessageUpdated &&
           runtimeType == other.runtimeType &&
-          language == other.language &&
           messages == other.messages;
 
   @override
-  int get hashCode => Object.hash(language, messages);
+  int get hashCode => messages.hashCode;
 
-  AiMessageUpdated copyWith({List<Message>? messages, Language? language}) =>
-      AiMessageUpdated(
-        messages: messages ?? this.messages,
-        language: language ?? this.language,
-      );
+  AiMessageUpdated copyWith({List<Message>? messages}) =>
+      AiMessageUpdated(messages: messages ?? this.messages);
 
   @override
   String toString() {
     if (kDebugMode) {
-      return 'AiMessageUpdated('
-          'messages: $messages, '
-          'language: $language,'
-          ')';
+      return 'AiMessageUpdated(messages: $messages)';
     } else {
       return super.toString();
     }
@@ -156,21 +118,15 @@ final class AiMessageUpdated extends ChatState {
 }
 
 final class SentMessageState extends ChatState {
-  const SentMessageState({required super.messages, required super.language});
+  const SentMessageState({required super.messages});
 
-  SentMessageState copyWith({List<Message>? messages, Language? language}) =>
-      SentMessageState(
-        messages: messages ?? this.messages,
-        language: language ?? this.language,
-      );
+  SentMessageState copyWith({List<Message>? messages}) =>
+      SentMessageState(messages: messages ?? this.messages);
 
   @override
   String toString() {
     if (kDebugMode) {
-      return 'SentMessageState('
-          'messages: $messages, '
-          'language: $language,'
-          ')';
+      return 'SentMessageState(messages: $messages)';
     } else {
       return super.toString();
     }
@@ -178,21 +134,15 @@ final class SentMessageState extends ChatState {
 }
 
 final class FeedbackState extends ChatState {
-  const FeedbackState({required super.messages, required super.language});
+  const FeedbackState({required super.messages});
 
-  FeedbackState copyWith({List<Message>? messages, Language? language}) =>
-      FeedbackState(
-        messages: messages ?? this.messages,
-        language: language ?? this.language,
-      );
+  FeedbackState copyWith({List<Message>? messages}) =>
+      FeedbackState(messages: messages ?? this.messages);
 
   @override
   String toString() {
     if (kDebugMode) {
-      return 'FeedbackState('
-          'messages: $messages, '
-          'language: $language,'
-          ')';
+      return 'FeedbackState(messages: $messages)';
     } else {
       return super.toString();
     }
@@ -200,21 +150,15 @@ final class FeedbackState extends ChatState {
 }
 
 final class FeedbackSent extends ChatState {
-  const FeedbackSent({required super.messages, required super.language});
+  const FeedbackSent({required super.messages});
 
-  FeedbackSent copyWith({List<Message>? messages, Language? language}) =>
-      FeedbackSent(
-        messages: messages ?? this.messages,
-        language: language ?? this.language,
-      );
+  FeedbackSent copyWith({List<Message>? messages}) =>
+      FeedbackSent(messages: messages ?? this.messages);
 
   @override
   String toString() {
     if (kDebugMode) {
-      return 'FeedbackSent('
-          'messages: $messages, '
-          'language: $language,'
-          ')';
+      return 'FeedbackSent(messages: $messages)';
     } else {
       return super.toString();
     }
@@ -224,7 +168,6 @@ final class FeedbackSent extends ChatState {
 final class ShareError extends ChatState {
   const ShareError({
     required this.errorMessage,
-    required super.language,
     required super.messages,
     required this.timestamp,
   });
@@ -235,13 +178,11 @@ final class ShareError extends ChatState {
   ShareError copyWith({
     String? errorMessage,
     List<Message>? messages,
-    Language? language,
     DateTime? timestamp,
   }) {
     return ShareError(
       errorMessage: errorMessage ?? this.errorMessage,
       messages: messages ?? this.messages,
-      language: language ?? this.language,
       timestamp: timestamp ?? this.timestamp,
     );
   }
@@ -252,17 +193,13 @@ final class ShareError extends ChatState {
 
     return other is ShareError &&
         other.errorMessage == errorMessage &&
-        other.language == language &&
         other.messages == messages &&
         other.timestamp == timestamp;
   }
 
   @override
   int get hashCode =>
-      errorMessage.hashCode ^
-      language.hashCode ^
-      messages.hashCode ^
-      timestamp.hashCode;
+      errorMessage.hashCode ^ messages.hashCode ^ timestamp.hashCode;
 
   @override
   String toString() {
@@ -270,8 +207,7 @@ final class ShareError extends ChatState {
       return 'ShareError('
           'errorMessage: $errorMessage, '
           'messages: $messages, '
-          'language: $language,'
-          'timestamp: $timestamp,'
+          'timestamp: $timestamp'
           ')';
     } else {
       return super.toString();

@@ -104,97 +104,104 @@ class _SupportPageState extends State<SupportPage> {
             }
           },
           builder: (BuildContext context, SupportState state) {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(
-                16.0,
-                kToolbarHeight * 1.5,
-                16.0,
-                16.0,
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Text(translate('support_page.description')),
-                    const SizedBox(height: 8),
-                    SelectableText(
-                      translate(
-                        'support_page.email_direct',
-                        args: <String, Object?>{
-                          'email': constants.supportEmail,
+            return SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Text(translate('support_page.description')),
+                      const SizedBox(height: 8),
+                      SelectableText(
+                        translate(
+                          'support_page.email_direct',
+                          args: <String, Object?>{
+                            'email': constants.supportEmail,
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        translate('support_page.privacy_notice'),
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: 24),
+                      TextFormField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          labelText: translate('support_page.full_name'),
+                          hintText: translate('support_page.full_name_hint'),
+                        ),
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return translate(
+                              'support_page.fill_out_all_fields',
+                            );
+                          }
+                          return null;
                         },
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      translate('support_page.privacy_notice'),
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    const SizedBox(height: 24),
-                    TextFormField(
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                        labelText: translate('support_page.full_name'),
-                        hintText: translate('support_page.full_name_hint'),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          labelText: translate('support_page.email_address'),
+                          hintText: translate(
+                            'support_page.email_address_hint',
+                          ),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return translate(
+                              'support_page.fill_out_all_fields',
+                            );
+                          }
+                          return null;
+                        },
                       ),
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return translate('support_page.fill_out_all_fields');
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        labelText: translate('support_page.email_address'),
-                        hintText: translate('support_page.email_address_hint'),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _messageController,
+                        decoration: InputDecoration(
+                          labelText: translate('support_page.message'),
+                          hintText: translate('support_page.message_hint'),
+                        ),
+                        maxLines: 5,
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return translate(
+                              'support_page.fill_out_all_fields',
+                            );
+                          }
+                          return null;
+                        },
                       ),
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return translate('support_page.fill_out_all_fields');
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _messageController,
-                      decoration: InputDecoration(
-                        labelText: translate('support_page.message'),
-                        hintText: translate('support_page.message_hint'),
+                      const SizedBox(height: 24),
+                      ElevatedButton(
+                        onPressed:
+                            (state is SupportLoading || !_isFormPopulated)
+                            ? null
+                            : () {
+                                if (_formKey.currentState?.validate() ??
+                                    false) {
+                                  context.read<SupportBloc>().add(
+                                    SendSupportEmail(
+                                      name: _nameController.text,
+                                      email: _emailController.text,
+                                      message: _messageController.text,
+                                    ),
+                                  );
+                                }
+                              },
+                        child: state is SupportLoading
+                            ? const CircularProgressIndicator()
+                            : Text(translate('support_page.send')),
                       ),
-                      maxLines: 5,
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return translate('support_page.fill_out_all_fields');
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: (state is SupportLoading || !_isFormPopulated)
-                          ? null
-                          : () {
-                              if (_formKey.currentState?.validate() ?? false) {
-                                context.read<SupportBloc>().add(
-                                  SendSupportEmail(
-                                    name: _nameController.text,
-                                    email: _emailController.text,
-                                    message: _messageController.text,
-                                  ),
-                                );
-                              }
-                            },
-                      child: state is SupportLoading
-                          ? const CircularProgressIndicator()
-                          : Text(translate('support_page.send')),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             );

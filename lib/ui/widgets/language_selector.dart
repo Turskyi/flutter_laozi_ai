@@ -33,6 +33,7 @@ class LanguageSelector extends StatelessWidget {
         .toList();
     final Resources resources = Resources.of(context);
     final Dimens dimens = resources.dimens;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return DropdownButton<Language>(
       padding: EdgeInsets.only(left: dimens.leftPadding),
@@ -40,7 +41,7 @@ class LanguageSelector extends StatelessWidget {
       value: currentLanguage,
 
       // The icon of the dropdown is the flag of the current language.
-      icon: const Icon(Icons.arrow_drop_down_outlined, color: Colors.white),
+      icon: Icon(Icons.arrow_drop_down_outlined, color: colorScheme.onPrimary),
       selectedItemBuilder: (BuildContext context) {
         final List<Center> languageSelectorItems = Language.values.map((
           Language language,
@@ -60,7 +61,7 @@ class LanguageSelector extends StatelessWidget {
             : languageSelectorItems.reversed.toList();
       },
       underline: const SizedBox(),
-      dropdownColor: Theme.of(context).colorScheme.primary,
+      dropdownColor: colorScheme.primary,
       borderRadius: BorderRadius.circular(dimens.borderRadius),
       // The items of the dropdown are the supported languages.
       items: currentLanguage.isEnglish
