@@ -140,9 +140,7 @@ class _SupportPageState extends State<SupportPage> {
                       ),
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return translate(
-                            'support_page.fill_out_all_fields',
-                          );
+                          return translate('support_page.fill_out_all_fields');
                         }
                         return null;
                       },
@@ -152,16 +150,12 @@ class _SupportPageState extends State<SupportPage> {
                       controller: _emailController,
                       decoration: InputDecoration(
                         labelText: translate('support_page.email_address'),
-                        hintText: translate(
-                          'support_page.email_address_hint',
-                        ),
+                        hintText: translate('support_page.email_address_hint'),
                       ),
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return translate(
-                            'support_page.fill_out_all_fields',
-                          );
+                          return translate('support_page.fill_out_all_fields');
                         }
                         return null;
                       },
@@ -176,21 +170,17 @@ class _SupportPageState extends State<SupportPage> {
                       maxLines: 5,
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return translate(
-                            'support_page.fill_out_all_fields',
-                          );
+                          return translate('support_page.fill_out_all_fields');
                         }
                         return null;
                       },
                     ),
                     const SizedBox(height: 24),
                     ElevatedButton(
-                      onPressed:
-                          (state is SupportLoading || !_isFormPopulated)
+                      onPressed: (state is SupportLoading || !_isFormPopulated)
                           ? null
                           : () {
-                              if (_formKey.currentState?.validate() ??
-                                  false) {
+                              if (_formKey.currentState?.validate() ?? false) {
                                 context.read<SupportBloc>().add(
                                   SendSupportEmail(
                                     name: _nameController.text,
