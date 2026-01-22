@@ -2,11 +2,10 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laozi_ai/application_services/blocs/settings_bloc.dart';
-import 'package:laozi_ai/domain_services/settings_repository.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockSettingsRepository extends Mock implements SettingsRepository {}
+import 'mock_settings_repository.dart';
 
 void main() {
   late MockSettingsRepository mockSettingsRepository;

@@ -65,7 +65,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i1032.SettingsBloc(gh<_i301.SettingsRepository>()),
     );
     gh.factory<_i841.ChatBloc>(
-      () => _i841.ChatBloc(gh<_i732.ChatRepository>()),
+      () => _i841.ChatBloc(
+        gh<_i732.ChatRepository>(),
+        gh<_i301.SettingsRepository>(),
+      ),
     );
     return this;
   }

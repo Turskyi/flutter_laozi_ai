@@ -231,11 +231,7 @@ class _AIChatBoxState extends State<AIChatBox> {
                                   fillColor: colorScheme.surface,
                                   filled: true,
                                 ),
-                                onSubmitted: (String value) =>
-                                    _submitChatMessage(
-                                      value,
-                                      settingsState.language,
-                                    ),
+                                onSubmitted: _submitChatMessage,
                               ),
                             ),
                             ValueListenableBuilder<TextEditingValue>(
@@ -252,9 +248,7 @@ class _AIChatBoxState extends State<AIChatBox> {
                                     return IconButton(
                                       icon: iconWidget ?? const SizedBox(),
                                       onPressed: value.text.isNotEmpty
-                                          ? () => _handleSendMessage(
-                                              settingsState.language,
-                                            )
+                                          ? _handleSendMessage
                                           : null,
                                     );
                                   },
@@ -295,12 +289,9 @@ class _AIChatBoxState extends State<AIChatBox> {
     }
   }
 
-  void _handleSendMessage(Language language) {
+  void _handleSendMessage() {
     context.read<ChatBloc>().add(
-      SendMessageEvent(
-        message: _textEditingController.text,
-        language: language,
-      ),
+      SendMessageEvent(message: _textEditingController.text),
     );
     _textEditingController.clear();
   }
@@ -324,9 +315,9 @@ class _AIChatBoxState extends State<AIChatBox> {
     }
   }
 
-  void _submitChatMessage(String value, Language language) {
+  void _submitChatMessage(String value) {
     if (value.isNotEmpty) {
-      _handleSendMessage(language);
+      _handleSendMessage();
     }
   }
 

@@ -10,16 +10,13 @@ final class LoadHomeEvent extends ChatEvent {
 }
 
 final class SendMessageEvent extends ChatEvent {
-  const SendMessageEvent({required this.message, required this.language});
+  const SendMessageEvent({required this.message});
 
   final String message;
-  final Language language;
 }
 
 final class RetrySendMessageEvent extends ChatEvent {
-  const RetrySendMessageEvent({required this.language});
-
-  final Language language;
+  const RetrySendMessageEvent();
 }
 
 final class UpdateAiMessageEvent extends ChatEvent {

@@ -43,6 +43,7 @@ class LaoziAiApp extends StatelessWidget {
         brightness: brightness,
         primary: const Color(0xFF6750A4),
         onPrimary: const Color(0xFFFFFFFF),
+        secondaryContainer: const Color(0xFFE8DEF8),
         onSecondaryContainer: const Color(0xFF1D192B),
         surface: isDark ? const Color(0xFF1C1B1F) : const Color(0xFFFEF7FF),
         onSurface: isDark ? const Color(0xFFE6E1E5) : const Color(0xFF1C1B1F),

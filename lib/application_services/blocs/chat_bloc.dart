@@ -11,6 +11,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:laozi_ai/domain_services/chat_repository.dart';
+import 'package:laozi_ai/domain_services/settings_repository.dart';
 import 'package:laozi_ai/entities/chat.dart';
 import 'package:laozi_ai/entities/enums/feedback_rating.dart';
 import 'package:laozi_ai/entities/enums/feedback_type.dart';
@@ -28,7 +29,7 @@ part 'chat_state.dart';
 
 @injectable
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  ChatBloc(this._chatRepository)
+  ChatBloc(this._chatRepository, this._settingsRepository)
     : super(const ChatInitial(messages: <Message>[])) {
     on<LoadHomeEvent>(_onLoadHomeEvent);
 
@@ -54,6 +55,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   final ChatRepository _chatRepository;
+  final SettingsRepository _settingsRepository;
 
   FutureOr<void> _onClearConversationEvent(
     ClearConversationEvent _,
@@ -165,8 +167,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ) async {
     final List<Message> currentMessages = List<Message>.from(state.messages);
     emit(SentMessageState(messages: currentMessages));
+    final Language language = _settingsRepository.getLanguage();
     _chatRepository
-        .sendChat(Chat(messages: currentMessages, language: event.language))
+        .sendChat(Chat(messages: currentMessages, language: language))
         .listen(
           (String line) => add(UpdateAiMessageEvent(line)),
           onError: (Object error, StackTrace stackTrace) {
@@ -274,8 +277,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     // Emit a new state with the updated list of messages.
     emit(SentMessageState(messages: updatedMessages));
     try {
+      final Language language = _settingsRepository.getLanguage();
       _chatRepository
-          .sendChat(Chat(messages: updatedMessages, language: event.language))
+          .sendChat(Chat(messages: updatedMessages, language: language))
           .listen(
             (String line) => add(UpdateAiMessageEvent(line)),
             onError: (Object error, StackTrace stackTrace) {

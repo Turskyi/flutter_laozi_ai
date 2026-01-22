@@ -106,9 +106,7 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
                       trailing: IconButton(
                         icon: Icon(Icons.refresh, color: colorScheme.onError),
                         onPressed: () => context.read<ChatBloc>().add(
-                          RetrySendMessageEvent(
-                            language: settingsState.language,
-                          ),
+                          const RetrySendMessageEvent(),
                         ),
                       ),
                     ),
