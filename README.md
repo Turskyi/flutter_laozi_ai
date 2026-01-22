@@ -544,7 +544,7 @@ or reach out to me directly at
 
 ## [[Video] Daoism • Laozi AI: App Demo & Development with Google Gemini](https://www.youtube.com/watch?v=wyVk3TPaE7c)
 
-[![Watch the video](https://img.youtube.com/vi/wyVk3TPaE7c/maxresdefault.jpg)](https://www.youtube.com/watch?v=wyVk3TPaE7c)
+[![Watch the video](https://img.youtube.com/vi/wyVk3TPaE7c/hqdefault.jpg)](https://www.youtube.com/watch?v=wyVk3TPaE7c)
 
 **Developer:** Dmytro Turskyi ([turskyi.com](https://turskyi.com))  
 _Single developer and maintainer of this project._
