@@ -7,11 +7,14 @@ class SettingsState {
   final Language language;
   final ThemeMode themeMode;
 
-  SettingsState copyWith({Language? language, ThemeMode? themeMode}) =>
-      SettingsState(
-        language: language ?? this.language,
-        themeMode: themeMode ?? this.themeMode,
-      );
+  SettingsState copyWith({Language? language, ThemeMode? themeMode}) {
+    return SettingsState(
+      language: language ?? this.language,
+      themeMode: themeMode ?? this.themeMode,
+    );
+  }
+
+  bool get isDark => themeMode == ThemeMode.dark;
 
   @override
   bool operator ==(Object other) =>

@@ -28,6 +28,9 @@ class _CustomFeedbackFormState extends State<FeedbackForm> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextStyle textStyle = TextStyle(color: colorScheme.onSurface);
+
     return Column(
       children: <Widget>[
         Expanded(
@@ -45,16 +48,18 @@ class _CustomFeedbackFormState extends State<FeedbackForm> {
                   0,
                 ),
                 children: <Widget>[
-                  Text(translate('feedback.whatKind')),
+                  Text(translate('feedback.whatKind'), style: textStyle),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      const Padding(
-                        padding: EdgeInsets.only(right: 8),
-                        child: Text('*'),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Text('*', style: textStyle),
                       ),
                       Flexible(
                         child: DropdownButton<FeedbackType>(
+                          dropdownColor: colorScheme.surface,
+                          style: textStyle,
                           value: _customFeedback.feedbackType,
                           items: FeedbackType.values
                               .map(
@@ -75,13 +80,22 @@ class _CustomFeedbackFormState extends State<FeedbackForm> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  Text(translate('feedback.whatIsYourFeedback')),
+                  Text(
+                    translate('feedback.whatIsYourFeedback'),
+                    style: textStyle,
+                  ),
                   TextField(
+                    style: textStyle,
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: colorScheme.onSurface),
+                      ),
+                    ),
                     onChanged: (String newFeedback) => _customFeedback =
                         _customFeedback.copyWith(feedbackText: newFeedback),
                   ),
                   const SizedBox(height: 16),
-                  Text(translate('feedback.howDoesThisFeel')),
+                  Text(translate('feedback.howDoesThisFeel'), style: textStyle),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: FeedbackRating.values.map(_ratingToIcon).toList(),
@@ -122,7 +136,7 @@ class _CustomFeedbackFormState extends State<FeedbackForm> {
         break;
     }
     return IconButton(
-      color: isSelected ? colorScheme.secondary : colorScheme.outline,
+      color: isSelected ? colorScheme.primary : colorScheme.outline,
       onPressed: () => setState(
         () => _customFeedback = _customFeedback.copyWith(rating: rating),
       ),
