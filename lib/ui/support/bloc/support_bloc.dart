@@ -12,7 +12,7 @@ part 'support_state.dart';
 
 class SupportBloc extends Bloc<SupportEvent, SupportState> {
   SupportBloc(this._emailRepository, SettingsRepository _settingsRepository)
-    : super(SupportInitial(language: _settingsRepository.getLanguage())) {
+    : super(const SupportInitial()) {
     on<SendSupportEmail>(_onSendSupportEmail);
   }
 
@@ -22,7 +22,7 @@ class SupportBloc extends Bloc<SupportEvent, SupportState> {
     SendSupportEmail event,
     Emitter<SupportState> emit,
   ) async {
-    emit(SupportLoading(language: state.language));
+    emit(const SupportLoading());
     try {
       final bool isSent = await _emailRepository.sendSupportEmail(
         name: event.name,
@@ -30,17 +30,13 @@ class SupportBloc extends Bloc<SupportEvent, SupportState> {
         message: event.message,
       );
       if (isSent) {
-        emit(SupportSuccess(language: state.language));
+        emit(const SupportSuccess());
       } else {
-        emit(SupportInitial(language: state.language));
+        emit(const SupportInitial());
       }
-    } catch (e) {
-      emit(
-        SupportFailure(
-          language: state.language,
-          error: translate('support_page.failed_to_send_email'),
-        ),
-      );
+    } catch (error, stackTrace) {
+      debugPrint('Error sending email: $error.\n Stack trace: $stackTrace');
+      emit(SupportFailure(translate('support_page.failed_to_send_email')));
     }
   }
 }
