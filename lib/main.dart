@@ -5,22 +5,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
-import 'package:laozi_ai/application_services/blocs/settings_bloc.dart';
+import 'package:laozi_ai/application_services/blocs/chat/chat_bloc.dart';
+import 'package:laozi_ai/application_services/blocs/settings/settings_bloc.dart';
+import 'package:laozi_ai/application_services/blocs/support/support_bloc.dart';
 import 'package:laozi_ai/di/injector.dart' as di;
 import 'package:laozi_ai/domain_services/settings_repository.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/localization/localization_delelegate_getter.dart'
     as locale;
 import 'package:laozi_ai/router/app_route.dart';
-import 'package:laozi_ai/ui/about/about_page.dart';
-import 'package:laozi_ai/ui/chat/ai_chatbox.dart';
-import 'package:laozi_ai/ui/faq/faq_page.dart';
+import 'package:laozi_ai/router/app_router.dart' as router;
 import 'package:laozi_ai/ui/feedback/feedback_form.dart';
 import 'package:laozi_ai/ui/laozi_ai_app.dart';
-import 'package:laozi_ai/ui/privacy/privacy_page.dart';
-import 'package:laozi_ai/ui/support/support_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// The [main] is the ultimate detail — the lowest-level policy.
 /// It is the initial entry point of the system.
@@ -43,12 +39,8 @@ void main() async {
   // Initialize dependency injection and wait for `SharedPreferences`.
   final GetIt dependencies = await di.injectDependencies();
 
-  // No need to use `getAsync<SharedPreferences>()` because `injectDependencies`
-  // already awaited the `SharedPreferences` initialization due to the
-  // `@preResolve` annotation in `SharedPreferencesModule`.
-  final SharedPreferences preferences = dependencies.get<SharedPreferences>();
-
   final ChatBloc chatBloc = dependencies.get<ChatBloc>();
+  final SupportBloc supportBloc = dependencies.get<SupportBloc>();
   final SettingsBloc settingsBloc = dependencies.get<SettingsBloc>();
 
   final SettingsRepository settingsRepository = dependencies
@@ -78,9 +70,9 @@ void main() async {
     );
   }
 
-  final Map<String, WidgetBuilder> routeMap = _buildAppRoutes(
+  final Map<String, WidgetBuilder> routeMap = router.buildAppRoutes(
     chatBloc: chatBloc,
-    preferences: preferences,
+    supportBloc: supportBloc,
   );
 
   runApp(
@@ -126,26 +118,6 @@ bool _shouldRebuildTheme(SettingsState previous, SettingsState current) {
   return previous.themeMode != current.themeMode;
 }
 
-Map<String, WidgetBuilder> _buildAppRoutes({
-  required ChatBloc chatBloc,
-  required SharedPreferences preferences,
-}) {
-  return <String, WidgetBuilder>{
-    AppRoute.home.path: (BuildContext _) => BlocProvider<ChatBloc>(
-      create: (BuildContext _) {
-        return chatBloc..add(const LoadHomeEvent());
-      },
-      child: const AIChatBox(),
-    ),
-    AppRoute.about.path: (BuildContext _) => const AboutPage(),
-    AppRoute.faq.path: (BuildContext _) => const FaqPage(),
-    AppRoute.privacy.path: (BuildContext _) => const PrivacyPage(),
-    AppRoute.support.path: (BuildContext _) {
-      return SupportPage(preferences: preferences);
-    },
-  };
-}
-
 void _applyInitialLocale({
   required Language initialLanguage,
   required LocalizationDelegate localizationDelegate,
@@ -158,7 +130,6 @@ void _applyInitialLocale({
   localizationDelegate.onLocaleChanged?.call(savedLocale);
 }
 
-/// Retrieves the host name (e.g., "localhost" or "uk.daoizm.online").
 Future<Language> _resolveInitialLanguageFromUrl({
   required Language initialLanguage,
   required SettingsRepository settingsRepository,

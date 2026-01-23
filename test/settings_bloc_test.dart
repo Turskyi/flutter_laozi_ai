@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laozi_ai/application_services/blocs/settings_bloc.dart';
+import 'package:laozi_ai/application_services/blocs/settings/settings_bloc.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:mocktail/mocktail.dart';
 

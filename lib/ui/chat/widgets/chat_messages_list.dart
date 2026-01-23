@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
-import 'package:laozi_ai/application_services/blocs/settings_bloc.dart';
+import 'package:laozi_ai/application_services/blocs/chat/chat_bloc.dart';
+import 'package:laozi_ai/application_services/blocs/settings/settings_bloc.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/ui/chat/widgets/chat_message.dart';
 

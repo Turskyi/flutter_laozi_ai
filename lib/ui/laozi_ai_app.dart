@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:laozi_ai/application_services/blocs/settings_bloc.dart';
+import 'package:laozi_ai/application_services/blocs/settings/settings_bloc.dart';
 import 'package:laozi_ai/env/env.dart';
 import 'package:laozi_ai/res/resources.dart';
 import 'package:laozi_ai/router/app_route.dart';

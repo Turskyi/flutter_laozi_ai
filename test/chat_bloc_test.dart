@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
+import 'package:laozi_ai/application_services/blocs/chat/chat_bloc.dart';
 import 'package:laozi_ai/domain_services/chat_repository.dart';
 import 'package:mocktail/mocktail.dart';
 

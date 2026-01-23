@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
+import 'package:laozi_ai/application_services/blocs/chat/chat_bloc.dart';
 import 'package:laozi_ai/entities/message.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 
