@@ -16,9 +16,3 @@ class SendSupportEmail extends SupportEvent {
   final String email;
   final String message;
 }
-
-class ChangeSupportLanguageEvent extends SupportEvent {
-  const ChangeSupportLanguageEvent(this.language);
-
-  final Language language;
-}

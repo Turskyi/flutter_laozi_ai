@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:laozi_ai/application_services/blocs/settings_bloc.dart';
 import 'package:laozi_ai/application_services/repositories/email_repository_impl.dart';
 import 'package:laozi_ai/application_services/repositories/settings_repository_impl.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
@@ -52,16 +53,16 @@ class _SupportPageState extends State<SupportPage> {
           leading: kIsWeb ? const HomeAppBarButton() : null,
           title: translate('support_page.title'),
           actions: <Widget>[
-            BlocBuilder<SupportBloc, SupportState>(
-              builder: (BuildContext context, SupportState state) {
+            BlocBuilder<SettingsBloc, SettingsState>(
+              builder: (BuildContext context, SettingsState state) {
                 return LanguageSelector(
                   currentLanguage: state.language,
                   onLanguageSelected: (Language newLanguage) {
                     // Dispatch event to the presenter to handle language
                     // change logic and update its state (which might also
                     // update this screen's language).
-                    context.read<SupportBloc>().add(
-                      ChangeSupportLanguageEvent(newLanguage),
+                    context.read<SettingsBloc>().add(
+                      ChangeLanguageSettingsEvent(newLanguage),
                     );
                     // Force a rebuild of the current screen's state
                     // (`_SupportPageState`).

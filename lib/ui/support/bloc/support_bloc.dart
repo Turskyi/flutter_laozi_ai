@@ -11,14 +11,12 @@ part 'support_event.dart';
 part 'support_state.dart';
 
 class SupportBloc extends Bloc<SupportEvent, SupportState> {
-  SupportBloc(this._emailRepository, this._settingsRepository)
+  SupportBloc(this._emailRepository, SettingsRepository _settingsRepository)
     : super(SupportInitial(language: _settingsRepository.getLanguage())) {
     on<SendSupportEmail>(_onSendSupportEmail);
-    on<ChangeSupportLanguageEvent>(_onChangeLanguageEvent);
   }
 
   final EmailRepositoryImpl _emailRepository;
-  final SettingsRepository _settingsRepository;
 
   Future<void> _onSendSupportEmail(
     SendSupportEmail event,
@@ -43,37 +41,6 @@ class SupportBloc extends Bloc<SupportEvent, SupportState> {
           error: translate('support_page.failed_to_send_email'),
         ),
       );
-    }
-  }
-
-  FutureOr<void> _onChangeLanguageEvent(
-    ChangeSupportLanguageEvent event,
-    Emitter<SupportState> emit,
-  ) async {
-    final Language language = event.language;
-    if (language != state.language) {
-      final bool isSaved = await _settingsRepository.saveLanguageIsoCode(
-        language.isoLanguageCode,
-      );
-      if (isSaved) {
-        emit(switch (state) {
-          SupportInitial() => (state as SupportInitial).copyWith(
-            language: language,
-          ),
-          SupportFailure() => (state as SupportFailure).copyWith(
-            language: language,
-          ),
-          SupportLoading() => (state as SupportLoading).copyWith(
-            language: language,
-          ),
-          SupportSuccess() => (state as SupportSuccess).copyWith(
-            language: language,
-          ),
-        });
-      } else {
-        // If saving fails, revert to previous state.
-        emit(SupportInitial(language: state.language));
-      }
     }
   }
 }
