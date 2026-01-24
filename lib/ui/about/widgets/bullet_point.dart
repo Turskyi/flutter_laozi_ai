@@ -7,15 +7,17 @@ class BulletPoint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 6.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text('• ', style: TextStyle(fontSize: 20)),
-          Expanded(
-            child: Text(text, style: Theme.of(context).textTheme.bodyLarge),
+          Text(
+            '• ',
+            style: TextStyle(fontSize: textTheme.headlineSmall?.fontSize),
           ),
+          Expanded(child: Text(text, style: textTheme.bodyLarge)),
         ],
       ),
     );

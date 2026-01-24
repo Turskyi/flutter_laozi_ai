@@ -3,17 +3,21 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:injectable/injectable.dart';
+import 'package:laozi_ai/domain_services/email_repository.dart';
 import 'package:laozi_ai/entities/models/exceptions/email_launch_exception.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:resend/resend.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class EmailRepositoryImpl {
+@Injectable(as: EmailRepository)
+class EmailRepositoryImpl implements EmailRepository {
   EmailRepositoryImpl(this._resend);
 
   final Resend _resend;
 
+  @override
   Future<bool> sendSupportEmail({
     required String name,
     required String userEmail,

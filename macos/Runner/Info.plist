@@ -29,7 +29,7 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
     <key>CFBundleDisplayName</key>
-    <string>Daoism - Laozi AI</string>
+    <string>Daoism • Laozi AI</string>
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.lifestyle</string>
     <key>ITSAppUsesNonExemptEncryption</key>

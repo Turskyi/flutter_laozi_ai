@@ -1,8 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/ui/faq/faq_item.dart';
+import 'package:laozi_ai/ui/widgets/app_bar/wave_app_bar.dart';
+import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FaqPage extends StatelessWidget {
@@ -11,9 +14,18 @@ class FaqPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(translate('faq_page.title'))),
+      extendBodyBehindAppBar: true,
+      appBar: WaveAppBar(
+        leading: kIsWeb ? const HomeAppBarButton() : null,
+        title: translate('faq_page.title'),
+      ),
       body: ListView(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.fromLTRB(
+          16.0,
+          kToolbarHeight + MediaQuery.of(context).padding.top,
+          16.0,
+          16.0,
+        ),
         children: <Widget>[
           const FaqItem(
             titleKey: 'faq_page.why_laozi_ai_title',
@@ -46,6 +58,13 @@ class FaqPage extends StatelessWidget {
               'faq_page.short_answers_p1',
               'faq_page.short_answers_p2',
               'faq_page.short_answers_p3',
+            ],
+          ),
+          const FaqItem(
+            titleKey: 'faq_page.clarify_rephrase_title',
+            paragraphKeys: <String>[
+              'faq_page.clarify_rephrase_p1',
+              'faq_page.clarify_rephrase_p2',
             ],
           ),
           const FaqItem(
@@ -82,7 +101,8 @@ class FaqPage extends StatelessWidget {
                   final String text = translate('faq_page.slow_responses_p2');
                   // We expect the text to contain the email address.
                   // For simplicity, we'll split by the email or just find it.
-                  // Since the text is known: "... email to dmytro@turskyi.com."
+                  // Since the text is known:
+                  // "... email to dmytro@turskyi.com."
                   const String email = constants.kDeveloperEmail;
                   final List<String> parts = text.split(email);
                   final ThemeData theme = Theme.of(context);

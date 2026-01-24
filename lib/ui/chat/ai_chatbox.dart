@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:laozi_ai/application_services/blocs/chat_bloc.dart';
+import 'package:laozi_ai/application_services/blocs/chat/chat_bloc.dart';
+import 'package:laozi_ai/application_services/blocs/settings/settings_bloc.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/router/app_route.dart';
-import 'package:laozi_ai/ui/chat/app_bar/wave_app_bar.dart';
-import 'package:laozi_ai/ui/chat/chat_messages_list.dart';
+import 'package:laozi_ai/ui/chat/widgets/chat_messages_list.dart';
+import 'package:laozi_ai/ui/widgets/app_bar/wave_app_bar.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AIChatBox extends StatefulWidget {
@@ -41,7 +42,9 @@ class _AIChatBoxState extends State<AIChatBox> {
           // The returned value in `then` is always `null`.
           .then((Object? _) {
             if (mounted) {
-              context.read<ChatBloc>().add(ChangeLanguageEvent(savedLanguage));
+              context.read<SettingsBloc>().add(
+                ChangeLanguageSettingsEvent(savedLanguage),
+              );
             }
           });
         }
@@ -52,182 +55,213 @@ class _AIChatBoxState extends State<AIChatBox> {
 
   @override
   Widget build(BuildContext _) {
-    return BlocConsumer<ChatBloc, ChatState>(
-      listener: _chatStateListener,
-      builder: (BuildContext context, ChatState state) {
-        final Language currentLanguage = _initialLanguage is Language
-            ? (_initialLanguage as Language)
-            : state.language;
-        final ThemeData themeData = Theme.of(context);
-        return Scaffold(
-          extendBodyBehindAppBar: true,
-          drawer: Drawer(
-            child: ListView(
-              children: <Widget>[
-                DrawerHeader(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(translate('title')),
-                      FutureBuilder<PackageInfo>(
-                        future: _packageInfo,
-                        builder:
-                            (
-                              BuildContext context,
-                              AsyncSnapshot<PackageInfo> snapshot,
-                            ) {
-                              if (snapshot.hasData) {
-                                final PackageInfo? data = snapshot.data;
-                                if (data != null) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(top: 8.0),
-                                    child: Text(
-                                      '${translate('app_version')} '
-                                      '${data.version}',
-                                      textAlign: TextAlign.center,
-                                      style: themeData.textTheme.bodySmall,
-                                    ),
-                                  );
-                                }
-                              }
-                              return const SizedBox.shrink();
-                            },
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      builder: (BuildContext _, SettingsState settingsState) {
+        return BlocConsumer<ChatBloc, ChatState>(
+          listener: _chatStateListener,
+          builder: (BuildContext context, ChatState chatState) {
+            final Language currentLanguage = _initialLanguage is Language
+                ? (_initialLanguage as Language)
+                : settingsState.language;
+            final ThemeData themeData = Theme.of(context);
+            final ColorScheme colorScheme = themeData.colorScheme;
+
+            return Scaffold(
+              extendBodyBehindAppBar: true,
+              drawer: Drawer(
+                child: ListView(
+                  children: <Widget>[
+                    DrawerHeader(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(translate('title')),
+                          FutureBuilder<PackageInfo>(
+                            future: _packageInfo,
+                            builder:
+                                (
+                                  BuildContext context,
+                                  AsyncSnapshot<PackageInfo> snapshot,
+                                ) {
+                                  if (snapshot.hasData) {
+                                    final PackageInfo? data = snapshot.data;
+                                    if (data != null) {
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: 8.0,
+                                        ),
+                                        child: Text(
+                                          '${translate('app_version')} '
+                                          '${data.version}',
+                                          textAlign: TextAlign.center,
+                                          style: themeData.textTheme.bodySmall,
+                                        ),
+                                      );
+                                    }
+                                  }
+                                  return const SizedBox.shrink();
+                                },
+                          ),
+                        ],
                       ),
+                    ),
+                    if (chatState.messages.isNotEmpty) ...<Widget>[
+                      ListTile(
+                        title: Text(translate('chat.startNewConversation')),
+                        onTap: _onDrawerStartNewConversation,
+                      ),
+                      const Divider(),
                     ],
-                  ),
+                    ListTile(
+                      title: Text(translate('about')),
+                      onTap: _openAbout,
+                    ),
+                    ListTile(title: Text(translate('faq')), onTap: _openFaq),
+                    ListTile(
+                      title: Text(translate('privacy')),
+                      onTap: _openPrivacy,
+                    ),
+                    ListTile(
+                      title: Text(translate('support')),
+                      onTap: _openSupport,
+                    ),
+                    const Divider(),
+                    ListTile(
+                      title: Text(translate('report_bug')),
+                      onTap: _onBugReportPressed,
+                    ),
+                    ExpansionTile(
+                      leading: const Icon(Icons.language),
+                      title: Text(translate('language')),
+                      children: Language.values.map((Language language) {
+                        return ListTile(
+                          leading: Text(language.flag),
+                          title: Text(translate(language.key)),
+                          selected: currentLanguage == language,
+                          onTap: () => _onLanguageSelected(language),
+                        );
+                      }).toList(),
+                    ),
+                    SwitchListTile(
+                      secondary: Icon(
+                        settingsState.themeMode == ThemeMode.light
+                            ? Icons.light_mode
+                            : Icons.dark_mode,
+                      ),
+                      title: Text(
+                        settingsState.themeMode == ThemeMode.light
+                            ? translate('theme.light')
+                            : translate('theme.dark'),
+                      ),
+                      value: settingsState.themeMode == ThemeMode.light,
+                      onChanged: (bool value) {
+                        context.read<SettingsBloc>().add(
+                          ChangeThemeModeSettingsEvent(
+                            value ? ThemeMode.light : ThemeMode.dark,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-                if (state.messages.isNotEmpty) ...<Widget>[
-                  ListTile(
-                    title: Text(translate('chat.startNewConversation')),
-                    onTap: _onDrawerStartNewConversation,
-                  ),
-                  const Divider(),
+              ),
+              appBar: WaveAppBar(
+                title: translate('title'),
+                actions: <Widget>[
+                  if (chatState.messages.isNotEmpty) ...<Widget>[
+                    IconButton(
+                      icon: const Icon(Icons.refresh),
+                      onPressed: _onStartNewConversation,
+                      tooltip: translate('chat.startNewConversation'),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.share),
+                      onPressed: _onShareConversationPressed,
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.bug_report_outlined),
+                      onPressed: _onBugReportPressed,
+                    ),
+                  ],
                 ],
-                ListTile(title: Text(translate('about')), onTap: _openAbout),
-                ListTile(title: Text(translate('faq')), onTap: _openFaq),
-                ListTile(
-                  title: Text(translate('privacy')),
-                  onTap: _openPrivacy,
+              ),
+              body: DecoratedBox(
+                decoration: BoxDecoration(
+                  // Build background picture.
+                  image: chatState.messages.isNotEmpty
+                      ? const DecorationImage(
+                          opacity: 0.5,
+                          image: AssetImage(constants.backgroundImagePath),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
                 ),
-                ListTile(
-                  title: Text(translate('support')),
-                  onTap: _openSupport,
-                ),
-                const Divider(),
-                ListTile(
-                  title: Text(translate('report_bug')),
-                  onTap: _onBugReportPressed,
-                ),
-                ExpansionTile(
-                  leading: const Icon(Icons.language),
-                  title: Text(translate('language')),
-                  children: Language.values.map((Language language) {
-                    return ListTile(
-                      leading: Text(language.flag),
-                      title: Text(translate(language.key)),
-                      selected: currentLanguage == language,
-                      onTap: () => _onLanguageSelected(language),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-          ),
-          appBar: WaveAppBar(
-            title: translate('title'),
-            actions: <Widget>[
-              if (state.messages.isNotEmpty) ...<Widget>[
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: _onStartNewConversation,
-                  tooltip: translate('chat.startNewConversation'),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.share),
-                  onPressed: _onShareConversationPressed,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.bug_report_outlined),
-                  onPressed: _onBugReportPressed,
-                ),
-              ],
-            ],
-          ),
-          body: DecoratedBox(
-            decoration: BoxDecoration(
-              // Build background picture.
-              image: state.messages.isNotEmpty
-                  ? const DecorationImage(
-                      opacity: 0.5,
-                      image: AssetImage(constants.backgroundImagePath),
-                      fit: BoxFit.cover,
-                    )
-                  : null,
-            ),
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: state is LoadingHomeState
-                      ? Stack(
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: chatState is LoadingHomeState
+                          ? Stack(
+                              children: <Widget>[
+                                const ChatMessagesList(),
+                                SpinKitFadingCircle(
+                                  color: colorScheme.primary,
+                                  size: 200.0,
+                                ),
+                              ],
+                            )
+                          : const ChatMessagesList(),
+                    ),
+                    SafeArea(
+                      top: false,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 8.0,
+                          right: 8.0,
+                          bottom: 8.0,
+                        ),
+                        child: Row(
                           children: <Widget>[
-                            const ChatMessagesList(),
-                            SpinKitFadingCircle(
-                              color: themeData.colorScheme.primary,
-                              size: 200.0,
+                            Expanded(
+                              child: TextField(
+                                enabled: chatState is! SentMessageState,
+                                controller: _textEditingController,
+                                decoration: InputDecoration(
+                                  hintText: translate('chat.askSomething'),
+                                  border: const OutlineInputBorder(),
+                                  fillColor: colorScheme.surface,
+                                  filled: true,
+                                ),
+                                onSubmitted: _submitChatMessage,
+                              ),
+                            ),
+                            ValueListenableBuilder<TextEditingValue>(
+                              valueListenable: _textEditingController,
+                              child: chatState is SentMessageState
+                                  ? const CircularProgressIndicator()
+                                  : const Icon(Icons.send),
+                              builder:
+                                  (
+                                    BuildContext _,
+                                    TextEditingValue value,
+                                    Widget? iconWidget,
+                                  ) {
+                                    return IconButton(
+                                      icon: iconWidget ?? const SizedBox(),
+                                      onPressed: value.text.isNotEmpty
+                                          ? _handleSendMessage
+                                          : null,
+                                    );
+                                  },
                             ),
                           ],
-                        )
-                      : const ChatMessagesList(),
-                ),
-                SafeArea(
-                  top: false,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8.0,
-                      right: 8.0,
-                      bottom: 8.0,
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: TextField(
-                            enabled: state is! SentMessageState,
-                            controller: _textEditingController,
-                            decoration: InputDecoration(
-                              hintText: translate('chat.askSomething'),
-                              border: const OutlineInputBorder(),
-                              fillColor: Colors.black,
-                              filled: true,
-                            ),
-                            onSubmitted: _submitChatMessage,
-                          ),
                         ),
-                        ValueListenableBuilder<TextEditingValue>(
-                          valueListenable: _textEditingController,
-                          child: state is SentMessageState
-                              ? const CircularProgressIndicator()
-                              : const Icon(Icons.send),
-                          builder:
-                              (
-                                BuildContext _,
-                                TextEditingValue value,
-                                Widget? iconWidget,
-                              ) {
-                                return IconButton(
-                                  icon: iconWidget ?? const SizedBox(),
-                                  onPressed: value.text.isNotEmpty
-                                      ? _handleSendMessage
-                                      : null,
-                                );
-                              },
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );
@@ -256,7 +290,9 @@ class _AIChatBoxState extends State<AIChatBox> {
   }
 
   void _handleSendMessage() {
-    context.read<ChatBloc>().add(SendMessageEvent(_textEditingController.text));
+    context.read<ChatBloc>().add(
+      SendMessageEvent(message: _textEditingController.text),
+    );
     _textEditingController.clear();
   }
 
@@ -333,7 +369,9 @@ class _AIChatBoxState extends State<AIChatBox> {
     .then((Object? _) {
       if (mounted) {
         _initialLanguage = newLanguage;
-        context.read<ChatBloc>().add(ChangeLanguageEvent(newLanguage));
+        context.read<SettingsBloc>().add(
+          ChangeLanguageSettingsEvent(newLanguage),
+        );
       }
     });
   }

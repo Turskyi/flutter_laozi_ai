@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Daoism - Laozi AI Chatbot. Engage with a Laozi-inspired AI for guidance and Daoist wisdom. Built with Flutter & Dart.",
+    "description": "Daoism • Laozi AI Chatbot. Engage with a Laozi-inspired AI for guidance and Daoist wisdom. Built with Flutter & Dart.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

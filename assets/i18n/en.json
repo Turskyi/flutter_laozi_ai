@@ -18,6 +18,10 @@
   "english": "English",
   "ukrainian": "Ukrainian",
   "latvian": "Latvian",
+  "theme": {
+    "light": "Light Theme",
+    "dark": "Dark Theme"
+  },
   "chat": {
     "askSomething": "Ask something about Daoism...",
     "sendMessageToStartChat": "Send a message to start the chat with Laozi AI!",
@@ -108,6 +112,9 @@
     "short_answers_p1": "Sometimes, Laozi AI will give a shorter response or seem to pause before fully addressing your question. This isn’t a mistake - it’s designed to keep the conversation natural and readable, just as a real person might offer a thought, pause, and wait for your reply.",
     "short_answers_p2": "If a response feels cut off or incomplete, simply say ‘please continue’. Laozi AI remembers the context of your conversation and will pick up right where it left off.",
     "short_answers_p3": "For the most authentic experience, try speaking to Laozi as if you were in conversation with a real person. Even the historical Laozi wouldn’t answer every question in a single, endless speech - wisdom often comes one thought at a time.",
+    "clarify_rephrase_title": "Can I ask Laozi to clarify or rephrase his response?",
+    "clarify_rephrase_p1": "Absolutely! You can interact with Laozi AI just as you would with a real person. If an answer feels unclear, too complex, or doesn't quite resonate with you, simply ask for a rephrase or clarification in your next message.",
+    "clarify_rephrase_p2": "Try saying things like: \"Can you explain that more simply?\", \"I don't quite understand, can you put it differently?\", or \"Could you approach this from a different angle?\". This conversational back-and-forth often leads to insights that the original answer didn't capture. Even the historical Laozi would have engaged in dialogue with his students - asking for clarification is a sign of genuine curiosity and engagement.",
     "different_answers_title": "Why are answers different on web and mobile?",
     "different_answers_p1": "Laozi AI uses different AI setups depending on the platform you are using.",
     "different_answers_p2": "The web version includes a retrieval system that leverages website content to provide more context-aware and detailed answers.",

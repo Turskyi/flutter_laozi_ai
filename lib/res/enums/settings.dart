@@ -1,5 +1,6 @@
 enum Settings {
-  languageIsoCode('languageIsoCode');
+  languageIsoCode('languageIsoCode'),
+  themeMode('themeMode');
 
   const Settings(this.key);
 

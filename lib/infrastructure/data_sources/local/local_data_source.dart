@@ -52,6 +52,7 @@ class LocalDataSource {
     final String host = Uri.base.host;
     // Retrieves the fragment (e.g., "/en" or "/uk").
     final String fragment = Uri.base.fragment;
+
     for (final Language language in Language.values) {
       final String currentLanguageCode = language.isoLanguageCode;
 
@@ -76,5 +77,13 @@ class LocalDataSource {
     return isSavedLanguageSupported
         ? savedLanguageIsoCode
         : defaultLanguageCode;
+  }
+
+  Language getSavedLanguage() {
+    final String savedLanguageIsoCode = getLanguageIsoCode();
+    final Language savedLanguage = Language.fromIsoLanguageCode(
+      savedLanguageIsoCode,
+    );
+    return savedLanguage;
   }
 }

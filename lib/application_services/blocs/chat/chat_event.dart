@@ -10,7 +10,7 @@ final class LoadHomeEvent extends ChatEvent {
 }
 
 final class SendMessageEvent extends ChatEvent {
-  const SendMessageEvent(this.message);
+  const SendMessageEvent({required this.message});
 
   final String message;
 }
@@ -38,12 +38,6 @@ final class UpdateAiMessageEvent extends ChatEvent {
   String toString() {
     return 'UpdateAiMessageEvent{pieceOfMessage: $pieceOfMessage}';
   }
-}
-
-final class ChangeLanguageEvent extends ChatEvent {
-  const ChangeLanguageEvent(this.language);
-
-  final Language language;
 }
 
 final class BugReportPressedEvent extends ChatEvent {

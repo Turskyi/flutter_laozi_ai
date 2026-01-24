@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:http/http.dart' as http;
@@ -30,19 +30,12 @@ part 'chat_state.dart';
 @injectable
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc(this._chatRepository, this._settingsRepository)
-    : super(
-        LoadingHomeState(
-          messages: const <Message>[],
-          language: _settingsRepository.getLanguage(),
-        ),
-      ) {
+    : super(const ChatInitial(messages: <Message>[])) {
     on<LoadHomeEvent>(_onLoadHomeEvent);
 
     on<SendMessageEvent>(_onSendMessageEvent);
 
     on<UpdateAiMessageEvent>(_onUpdateAiMessageEvent);
-
-    on<ChangeLanguageEvent>(_onChangeLanguageEvent);
 
     on<BugReportPressedEvent>(_onBugReportPressedEvent);
 
@@ -68,7 +61,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ClearConversationEvent _,
     Emitter<ChatState> emit,
   ) {
-    emit(ChatInitial(messages: const <Message>[], language: state.language));
+    emit(const ChatInitial(messages: <Message>[]));
   }
 
   FutureOr<void> _onShareConversationEvent(
@@ -106,7 +99,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           ShareError(
             errorMessage: translate('error.unexpected_error'),
             messages: state.messages,
-            language: state.language,
             timestamp: DateTime.now(),
           ),
         );
@@ -116,7 +108,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         ShareError(
           errorMessage: translate('error.no_messages_to_share'),
           messages: state.messages,
-          language: state.language,
           timestamp: DateTime.now(),
         ),
       );
@@ -167,23 +158,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   FutureOr<void> _onErrorEvent(ErrorEvent event, Emitter<ChatState> emit) {
-    emit(
-      ChatError(
-        errorMessage: event.error,
-        messages: state.messages,
-        language: state.language,
-      ),
-    );
+    emit(ChatError(errorMessage: event.error, messages: state.messages));
   }
 
   FutureOr<void> _onRetrySendMessageEvent(
-    RetrySendMessageEvent _,
+    RetrySendMessageEvent event,
     Emitter<ChatState> emit,
   ) async {
     final List<Message> currentMessages = List<Message>.from(state.messages);
-    emit(SentMessageState(messages: currentMessages, language: state.language));
+    emit(SentMessageState(messages: currentMessages));
+    final Language language = _settingsRepository.getLanguage();
     _chatRepository
-        .sendChat(Chat(messages: currentMessages, language: state.language))
+        .sendChat(Chat(messages: currentMessages, language: language))
         .listen(
           (String line) => add(UpdateAiMessageEvent(line)),
           onError: (Object error, StackTrace stackTrace) {
@@ -210,7 +196,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     SubmitFeedbackEvent event,
     Emitter<ChatState> emit,
   ) async {
-    emit(LoadingHomeState(messages: state.messages, language: state.language));
+    emit(LoadingHomeState(messages: state.messages));
     final UserFeedback feedback = event.feedback;
     try {
       final String screenshotFilePath = await _writeImageToStorage(
@@ -266,19 +252,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       );
       add(ErrorEvent(translate('error.unexpected_error_preparing_feedback')));
     }
-    emit(AiMessageUpdated(messages: state.messages, language: state.language));
+    emit(AiMessageUpdated(messages: state.messages));
   }
 
   FutureOr<void> _onClosingFeedbackEvent(
     ClosingFeedbackEvent _,
     Emitter<ChatState> emit,
   ) {
-    emit(AiMessageUpdated(messages: state.messages, language: state.language));
+    emit(AiMessageUpdated(messages: state.messages));
   }
 
   FutureOr<void> _onLoadHomeEvent(LoadHomeEvent _, Emitter<ChatState> emit) {
-    final Language savedLanguage = _settingsRepository.getLanguage();
-    emit(ChatInitial(language: savedLanguage, messages: state.messages));
+    emit(ChatInitial(messages: state.messages));
   }
 
   FutureOr<void> _onSendMessageEvent(
@@ -290,10 +275,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     final List<Message> updatedMessages = List<Message>.from(state.messages)
       ..add(Message(role: Role.user, content: StringBuffer(event.message)));
     // Emit a new state with the updated list of messages.
-    emit(SentMessageState(messages: updatedMessages, language: state.language));
+    emit(SentMessageState(messages: updatedMessages));
     try {
+      final Language language = _settingsRepository.getLanguage();
       _chatRepository
-          .sendChat(Chat(messages: updatedMessages, language: state.language))
+          .sendChat(Chat(messages: updatedMessages, language: language))
           .listen(
             (String line) => add(UpdateAiMessageEvent(line)),
             onError: (Object error, StackTrace stackTrace) {
@@ -442,9 +428,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       );
       updatedMessages.add(updatedLastMessage);
 
-      emit(
-        AiMessageUpdated(messages: updatedMessages, language: state.language),
-      );
+      emit(AiMessageUpdated(messages: updatedMessages));
     } else {
       // Add a new AI message.
       final List<Message> updatedMessages = List<Message>.from(state.messages)
@@ -454,47 +438,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             content: StringBuffer(event.pieceOfMessage),
           ),
         );
-      emit(
-        AiMessageUpdated(messages: updatedMessages, language: state.language),
-      );
-    }
-  }
-
-  FutureOr<void> _onChangeLanguageEvent(
-    ChangeLanguageEvent event,
-    Emitter<ChatState> emit,
-  ) async {
-    final Language language = event.language;
-    if (language != state.language) {
-      final bool isSaved = await _settingsRepository.saveLanguageIsoCode(
-        language.isoLanguageCode,
-      );
-      if (isSaved) {
-        emit(switch (state) {
-          ChatInitial() => (state as ChatInitial).copyWith(language: language),
-          ChatError() => (state as ChatError).copyWith(language: language),
-          SentMessageState() => (state as SentMessageState).copyWith(
-            language: language,
-          ),
-          AiMessageUpdated() => (state as AiMessageUpdated).copyWith(
-            language: language,
-          ),
-          LoadingHomeState() => (state as LoadingHomeState).copyWith(
-            language: language,
-          ),
-          FeedbackState() => (state as FeedbackState).copyWith(
-            language: language,
-          ),
-          FeedbackSent() => (state as FeedbackSent).copyWith(
-            language: language,
-          ),
-          ShareError() => (state as ShareError).copyWith(language: language),
-        });
-      } else {
-        // If saving fails, revert to previous state or reload home,
-        // here it reloads home which re-fetches saved language.
-        add(const LoadHomeEvent());
-      }
+      emit(AiMessageUpdated(messages: updatedMessages));
     }
   }
 
@@ -502,7 +446,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     BugReportPressedEvent _,
     Emitter<ChatState> emit,
   ) {
-    emit(FeedbackState(messages: state.messages, language: state.language));
+    emit(FeedbackState(messages: state.messages));
   }
 
   Future<String> _writeImageToStorage(Uint8List feedbackScreenshot) async {
