@@ -13,6 +13,7 @@ import 'package:laozi_ai/domain_services/settings_repository.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/localization/localization_delelegate_getter.dart'
     as locale;
+import 'package:laozi_ai/res/app_theme.dart';
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/router/app_router.dart' as router;
 import 'package:laozi_ai/ui/feedback/feedback_form.dart';
@@ -84,6 +85,10 @@ void main() async {
           buildWhen: _shouldRebuildTheme,
           builder: (BuildContext _, SettingsState state) {
             final bool isDark = state.isDark;
+            final Brightness brightness = isDark
+                ? Brightness.dark
+                : Brightness.light;
+            final ThemeData theme = createAppTheme(brightness);
             return BetterFeedback(
               feedbackBuilder:
                   (
@@ -100,7 +105,8 @@ void main() async {
                 feedbackSheetColor: isDark
                     ? const Color(0xFF1C1B1F)
                     : const Color(0xFFFEF7FF),
-                brightness: isDark ? Brightness.dark : Brightness.light,
+                brightness: brightness,
+                colorScheme: theme.colorScheme,
               ),
               child: BlocListener<SettingsBloc, SettingsState>(
                 listener: _onSettingsStateChanged,
@@ -130,6 +136,7 @@ void _applyInitialLocale({
   localizationDelegate.onLocaleChanged?.call(savedLocale);
 }
 
+/// Retrieves the host name (e.g., "localhost" or "uk.daoizm.online").
 Future<Language> _resolveInitialLanguageFromUrl({
   required Language initialLanguage,
   required SettingsRepository settingsRepository,

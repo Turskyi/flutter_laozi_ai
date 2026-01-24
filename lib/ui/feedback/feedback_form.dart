@@ -1,9 +1,12 @@
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:laozi_ai/application_services/blocs/settings/settings_bloc.dart';
 import 'package:laozi_ai/entities/enums/feedback_rating.dart';
 import 'package:laozi_ai/entities/enums/feedback_type.dart';
 import 'package:laozi_ai/entities/feedback_details.dart';
+import 'package:laozi_ai/res/app_theme.dart';
 
 /// A form that prompts the user for the type of feedback they want to give,
 /// free form text feedback, and a sentiment rating.
@@ -28,101 +31,128 @@ class _CustomFeedbackFormState extends State<FeedbackForm> {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final TextStyle textStyle = TextStyle(color: colorScheme.onSurface);
+    // We watch the settings bloc to get the correct theme mode, because
+    // this widget is a child of BetterFeedback which is outside MaterialApp.
+    final SettingsState settingsState = context.watch<SettingsBloc>().state;
+    final Brightness brightness = settingsState.isDark
+        ? Brightness.dark
+        : Brightness.light;
+    final ThemeData theme = createAppTheme(brightness);
+    final ColorScheme colorScheme = theme.colorScheme;
 
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: Stack(
-            children: <Widget>[
-              if (widget.scrollController != null)
-                const FeedbackSheetDragHandle(),
-              ListView(
-                controller: widget.scrollController,
-                // Pad the top by 20 to match the corner radius if drag enabled.
-                padding: EdgeInsets.fromLTRB(
-                  16,
-                  widget.scrollController != null ? 20 : 16,
-                  16,
-                  0,
-                ),
+    return Theme(
+      data: theme,
+      child: DefaultTextStyle(
+        style: TextStyle(color: colorScheme.onSurface),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Stack(
                 children: <Widget>[
-                  Text(translate('feedback.whatKind'), style: textStyle),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  if (widget.scrollController != null)
+                    const FeedbackSheetDragHandle(),
+                  ListView(
+                    controller: widget.scrollController,
+                    // Pad the top by 20 to match the corner radius if drag
+                    // enabled.
+                    padding: EdgeInsets.fromLTRB(
+                      16,
+                      widget.scrollController != null ? 20 : 16,
+                      16,
+                      0,
+                    ),
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Text('*', style: textStyle),
+                      Text(
+                        translate('feedback.whatKind'),
+                        style: TextStyle(color: colorScheme.onSurface),
                       ),
-                      Flexible(
-                        child: DropdownButton<FeedbackType>(
-                          dropdownColor: colorScheme.surface,
-                          style: textStyle,
-                          value: _customFeedback.feedbackType,
-                          items: FeedbackType.values
-                              .map(
-                                (FeedbackType type) =>
-                                    DropdownMenuItem<FeedbackType>(
-                                      value: type,
-                                      child: Text(type.value),
-                                    ),
-                              )
-                              .toList(),
-                          onChanged: (FeedbackType? feedbackType) => setState(
-                            () => _customFeedback = _customFeedback.copyWith(
-                              feedbackType: feedbackType,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Text(
+                              '*',
+                              style: TextStyle(color: colorScheme.onSurface),
                             ),
                           ),
+                          Flexible(
+                            child: DropdownButton<FeedbackType>(
+                              value: _customFeedback.feedbackType,
+                              dropdownColor: colorScheme.surface,
+                              style: TextStyle(color: colorScheme.onSurface),
+                              items: FeedbackType.values
+                                  .map(
+                                    (FeedbackType type) =>
+                                        DropdownMenuItem<FeedbackType>(
+                                          value: type,
+                                          child: Text(type.value),
+                                        ),
+                                  )
+                                  .toList(),
+                              onChanged: (FeedbackType? feedbackType) =>
+                                  setState(
+                                    () => _customFeedback = _customFeedback
+                                        .copyWith(feedbackType: feedbackType),
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        translate('feedback.whatIsYourFeedback'),
+                        style: TextStyle(color: colorScheme.onSurface),
+                      ),
+                      TextField(
+                        style: TextStyle(color: colorScheme.onSurface),
+                        decoration: InputDecoration(
+                          hintStyle: TextStyle(
+                            color: colorScheme.onSurface.withValues(alpha: 0.6),
+                          ),
                         ),
+                        onChanged: (String newFeedback) => _customFeedback =
+                            _customFeedback.copyWith(feedbackText: newFeedback),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        translate('feedback.howDoesThisFeel'),
+                        style: TextStyle(color: colorScheme.onSurface),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: FeedbackRating.values
+                            .map(
+                              (FeedbackRating rating) =>
+                                  _ratingToIcon(rating, colorScheme),
+                            )
+                            .toList(),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    translate('feedback.whatIsYourFeedback'),
-                    style: textStyle,
-                  ),
-                  TextField(
-                    style: textStyle,
-                    decoration: InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: colorScheme.onSurface),
-                      ),
-                    ),
-                    onChanged: (String newFeedback) => _customFeedback =
-                        _customFeedback.copyWith(feedbackText: newFeedback),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(translate('feedback.howDoesThisFeel'), style: textStyle),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: FeedbackRating.values.map(_ratingToIcon).toList(),
-                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+            TextButton(
+              // Disable this button until the user has specified a feedback
+              // type.
+              onPressed: _customFeedback.feedbackType != null
+                  ? () => widget.onSubmit(
+                      _customFeedback.feedbackText ?? '',
+                      extras: _customFeedback.toMap(),
+                    )
+                  : null,
+              child: Text(translate('submit')),
+            ),
+            const SizedBox(height: 8),
+          ],
         ),
-        TextButton(
-          // disable this button until the user has specified a feedback type
-          onPressed: _customFeedback.feedbackType != null
-              ? () => widget.onSubmit(
-                  _customFeedback.feedbackText ?? '',
-                  extras: _customFeedback.toMap(),
-                )
-              : null,
-          child: Text(translate('submit')),
-        ),
-        const SizedBox(height: 8),
-      ],
+      ),
     );
   }
 
-  Widget _ratingToIcon(FeedbackRating rating) {
+  Widget _ratingToIcon(FeedbackRating rating, ColorScheme colorScheme) {
     final bool isSelected = _customFeedback.rating == rating;
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     late IconData icon;
     switch (rating) {
       case FeedbackRating.bad:
