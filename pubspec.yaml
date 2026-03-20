@@ -54,9 +54,8 @@ dependencies:
   get_it: ^9.2.1
   http: ^1.6.0
   injectable: ^2.7.1+4
-  # I have tried the injectable_generator: ^2.12.0, but it could not run
-  #  flutter pub get.
-  injectable_generator: any
+
+  injectable_generator: ^2.12.1
   intl: ^0.20.2
   json_annotation: ^4.11.0
   logger: ^2.7.0
@@ -85,9 +84,12 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
-  # Tried to use ^6.11.3, but it did not run flutter pub get.
-  json_serializable: any
-  retrofit_generator: ^10.2.1
+
+  json_serializable: ^6.13.0
+  # Upgrading to "10.2.3" lead to an error
+  #  "When using @DioResponseType(ResponseType.stream), the return type must be
+  #Stream<Uint8List> or Stream<String>. Got: Future<HttpResponse<Object>> "
+  retrofit_generator: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
