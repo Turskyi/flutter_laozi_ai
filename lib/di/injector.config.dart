@@ -56,17 +56,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i908.LoggingInterceptor>(
       () => const _i908.LoggingInterceptor(),
     );
-    gh.factory<_i252.EmailRepository>(
-      () => _i174.EmailRepositoryImpl(gh<_i176.Resend>()),
-    );
     gh.factory<_i301.SettingsRepository>(
       () => _i731.SettingsRepositoryImpl(gh<_i460.SharedPreferences>()),
+    );
+    gh.factory<_i451.LocalDataSource>(
+      () => _i451.LocalDataSource(gh<_i460.SharedPreferences>()),
     );
     gh.factory<_i375.RetrofitClient>(
       () => retrofitClientModule.getRestClient(gh<_i908.LoggingInterceptor>()),
     );
-    gh.factory<_i451.LocalDataSource>(
-      () => _i451.LocalDataSource(gh<_i460.SharedPreferences>()),
+    gh.factory<_i355.SettingsBloc>(
+      () => _i355.SettingsBloc(gh<_i301.SettingsRepository>()),
+    );
+    gh.factory<_i252.EmailRepository>(
+      () => _i174.EmailRepositoryImpl(gh<_i176.Resend>()),
     );
     gh.factory<_i732.ChatRepository>(
       () => _i848.ChatRepositoryImpl(
@@ -74,17 +77,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i451.LocalDataSource>(),
       ),
     );
-    gh.factory<_i976.SupportBloc>(
-      () => _i976.SupportBloc(gh<_i252.EmailRepository>()),
-    );
-    gh.factory<_i355.SettingsBloc>(
-      () => _i355.SettingsBloc(gh<_i301.SettingsRepository>()),
-    );
     gh.factory<_i776.ChatBloc>(
       () => _i776.ChatBloc(
         gh<_i732.ChatRepository>(),
         gh<_i301.SettingsRepository>(),
       ),
+    );
+    gh.factory<_i976.SupportBloc>(
+      () => _i976.SupportBloc(gh<_i252.EmailRepository>()),
     );
     return this;
   }

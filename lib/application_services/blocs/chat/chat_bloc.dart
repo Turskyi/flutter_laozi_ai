@@ -93,7 +93,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       } catch (e, stackTrace) {
         debugPrint(
           'Error in $runtimeType sharing conversation: $e.\n'
-          'Stacktrace: $stackTrace',
+          'Stack-trace: $stackTrace',
         );
         emit(
           ShareError(
@@ -184,7 +184,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               debugPrint(
                 'Error in $runtimeType in `onError` (RetrySendMessageEvent): '
                 '$error.\n'
-                'Stacktrace: $stackTrace',
+                'Stack-trace: $stackTrace',
               );
               add(ErrorEvent(translate('error.unexpected_error')));
             }
@@ -241,14 +241,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       } catch (error, stackTrace) {
         debugPrint(
           'Error in $runtimeType sending email: $error.\n'
-          'Stacktrace: $stackTrace',
+          'Stack trace: $stackTrace',
         );
         add(ErrorEvent(translate('error.unexpected_error_sending_feedback')));
       }
     } catch (error, stackTrace) {
       debugPrint(
         'Error in $runtimeType preparing feedback: $error.\n'
-        'Stacktrace: $stackTrace',
+        'Stack trace: $stackTrace',
       );
       add(ErrorEvent(translate('error.unexpected_error_preparing_feedback')));
     }
@@ -293,7 +293,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                 debugPrint(
                   'Error in $runtimeType in `onError` (SendMessageEvent): '
                   '$error.\n'
-                  'Stacktrace: $stackTrace',
+                  'Stack trace: $stackTrace',
                 );
                 add(ErrorEvent(translate('error.unexpected_error')));
               }
@@ -302,7 +302,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     } catch (error, stackTrace) {
       debugPrint(
         'Error in $runtimeType in `catch` (SendMessageEvent): $error.\n'
-        'Stacktrace: $stackTrace',
+        'Stack trace: $stackTrace',
       );
       add(ErrorEvent(translate('error.oops_something_went_wrong')));
     }
@@ -334,7 +334,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (error.error != null) {
       buffer.writeln('  Underlying error: ${error.error}');
     }
-    buffer.writeln('  Stacktrace: $stackTrace');
+    buffer.writeln('  Stack trace: $stackTrace');
     debugPrint(buffer.toString());
 
     String errorMessageKey = 'error.unexpected_network_error';
