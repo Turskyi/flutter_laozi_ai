@@ -69,7 +69,10 @@
     "unexpected_error_sending_feedback": "Sūtot atsauksmes, radās neparedzēta kļūda. Lūdzu, mēģiniet vēlre.",
     "unexpected_error_preparing_feedback": "Sagatavojot atsauksmes, radās neparedzēta kļūda. Lūdzu, mēģiniet vēlre.",
     "no_messages_to_share": "Nav ziņojumu, ko kopīgot",
-    "server_connection_error_visit_other_site": "Servera savienojuma kļūda. Lūdzu, apmeklējiet citu šīs lietotnes tīmekļa versiju vietnē https://daoizm.online"
+    "failed_to_launch_primary_url": "Neizdevās atvērt primāro tīmekļa vietnes saiti.",
+    "failed_to_launch_fallback_url": "Neizdevās atvērt rezerves tīmekļa vietnes saiti.",
+    "failed_to_launch_fallback_url_after_check": "Neizdevās atvērt rezerves tīmekļa vietnes saiti pēc savienojuma pārbaudes neizdevās.",
+    "failed_to_launch_external_url": "Neizdevās atvērt ārējo saiti."
   },
   "about_page": {
     "title": "Par daoismu un Laodzi AI",
@@ -113,7 +116,7 @@
     "short_answers_p2": "Ja atbilde šķiet nogriezta vai nepilnīga, vienkārši sakiet ‘lūdzu, turpiniet’. Laodzi AI atceras jūsu sarunas kontekstu un turpinās tieši tur, kur pārtrauca.",
     "short_answers_p3": "Lai iegūtu autentiskāko pieredzi, mēģiniet runāt ar Laodzi tā, it kā jūs sarunātos ar reālu cilvēku. Pat vēsturiskais Laodzi neatbildētu uz katru jautājumu vienā bezgalīgā runā — gudrība bieži nāk pa vienai domai.",
     "clarify_rephrase_title": "Vai es varu lūgt Laodzi precizēt vai pārfrāzēt savu atbildi?",
-    "clarify_rephrase_p1": "Pilnīgi noteikti! Jūs varat mijiedarboties ar Laodzi AI tieši tāpat kā ar reālu personu. Ja atbilde šķiet nekonkrēta, pārāk sarežēta vai ne visai uzrunā jūs, vienkārši lūdziet pārfrāzēt vai precizēt to savā nākamajā ziā.",
+    "clarify_rephrase_p1": "Pilnīgi noteikti! Jūs varat mijiedarboties ar Laodzi AI tieši tāpat kā ar reālu personu. Ja atbilde šķiet nekonkrēta, pārāk sarežģīta vai ne visai uzrunā jūs, vienkārši lūdziet pārfrāzēt vai precizēt to savā nākamajā ziā.",
     "clarify_rephrase_p2": "Mēģiniet teikt tādas lietas kā: \"Vai varat to paskaidrot vienkāršāk?\", \"Es ne visai saprotu, vai varat to pateikt citādāk?\" vai \"Vai jūs varētu tam pieiet no cita leņķa?\". Šī sarunvalodas apmaiņa bieži noved pie atziņām, kuras sākotnējā atbilde nesniedza. Pat vēsturiskais Laodzi būtu iesaistījies dialogā ar saviem skolēniem — lūgums pēc paskaidrojuma ir patiesas ziņkārības un iesaistes pazīme.",
     "different_answers_title": "Kāpēc atbildes atšķiras tīmeklī un mobilajā ierīcē?",
     "different_answers_p1": "Laodzi AI izmanto dažādus AI iestatījumus atkarībā no platformas, kuru izmantojat.",
