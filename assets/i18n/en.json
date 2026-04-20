@@ -44,6 +44,7 @@
   },
   "error": {
     "launch_email_failed": "Could not launch the email application.",
+    "cannot_launch_email_url": "Unable to launch email URL. No email application found.",
     "pleaseCheckInternet": "An error occurred. Please check your internet connection and try again.",
     "unexpectedError": "An unexpected error occurred. Please try again.",
     "unexpected_error": "An unexpected error occurred. Please try again.",

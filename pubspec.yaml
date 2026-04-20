@@ -86,10 +86,8 @@ dev_dependencies:
     sdk: flutter
 
   json_serializable: ^6.13.1
-  # Upgrading to "10.2.3" lead to an error
-  #  "When using @DioResponseType(ResponseType.stream), the return type must be
-  #Stream<Uint8List> or Stream<String>. Got: Future<HttpResponse<Object>> "
-  retrofit_generator: any
+
+  retrofit_generator: ^10.2.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
