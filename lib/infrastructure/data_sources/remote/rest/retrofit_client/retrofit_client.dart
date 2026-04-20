@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart' hide Headers;
 import 'package:laozi_ai/infrastructure/data_sources/remote/models/chat_request/chat_request.dart';
 import 'package:retrofit/retrofit.dart';
@@ -10,41 +12,31 @@ abstract class RetrofitClient {
 
   @POST('chat-android-en')
   @DioResponseType(ResponseType.stream)
-  Future<HttpResponse<Object>> sendEnglishAndroidChatMessage(
-    @Body() ChatRequest chatRequest,
-  );
+  Stream<String> sendEnglishAndroidChatMessage(@Body() ChatRequest chatRequest);
 
   @POST('chat-android-ua')
   @DioResponseType(ResponseType.stream)
-  Future<HttpResponse<Object>> sendUkrainianAndroidChatMessage(
+  Stream<String> sendUkrainianAndroidChatMessage(
     @Body() ChatRequest chatRequest,
   );
 
   @POST('chat-ios-en')
   @DioResponseType(ResponseType.stream)
-  Future<HttpResponse<Object>> sendEnglishIosChatMessage(
-    @Body() ChatRequest chatRequest,
-  );
+  Stream<String> sendEnglishIosChatMessage(@Body() ChatRequest chatRequest);
 
   @POST('chat-ios-ua')
   @DioResponseType(ResponseType.stream)
-  Future<HttpResponse<Object>> sendUkrainianIosChatMessage(
-    @Body() ChatRequest chatRequest,
-  );
+  Stream<String> sendUkrainianIosChatMessage(@Body() ChatRequest chatRequest);
 
   @POST('chat-web-app-en')
   @DioResponseType(ResponseType.stream)
-  Future<HttpResponse<Object>> sendEnglishWebChatMessage(
-    @Body() ChatRequest chatRequest,
-  );
+  Stream<String> sendEnglishWebChatMessage(@Body() ChatRequest chatRequest);
 
   @POST('chat-web-app-ua')
   @DioResponseType(ResponseType.stream)
-  Future<HttpResponse<Object>> sendUkrainianWebChatMessage(
-    @Body() ChatRequest chatRequest,
-  );
+  Stream<String> sendUkrainianWebChatMessage(@Body() ChatRequest chatRequest);
 
   @POST('chat')
   @DioResponseType(ResponseType.stream)
-  Future<HttpResponse<Object>> sendChatMessage(@Body() ChatRequest chatRequest);
+  Stream<String> sendChatMessage(@Body() ChatRequest chatRequest);
 }

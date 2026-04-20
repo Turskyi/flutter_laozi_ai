@@ -44,6 +44,7 @@
   },
   "error": {
     "launch_email_failed": "Could not launch the email application.",
+    "cannot_launch_email_url": "Unable to launch email URL. No email application found.",
     "pleaseCheckInternet": "An error occurred. Please check your internet connection and try again.",
     "unexpectedError": "An unexpected error occurred. Please try again.",
     "unexpected_error": "An unexpected error occurred. Please try again.",
@@ -69,7 +70,11 @@
     "unexpected_unknown_network_error": "An unexpected unknown network error occurred. Please try again.",
     "unexpected_error_sending_feedback": "An unexpected error occurred while sending feedback. Please try again.",
     "unexpected_error_preparing_feedback": "An unexpected error occurred while preparing feedback. Please try again.",
-    "no_messages_to_share": "There are no messages to share."
+    "no_messages_to_share": "There are no messages to share.",
+    "failed_to_launch_primary_url": "Unable to open the primary website link.",
+    "failed_to_launch_fallback_url": "Unable to open the backup website link.",
+    "failed_to_launch_fallback_url_after_check": "Unable to open the backup website link after connection check failed.",
+    "failed_to_launch_external_url": "Unable to open the external link."
   },
   "about_page": {
     "title": "About Daoism and Laozi AI",

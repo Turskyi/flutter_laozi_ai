@@ -93,7 +93,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       } catch (e, stackTrace) {
         debugPrint(
           'Error in $runtimeType sharing conversation: $e.\n'
-          'Stacktrace: $stackTrace',
+          'Stack-trace: $stackTrace',
         );
         emit(
           ShareError(
@@ -128,33 +128,68 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
         if (response.statusCode == HttpStatus.ok) {
           // Website is likely active and serving content.
-          await _launchUrl(primaryUrl);
+          try {
+            await _launchUrl(primaryUrl);
+          } catch (e) {
+            debugPrint('Error launching primary URL $primaryUrl: $e');
+            emit(
+              ChatError(
+                errorMessage: translate('error.failed_to_launch_primary_url'),
+                messages: state.messages,
+              ),
+            );
+          }
         } else {
           // Website might not be active, or returned an error.
-          await _launchUrl(fallbackUrl);
+          try {
+            await _launchUrl(fallbackUrl);
+          } catch (e) {
+            debugPrint('Error launching fallback URL $fallbackUrl: $e');
+            emit(
+              ChatError(
+                errorMessage: translate('error.failed_to_launch_fallback_url'),
+                messages: state.messages,
+              ),
+            );
+          }
         }
       } catch (e) {
         // An error occurred during the HTTP request (e.g., network issue,
         // domain not resolving).
         debugPrint('HTTP error checking $primaryUrl: $e');
-        await _launchUrl(fallbackUrl);
+        try {
+          await _launchUrl(fallbackUrl);
+        } catch (e2) {
+          debugPrint('Error launching fallback URL $fallbackUrl: $e2');
+          emit(
+            ChatError(
+              errorMessage: translate(
+                'error.failed_to_launch_fallback_url_after_check',
+              ),
+              messages: state.messages,
+            ),
+          );
+        }
       }
     } else {
-      // TODO: tell user that we have an issue with an attempt to launch this
-      //  url.
+      try {
+        await _launchUrl(href);
+      } catch (e) {
+        debugPrint('Error launching URL $href: $e');
+        emit(
+          ChatError(
+            errorMessage: translate('error.failed_to_launch_external_url'),
+            messages: state.messages,
+          ),
+        );
+      }
     }
   }
 
   /// Launches a given URL.
-  /// Displays an error message if the URL cannot be launched.
+  /// Throws if the URL cannot be launched.
   Future<void> _launchUrl(String url) async {
-    try {
-      await launchUrl(Uri.parse(url));
-    } catch (e) {
-      // Handle potential errors during URL launching (less common than HTTP
-      // errors, but good to be safe).
-      debugPrint('Error launching URL $url: $e');
-    }
+    await launchUrl(Uri.parse(url));
   }
 
   FutureOr<void> _onErrorEvent(ErrorEvent event, Emitter<ChatState> emit) {
@@ -184,7 +219,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               debugPrint(
                 'Error in $runtimeType in `onError` (RetrySendMessageEvent): '
                 '$error.\n'
-                'Stacktrace: $stackTrace',
+                'Stack-trace: $stackTrace',
               );
               add(ErrorEvent(translate('error.unexpected_error')));
             }
@@ -241,14 +276,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       } catch (error, stackTrace) {
         debugPrint(
           'Error in $runtimeType sending email: $error.\n'
-          'Stacktrace: $stackTrace',
+          'Stack trace: $stackTrace',
         );
         add(ErrorEvent(translate('error.unexpected_error_sending_feedback')));
       }
     } catch (error, stackTrace) {
       debugPrint(
         'Error in $runtimeType preparing feedback: $error.\n'
-        'Stacktrace: $stackTrace',
+        'Stack trace: $stackTrace',
       );
       add(ErrorEvent(translate('error.unexpected_error_preparing_feedback')));
     }
@@ -293,7 +328,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                 debugPrint(
                   'Error in $runtimeType in `onError` (SendMessageEvent): '
                   '$error.\n'
-                  'Stacktrace: $stackTrace',
+                  'Stack trace: $stackTrace',
                 );
                 add(ErrorEvent(translate('error.unexpected_error')));
               }
@@ -302,7 +337,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     } catch (error, stackTrace) {
       debugPrint(
         'Error in $runtimeType in `catch` (SendMessageEvent): $error.\n'
-        'Stacktrace: $stackTrace',
+        'Stack trace: $stackTrace',
       );
       add(ErrorEvent(translate('error.oops_something_went_wrong')));
     }
@@ -334,7 +369,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (error.error != null) {
       buffer.writeln('  Underlying error: ${error.error}');
     }
-    buffer.writeln('  Stacktrace: $stackTrace');
+    buffer.writeln('  Stack trace: $stackTrace');
     debugPrint(buffer.toString());
 
     String errorMessageKey = 'error.unexpected_network_error';

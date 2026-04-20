@@ -13,7 +13,7 @@ import 'package:laozi_ai/domain_services/settings_repository.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/localization/localization_delelegate_getter.dart'
     as locale;
-import 'package:laozi_ai/res/app_theme.dart';
+import 'package:laozi_ai/res/app_theme.dart' as theme;
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/router/app_router.dart' as router;
 import 'package:laozi_ai/ui/feedback/feedback_form.dart';
@@ -47,6 +47,67 @@ void main() async {
   final SettingsRepository settingsRepository = dependencies
       .get<SettingsRepository>();
 
+  final LocalizationDelegate localizationDelegate = await _initLocalization(
+    settingsRepository,
+  );
+
+  final Map<String, WidgetBuilder> routeMap = router.buildAppRoutes(
+    chatBloc: chatBloc,
+    supportBloc: supportBloc,
+  );
+
+  runApp(
+    LocalizedApp(
+      localizationDelegate,
+      BlocProvider<SettingsBloc>(
+        create: (BuildContext _) => settingsBloc,
+        child: BlocBuilder<SettingsBloc, SettingsState>(
+          buildWhen: _shouldRebuildTheme,
+          builder: (BuildContext _, SettingsState state) {
+            final bool isDark = state.isDark;
+
+            final Brightness brightness = isDark
+                ? Brightness.dark
+                : Brightness.light;
+
+            final ThemeData themeData = theme.createAppTheme(brightness);
+
+            final ColorScheme colorScheme = themeData.colorScheme;
+
+            return BetterFeedback(
+              feedbackBuilder:
+                  (
+                    BuildContext _,
+                    OnSubmit onSubmit,
+                    ScrollController? scrollController,
+                  ) {
+                    return FeedbackForm(
+                      onSubmit: onSubmit,
+                      scrollController: scrollController,
+                    );
+                  },
+              theme: FeedbackThemeData(
+                feedbackSheetColor: isDark
+                    ? const Color(0xFF1C1B1F)
+                    : const Color(0xFFFEF7FF),
+                brightness: brightness,
+                colorScheme: colorScheme,
+              ),
+              child: BlocListener<SettingsBloc, SettingsState>(
+                listener: _onSettingsStateChanged,
+                child: LaoziAiApp(routeMap: routeMap),
+              ),
+            );
+          },
+        ),
+      ),
+    ),
+  );
+}
+
+Future<LocalizationDelegate> _initLocalization(
+  SettingsRepository settingsRepository,
+) async {
   Language initialLanguage = settingsRepository.getLanguage();
 
   if (kIsWeb) {
@@ -70,54 +131,7 @@ void main() async {
       localizationDelegate: localizationDelegate,
     );
   }
-
-  final Map<String, WidgetBuilder> routeMap = router.buildAppRoutes(
-    chatBloc: chatBloc,
-    supportBloc: supportBloc,
-  );
-
-  runApp(
-    LocalizedApp(
-      localizationDelegate,
-      BlocProvider<SettingsBloc>(
-        create: (BuildContext _) => settingsBloc,
-        child: BlocBuilder<SettingsBloc, SettingsState>(
-          buildWhen: _shouldRebuildTheme,
-          builder: (BuildContext _, SettingsState state) {
-            final bool isDark = state.isDark;
-            final Brightness brightness = isDark
-                ? Brightness.dark
-                : Brightness.light;
-            final ThemeData theme = createAppTheme(brightness);
-            return BetterFeedback(
-              feedbackBuilder:
-                  (
-                    BuildContext _,
-                    OnSubmit onSubmit,
-                    ScrollController? scrollController,
-                  ) {
-                    return FeedbackForm(
-                      onSubmit: onSubmit,
-                      scrollController: scrollController,
-                    );
-                  },
-              theme: FeedbackThemeData(
-                feedbackSheetColor: isDark
-                    ? const Color(0xFF1C1B1F)
-                    : const Color(0xFFFEF7FF),
-                brightness: brightness,
-                colorScheme: theme.colorScheme,
-              ),
-              child: BlocListener<SettingsBloc, SettingsState>(
-                listener: _onSettingsStateChanged,
-                child: LaoziAiApp(routeMap: routeMap),
-              ),
-            );
-          },
-        ),
-      ),
-    ),
-  );
+  return localizationDelegate;
 }
 
 bool _shouldRebuildTheme(SettingsState previous, SettingsState current) {

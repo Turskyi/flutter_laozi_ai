@@ -20,15 +20,13 @@ class _RetrofitClient implements RetrofitClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<Object>> sendEnglishAndroidChatMessage(
-    ChatRequest chatRequest,
-  ) async {
+  Stream<String> sendEnglishAndroidChatMessage(ChatRequest chatRequest) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<HttpResponse<Object>>(
+    final _options = _setStreamType<String>(
       Options(
             method: 'POST',
             headers: _headers,
@@ -43,28 +41,21 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Object>(_options);
-    late Object _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    final _value = _result.data!.stream.map(utf8.decode);
+    yield* _value;
   }
 
   @override
-  Future<HttpResponse<Object>> sendUkrainianAndroidChatMessage(
+  Stream<String> sendUkrainianAndroidChatMessage(
     ChatRequest chatRequest,
-  ) async {
+  ) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<HttpResponse<Object>>(
+    final _options = _setStreamType<String>(
       Options(
             method: 'POST',
             headers: _headers,
@@ -79,28 +70,19 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Object>(_options);
-    late Object _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    final _value = _result.data!.stream.map(utf8.decode);
+    yield* _value;
   }
 
   @override
-  Future<HttpResponse<Object>> sendEnglishIosChatMessage(
-    ChatRequest chatRequest,
-  ) async {
+  Stream<String> sendEnglishIosChatMessage(ChatRequest chatRequest) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<HttpResponse<Object>>(
+    final _options = _setStreamType<String>(
       Options(
             method: 'POST',
             headers: _headers,
@@ -115,28 +97,19 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Object>(_options);
-    late Object _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    final _value = _result.data!.stream.map(utf8.decode);
+    yield* _value;
   }
 
   @override
-  Future<HttpResponse<Object>> sendUkrainianIosChatMessage(
-    ChatRequest chatRequest,
-  ) async {
+  Stream<String> sendUkrainianIosChatMessage(ChatRequest chatRequest) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<HttpResponse<Object>>(
+    final _options = _setStreamType<String>(
       Options(
             method: 'POST',
             headers: _headers,
@@ -151,28 +124,19 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Object>(_options);
-    late Object _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    final _value = _result.data!.stream.map(utf8.decode);
+    yield* _value;
   }
 
   @override
-  Future<HttpResponse<Object>> sendEnglishWebChatMessage(
-    ChatRequest chatRequest,
-  ) async {
+  Stream<String> sendEnglishWebChatMessage(ChatRequest chatRequest) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<HttpResponse<Object>>(
+    final _options = _setStreamType<String>(
       Options(
             method: 'POST',
             headers: _headers,
@@ -187,28 +151,19 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Object>(_options);
-    late Object _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    final _value = _result.data!.stream.map(utf8.decode);
+    yield* _value;
   }
 
   @override
-  Future<HttpResponse<Object>> sendUkrainianWebChatMessage(
-    ChatRequest chatRequest,
-  ) async {
+  Stream<String> sendUkrainianWebChatMessage(ChatRequest chatRequest) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<HttpResponse<Object>>(
+    final _options = _setStreamType<String>(
       Options(
             method: 'POST',
             headers: _headers,
@@ -223,26 +178,19 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Object>(_options);
-    late Object _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    final _value = _result.data!.stream.map(utf8.decode);
+    yield* _value;
   }
 
   @override
-  Future<HttpResponse<Object>> sendChatMessage(ChatRequest chatRequest) async {
+  Stream<String> sendChatMessage(ChatRequest chatRequest) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(chatRequest.toJson());
-    final _options = _setStreamType<HttpResponse<Object>>(
+    final _options = _setStreamType<String>(
       Options(
             method: 'POST',
             headers: _headers,
@@ -257,16 +205,9 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Object>(_options);
-    late Object _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
+    final _result = await _dio.fetch<ResponseBody>(_options);
+    final _value = _result.data!.stream.map(utf8.decode);
+    yield* _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

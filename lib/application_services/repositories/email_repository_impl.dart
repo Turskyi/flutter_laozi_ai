@@ -102,7 +102,7 @@ class EmailRepositoryImpl implements EmailRepository {
         await launchUrl(emailLaunchUri);
         debugPrint('Feedback email launched successfully via url_launcher.');
       } else {
-        throw const EmailLaunchException('error.launch_email_failed');
+        throw const EmailLaunchException('error.cannot_launch_email_url');
       }
     } catch (urlLauncherError, urlLauncherStackTrace) {
       final String urlLauncherErrorMessage =
@@ -110,7 +110,7 @@ class EmailRepositoryImpl implements EmailRepository {
       debugPrint(
         '$urlLauncherErrorMessage\nStackTrace: $urlLauncherStackTrace',
       );
-      // TODO: throw exception?
+      throw const EmailLaunchException('error.launch_email_failed');
     }
   }
 }

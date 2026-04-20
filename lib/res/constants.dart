@@ -1,3 +1,4 @@
+// Expiration Jun 8, 2026 - auto-renew is off
 const String primaryDomain = 'daoizm.online';
 const String kDeveloperEmail = 'dmytro@turskyi.com';
 const String primaryWebsiteUrl = 'https://$primaryDomain';
@@ -10,8 +11,9 @@ const String laoziImagePath = '${imageAssetsPath}laozi.png';
 const String laoziAvatarPath = '${imageAssetsPath}laozi_head.png';
 const String appName = 'Daoism • Laozi AI';
 const String googleAiModelName = 'gemini-2.5-flash';
-// Expires Mar 13, 2026.
-const String resendEmailDomain = 'kima.website';
+
+// Expiration Jun 8, 2026 - auto-renew is off
+const String resendEmailDomain = 'daoizm.online';
 const String kMailToScheme = 'mailto';
 const String subjectParameter = 'subject';
 const String bodyParameter = 'body';
