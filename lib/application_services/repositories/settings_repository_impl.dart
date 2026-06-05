@@ -16,56 +16,51 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   @override
   Language getLanguage() {
+    // 1. Check for URL-based language first (priority for Web).
+    Language? languageFromUrl;
+    if (kIsWeb) {
+      // Retrieves the host name (e.g., "localhost" or "uk.daoismonline.com").
+      final String host = Uri.base.host;
+      // Retrieves the fragment (e.g., "/en" or "/uk").
+      final String fragment = Uri.base.fragment;
+      for (final Language language in Language.values) {
+        final String currentLanguageCode = language.isoLanguageCode;
+
+        if (host.startsWith('$currentLanguageCode.') ||
+            fragment.contains('${AppRoute.home.path}$currentLanguageCode')) {
+          languageFromUrl = language;
+          try {
+            Intl.defaultLocale = currentLanguageCode;
+          } catch (e) {
+            // Silently ignore or log as needed.
+          }
+          break;
+        }
+      }
+    }
+
+    if (languageFromUrl != null) {
+      return languageFromUrl;
+    }
+
+    // 2. Check for saved language in preferences.
     final String? savedLanguageIsoCode = _preferences.getString(
       Settings.languageIsoCode.key,
     );
 
-    final bool isSavedLanguageSupported =
-        savedLanguageIsoCode != null &&
-        Language.values.any(
-          (Language lang) => lang.isoLanguageCode == savedLanguageIsoCode,
-        );
+    if (savedLanguageIsoCode != null) {
+      final Language savedLanguage = Language.values.firstWhere(
+        (Language lang) => lang.isoLanguageCode == savedLanguageIsoCode,
+        orElse: () => Language.en,
+      );
+      return savedLanguage;
+    }
 
+    // 3. Fallback to system language or default to English.
     final String systemLanguageCode =
         PlatformDispatcher.instance.locale.languageCode;
 
-    String defaultLanguageCode =
-        Language.values.any(
-          (Language lang) => lang.isoLanguageCode == systemLanguageCode,
-        )
-        ? systemLanguageCode
-        : Language.en.isoLanguageCode;
-
-    // Retrieves the host name (e.g., "localhost" or "uk.daoismonline.com").
-    final String host = Uri.base.host;
-    // Retrieves the fragment (e.g., "/en" or "/uk").
-    final String fragment = Uri.base.fragment;
-    for (final Language language in Language.values) {
-      final String currentLanguageCode = language.isoLanguageCode;
-
-      if (host.startsWith('$currentLanguageCode.') ||
-          fragment.contains('${AppRoute.home.path}$currentLanguageCode')) {
-        try {
-          Intl.defaultLocale = currentLanguageCode;
-        } catch (e, stackTrace) {
-          debugPrint(
-            'Failed to set Intl.defaultLocale to "$currentLanguageCode".\n'
-            'Error: $e\n'
-            'StackTrace: $stackTrace\n'
-            'Proceeding with previously set default locale or system default.',
-          );
-        }
-        defaultLanguageCode = currentLanguageCode;
-        // Exit the loop once a match is found and processed.
-        break;
-      }
-    }
-
-    final String finalIsoCode = isSavedLanguageSupported
-        ? savedLanguageIsoCode
-        : defaultLanguageCode;
-
-    return Language.fromIsoLanguageCode(finalIsoCode);
+    return Language.fromIsoLanguageCode(systemLanguageCode);
   }
 
   @override
