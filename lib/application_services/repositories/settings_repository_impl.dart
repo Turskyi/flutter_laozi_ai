@@ -36,7 +36,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
         ? systemLanguageCode
         : Language.en.isoLanguageCode;
 
-    // Retrieves the host name (e.g., "localhost" or "uk.daoizm.online").
+    // Retrieves the host name (e.g., "localhost" or "uk.daoismonline.com").
     final String host = Uri.base.host;
     // Retrieves the fragment (e.g., "/en" or "/uk").
     final String fragment = Uri.base.fragment;

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable()
@@ -12,8 +13,13 @@ class LoggingInterceptor extends Interceptor {
     Response<Object?> response,
     ResponseInterceptorHandler handler,
   ) {
-    log('onResponse -------------------');
-    log('-----------------------------');
+    if (kDebugMode) {
+      log('onResponse -------------------');
+      log('STATUS: ${response.statusCode}');
+      log('BODY: ${response.data}');
+      log('-----------------------------');
+    }
+
     super.onResponse(response, handler);
   }
 

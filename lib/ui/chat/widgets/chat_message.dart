@@ -15,6 +15,15 @@ class ChatMessage extends StatelessWidget {
     const double laoziAvatarSize = 52.0;
     // Accessing the color scheme from the theme.
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color contentColor = message.isAi
+        ? colorScheme.onSecondaryContainer
+        : colorScheme.onPrimary;
+    final TextTheme textTheme = Theme.of(context).textTheme.apply(
+      bodyColor: contentColor,
+      displayColor: contentColor,
+      decorationColor: contentColor,
+    );
+
     return Row(
       mainAxisAlignment: message.isAi
           ? MainAxisAlignment.start
@@ -38,25 +47,24 @@ class ChatMessage extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             child: MarkdownBody(
-              data: '${message.content}'
+              data: message.content
+                  .toString()
                   // Replace escaped newlines with actual newlines.
                   .replaceAll(r'\n', '\n')
                   // Replace escaped quotes with actual quotes.
                   .replaceAll(r'\"', '"'),
-              styleSheet: MarkdownStyleSheet(
-                p: TextStyle(
-                  color: message.isAi
-                      ? colorScheme.onSecondaryContainer
-                      : colorScheme.onPrimary,
-                ),
-                strong: const TextStyle(fontWeight: FontWeight.bold),
-                em: const TextStyle(fontStyle: FontStyle.italic),
-                listBullet: TextStyle(
-                  color: message.isAi
-                      ? colorScheme.onSecondaryContainer
-                      : colorScheme.onPrimary,
-                ),
-              ),
+              styleSheet:
+                  MarkdownStyleSheet.fromTheme(
+                    Theme.of(context).copyWith(textTheme: textTheme),
+                  ).copyWith(
+                    strong: textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    em: textTheme.bodyMedium?.copyWith(
+                      fontStyle: FontStyle.italic,
+                    ),
+                    listBullet: textTheme.bodyMedium,
+                  ),
               selectable: true,
               onTapLink: (String _, String? href, String _) {
                 context.read<ChatBloc>().add(LaunchUrlEvent(href ?? ''));

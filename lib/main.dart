@@ -111,7 +111,7 @@ Future<LocalizationDelegate> _initLocalization(
   Language initialLanguage = settingsRepository.getLanguage();
 
   if (kIsWeb) {
-    // Retrieves the host name (e.g., "localhost" or "uk.daoizm.online").
+    // Retrieves the host name (e.g., "localhost" or "uk.daoismonline.com").
     initialLanguage = await _resolveInitialLanguageFromUrl(
       initialLanguage: initialLanguage,
       settingsRepository: settingsRepository,
@@ -150,12 +150,12 @@ void _applyInitialLocale({
   localizationDelegate.onLocaleChanged?.call(savedLocale);
 }
 
-/// Retrieves the host name (e.g., "localhost" or "uk.daoizm.online").
+/// Retrieves the host name (e.g., "localhost" or "uk.daoismonline.com").
 Future<Language> _resolveInitialLanguageFromUrl({
   required Language initialLanguage,
   required SettingsRepository settingsRepository,
 }) async {
-  // Retrieves the host name (e.g., "localhost" or "uk.daoizm.online").
+  // Retrieves the host name (e.g., "localhost" or "uk.daoismonline.com").
   final String host = Uri.base.host;
   // Retrieves the fragment (e.g., "/en" or "/uk").
   final String fragment = Uri.base.fragment;
