@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.turskyi.laozi_ai",
+      "sha256_cert_fingerprints": [
+        "CF:E3:6E:0D:74:0B:0F:AC:95:15:53:69:AB:8E:8A:86:35:FA:5D:53:6F:F9:29:59:F9:E5:D3:03:C3:31:01:10"
+      ]
+    }
+  }
+]
