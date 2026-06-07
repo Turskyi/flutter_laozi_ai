@@ -1,14 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:laozi_ai/application_services/blocs/settings/settings_bloc.dart';
+import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/ui/privacy/widgets/privacy_section.dart';
 import 'package:laozi_ai/ui/widgets/app_bar/wave_app_bar.dart';
 import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
+import 'package:laozi_ai/ui/widgets/language_selector.dart';
 
-class PrivacyPage extends StatelessWidget {
+class PrivacyPage extends StatefulWidget {
   const PrivacyPage({super.key});
 
+  @override
+  State<PrivacyPage> createState() => _PrivacyPageState();
+}
+
+class _PrivacyPageState extends State<PrivacyPage> {
   @override
   Widget build(BuildContext context) {
     final bool isAndroid =
@@ -28,6 +37,23 @@ class PrivacyPage extends StatelessWidget {
           isAndroid ? 'privacy_page_android.title' : 'privacy_page.title',
           args: <String, Object?>{'appName': appName},
         ),
+        actions: <Widget>[
+          BlocBuilder<SettingsBloc, SettingsState>(
+            builder: (BuildContext context, SettingsState state) {
+              return LanguageSelector(
+                currentLanguage: state.language,
+                onLanguageSelected: (Language newLanguage) {
+                  context.read<SettingsBloc>().add(
+                    ChangeLanguageSettingsEvent(newLanguage),
+                  );
+                  // Mark this specific widget as dirty to ensure
+                  // translate() calls are re-evaluated.
+                  setState(() {});
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(

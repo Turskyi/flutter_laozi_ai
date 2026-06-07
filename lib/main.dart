@@ -1,10 +1,8 @@
 import 'package:feedback/feedback.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart';
 import 'package:laozi_ai/application_services/blocs/chat/chat_bloc.dart';
 import 'package:laozi_ai/application_services/blocs/settings/settings_bloc.dart';
 import 'package:laozi_ai/application_services/blocs/support/support_bloc.dart';
@@ -14,42 +12,43 @@ import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:laozi_ai/localization/localization_delelegate_getter.dart'
     as locale;
 import 'package:laozi_ai/res/app_theme.dart' as theme;
-import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/router/app_router.dart' as router;
 import 'package:laozi_ai/ui/feedback/feedback_form.dart';
 import 'package:laozi_ai/ui/laozi_ai_app.dart';
 
 /// The [main] is the ultimate detail — the lowest-level policy.
-/// It is the initial entry point of the system.
-/// Nothing, other than the operating system, depends on it.
-/// Here we should [injectDependencies] by a dependency injection framework.
-/// The [main] is a dirty low-level module in the outermost circle of the onion
-/// architecture.
-/// Think of [main] as a plugin to the [LaoziAiApp] — a plugin that sets up
-/// the initial conditions and configurations, gathers all the outside
-/// resources, and then hands control over to the high-level policy of the
-/// [LaoziAiApp].
-/// When [main] is released, it has utterly no effect on any of the other
-/// components in the system. They don’t know about [main], and they don’t care
-/// when it changes.
 void main() async {
-  // Ensure that the Flutter engine is initialized, to avoid errors with
-  // `SharedPreferences` dependencies initialization.
+  // Ensure that the Flutter engine is initialized.
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize dependency injection and wait for `SharedPreferences`.
+  // Initialize dependency injection.
   final GetIt dependencies = await di.injectDependencies();
+
+  final SettingsRepository settingsRepository = dependencies
+      .get<SettingsRepository>();
+
+  // Get the language that should be used initially.
+  // Our SettingsRepositoryImpl now correctly prioritizes URL on Web.
+  final Language initialLanguage = settingsRepository.getLanguage();
 
   final ChatBloc chatBloc = dependencies.get<ChatBloc>();
   final SupportBloc supportBloc = dependencies.get<SupportBloc>();
   final SettingsBloc settingsBloc = dependencies.get<SettingsBloc>();
 
-  final SettingsRepository settingsRepository = dependencies
-      .get<SettingsRepository>();
+  // Initialize localization with the same initial language.
+  final LocalizationDelegate localizationDelegate = await locale
+      .getLocalizationDelegate(initialLocale: initialLanguage.isoLanguageCode);
 
-  final LocalizationDelegate localizationDelegate = await _initLocalization(
-    settingsRepository,
-  );
+  // We MUST ensure the delegate's current locale matches the repository's
+  // language before starting the app. This prevents the "right selector,
+  // wrong text" issue which happens when the Bloc starts in one language
+  // and the Delegate in another, and they don't sync until a user action.
+  if (localizationDelegate.currentLocale.languageCode !=
+      initialLanguage.isoLanguageCode) {
+    await localizationDelegate.changeLocale(
+      Locale(initialLanguage.isoLanguageCode),
+    );
+  }
 
   final Map<String, WidgetBuilder> routeMap = router.buildAppRoutes(
     chatBloc: chatBloc,
@@ -65,13 +64,10 @@ void main() async {
           buildWhen: _shouldRebuildTheme,
           builder: (BuildContext _, SettingsState state) {
             final bool isDark = state.isDark;
-
             final Brightness brightness = isDark
                 ? Brightness.dark
                 : Brightness.light;
-
             final ThemeData themeData = theme.createAppTheme(brightness);
-
             final ColorScheme colorScheme = themeData.colorScheme;
 
             return BetterFeedback(
@@ -105,99 +101,18 @@ void main() async {
   );
 }
 
-Future<LocalizationDelegate> _initLocalization(
-  SettingsRepository settingsRepository,
-) async {
-  Language initialLanguage = settingsRepository.getLanguage();
-
-  if (kIsWeb) {
-    // Retrieves the host name (e.g., "localhost" or "uk.daoizm.online").
-    initialLanguage = await _resolveInitialLanguageFromUrl(
-      initialLanguage: initialLanguage,
-      settingsRepository: settingsRepository,
-    );
-  }
-
-  final LocalizationDelegate localizationDelegate = await locale
-      .getLocalizationDelegate();
-
-  final Language currentLanguage = Language.fromIsoLanguageCode(
-    localizationDelegate.currentLocale.languageCode,
-  );
-
-  if (initialLanguage != currentLanguage) {
-    _applyInitialLocale(
-      initialLanguage: initialLanguage,
-      localizationDelegate: localizationDelegate,
-    );
-  }
-  return localizationDelegate;
-}
-
 bool _shouldRebuildTheme(SettingsState previous, SettingsState current) {
   return previous.themeMode != current.themeMode;
 }
 
-void _applyInitialLocale({
-  required Language initialLanguage,
-  required LocalizationDelegate localizationDelegate,
-}) {
-  final Locale savedLocale = localeFromString(initialLanguage.isoLanguageCode);
-
-  localizationDelegate.changeLocale(savedLocale);
-
-  // Notify listeners that the savedLocale has changed so they can update.
-  localizationDelegate.onLocaleChanged?.call(savedLocale);
-}
-
-/// Retrieves the host name (e.g., "localhost" or "uk.daoizm.online").
-Future<Language> _resolveInitialLanguageFromUrl({
-  required Language initialLanguage,
-  required SettingsRepository settingsRepository,
-}) async {
-  // Retrieves the host name (e.g., "localhost" or "uk.daoizm.online").
-  final String host = Uri.base.host;
-  // Retrieves the fragment (e.g., "/en" or "/uk").
-  final String fragment = Uri.base.fragment;
-
-  for (final Language language in Language.values) {
-    final String currentLanguageCode = language.isoLanguageCode;
-
-    if (host.startsWith('$currentLanguageCode.') ||
-        fragment.contains('${AppRoute.home.path}$currentLanguageCode')) {
-      try {
-        Intl.defaultLocale = currentLanguageCode;
-      } catch (e, stackTrace) {
-        debugPrint(
-          'Failed to set Intl.defaultLocale to "$currentLanguageCode".\n'
-          'Error: $e\n'
-          'StackTrace: $stackTrace\n'
-          'Proceeding with previously set default locale or system default.',
-        );
-      }
-      initialLanguage = language;
-      // We save it so the rest of the app uses this language.
-      await settingsRepository.saveLanguageIsoCode(currentLanguageCode);
-      break;
-    }
-  }
-  return initialLanguage;
-}
-
 void _onSettingsStateChanged(BuildContext context, SettingsState state) {
+  final LocalizationDelegate delegate = LocalizedApp.of(context).delegate;
   final Language currentLanguage = Language.fromIsoLanguageCode(
-    LocalizedApp.of(context).delegate.currentLocale.languageCode,
+    delegate.currentLocale.languageCode,
   );
   final Language savedLanguage = state.language;
+
   if (currentLanguage != savedLanguage) {
-    changeLocale(context, savedLanguage.isoLanguageCode)
-    // The returned value in `then` is always `null`.
-    .then((Object? _) {
-      if (context.mounted) {
-        context.read<SettingsBloc>().add(
-          ChangeLanguageSettingsEvent(savedLanguage),
-        );
-      }
-    });
+    changeLocale(context, savedLanguage.isoLanguageCode);
   }
 }

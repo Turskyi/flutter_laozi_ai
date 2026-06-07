@@ -51,7 +51,8 @@ This will install all the necessary Flutter packages for the project.
 
 ### Environment Setup:
 
-The app relies on environmental files that are not available in the repository and have to be added manually. Here are these files:
+The app relies on environmental files that are not available in the repository
+and have to be added manually. Here are these files:
 
 1. `.env` with content:
 
@@ -59,8 +60,10 @@ The app relies on environmental files that are not available in the repository a
 RESEND_API_KEY="re_abc123example"
 ```
 
-This API key can be taken from [https://resend.com/api-keys](https://resend.com/api-keys).
-After creating the file, run the following commands to generate `lib/env/env.g.dart`:
+This API key can be taken
+from [https://resend.com/api-keys](https://resend.com/api-keys).
+After creating the file, run the following commands to generate
+`lib/env/env.g.dart`:
 
 ```bash
 dart run build_runner clean
@@ -80,14 +83,14 @@ production.SIGNING_KEY_RELEASE_PATH=../keystore/laozi_ai_release.keystore
 production.SIGNING_KEY_RELEASE_PASSWORD=
 production.SIGNING_KEY_RELEASE_KEY=laozi_ai_release
 production.SIGNING_KEY_RELEASE_KEY_PASSWORD=
-
 FIREBASE_ANDROID_APP_ID=
-
 FIREBASE_TOKEN=
 ```
 
-3. `android/keystore/laozi_ai_debug.keystore` (create or obtain the debug keystore).
-4. `android/keystore/laozi_ai_release.keystore` (create or obtain the release keystore).
+3. `android/keystore/laozi_ai_debug.keystore` (create or obtain the debug
+   keystore).
+4. `android/keystore/laozi_ai_release.keystore` (create or obtain the release
+   keystore).
 5. `android/app/google-services.json` (Firebase Android configuration file).
 
 ## Running the App:
@@ -111,7 +114,7 @@ resources:
 
 1. **Primary Web Application & API Backend:**
 
-- **URL:** [https://daoizm.online](https://daoizm.online)
+- **URL:** [https://daoismonline.com](https://daoismonline.com)
 - **Description:** This is the main web presence for the Laozi AI project. It
   hosts a Next.js frontend and, importantly, the **API backend that this Flutter
   application consumes** for its core functionality. While the frontend at this
@@ -125,7 +128,7 @@ resources:
 - **URL:** [https://laozi-chatbot.vercel.app](https://laozi-chatbot.vercel.app)
 - **Description:** This URL also hosts the Next.js frontend and the same API
   backend used by the Flutter application. It serves as a more stable, long-term
-  accessible alternative to `daoizm.online` as it's hosted on Vercel's free
+  accessible alternative to `daoismonline.com` as it's hosted on Vercel's free
   tier.
 
 3. **Flutter Web Deployment:**
@@ -189,20 +192,20 @@ folder:
 `application_services` (`core`)
 
 The number of layers in the application `core` will vary, but remember that
-the `Entities` is the very center, and since all couplings are toward the
-center, the `Entities` is only coupled to itself.
+the `Entities` is the very centre, and since all couplings are toward the
+centre, the `Entities` is only coupled to itself.
 
 #### Entities - `entities`
 
-In the very center, we see the `Entities`, which represents the state and
-behavior combination that models truth for the organization.
-Around the Entities are other layers with more behavior.
+In the very centre, we see the `Entities`, which represents the state and
+behaviour combination that models truth for the organization.
+Around the Entities are other layers with more behaviour.
 
 #### DOMAIN SERVICES - `domain_services`
 
 The first layer around the Entities is typically where we would find
 interfaces that provide object saving and retrieving behaviour, called
-`repository` interfaces. The implementation of the object-saving behavior is
+`repository` interfaces. The implementation of the object-saving behaviour is
 not in the application core, however, because it typically involves a database.
 Only the interface is in the application core.
 
@@ -515,7 +518,7 @@ more expression and flexibility.
 
 For any inquiries or suggestions, please open an issue on the GitHub repository
 or reach out to me directly at
-[support@daoizm.online](mailto:support@daoizm.online).
+[support@daoismonline.com](mailto:support@daoismonline.com).
 
 ## Screenshots:
 

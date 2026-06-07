@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/application_services/blocs/settings/settings_bloc.dart';
 import 'package:laozi_ai/env/env.dart';
@@ -16,9 +17,14 @@ class LaoziAiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Resend(apiKey: Env.resendApiKey);
+    final LocalizationDelegate localizationDelegate = LocalizedApp.of(
+      context,
+    ).delegate;
+
     return BlocBuilder<SettingsBloc, SettingsState>(
       buildWhen: (SettingsState previous, SettingsState current) =>
-          previous.themeMode != current.themeMode,
+          previous.themeMode != current.themeMode ||
+          previous.language != current.language,
       builder: (BuildContext context, SettingsState state) {
         return Resources(
           child: MaterialApp(
@@ -29,6 +35,14 @@ class LaoziAiApp extends StatelessWidget {
             themeMode: state.themeMode,
             theme: createAppTheme(Brightness.light),
             darkTheme: createAppTheme(Brightness.dark),
+            localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              localizationDelegate,
+            ],
+            supportedLocales: localizationDelegate.supportedLocales,
+            locale: localizationDelegate.currentLocale,
           ),
         );
       },
