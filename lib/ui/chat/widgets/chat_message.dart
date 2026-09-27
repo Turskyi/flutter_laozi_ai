@@ -46,29 +46,48 @@ class ChatMessage extends StatelessWidget {
                   : colorScheme.primary,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: MarkdownBody(
-              data: message.content
-                  .toString()
-                  // Replace escaped newlines with actual newlines.
-                  .replaceAll(r'\n', '\n')
-                  // Replace escaped quotes with actual quotes.
-                  .replaceAll(r'\"', '"'),
-              styleSheet:
-                  MarkdownStyleSheet.fromTheme(
-                    Theme.of(context).copyWith(textTheme: textTheme),
-                  ).copyWith(
-                    strong: textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                MarkdownBody(
+                  data: message.content
+                      .toString()
+                      // Replace escaped newlines with actual newlines.
+                      .replaceAll(r'\n', '\n')
+                      // Replace escaped quotes with actual quotes.
+                      .replaceAll(r'\"', '"'),
+                  styleSheet:
+                      MarkdownStyleSheet.fromTheme(
+                        Theme.of(context).copyWith(textTheme: textTheme),
+                      ).copyWith(
+                        strong: textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        em: textTheme.bodyMedium?.copyWith(
+                          fontStyle: FontStyle.italic,
+                        ),
+                        listBullet: textTheme.bodyMedium,
+                      ),
+                  selectable: true,
+                  onTapLink: (String _, String? href, String _) {
+                    context.read<ChatBloc>().add(LaunchUrlEvent(href ?? ''));
+                  },
+                ),
+                if (message.isAi && message.aiModel != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      message.aiModel!,
+                      textAlign: TextAlign.end,
+                      style: textTheme.labelSmall?.copyWith(
+                        color: contentColor.withValues(alpha: 0.45),
+                        fontSize: 10,
+                        letterSpacing: 0.4,
+                      ),
                     ),
-                    em: textTheme.bodyMedium?.copyWith(
-                      fontStyle: FontStyle.italic,
-                    ),
-                    listBullet: textTheme.bodyMedium,
                   ),
-              selectable: true,
-              onTapLink: (String _, String? href, String _) {
-                context.read<ChatBloc>().add(LaunchUrlEvent(href ?? ''));
-              },
+              ],
             ),
           ),
         ),

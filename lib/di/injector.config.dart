@@ -31,6 +31,8 @@ import 'package:laozi_ai/domain_services/email_repository.dart' as _i252;
 import 'package:laozi_ai/domain_services/settings_repository.dart' as _i301;
 import 'package:laozi_ai/infrastructure/data_sources/local/local_data_source.dart'
     as _i451;
+import 'package:laozi_ai/infrastructure/data_sources/remote/rest/ai_model_header.dart'
+    as _i910;
 import 'package:laozi_ai/infrastructure/data_sources/remote/rest/logging_interceptor.dart'
     as _i908;
 import 'package:laozi_ai/infrastructure/data_sources/remote/rest/retrofit_client/retrofit_client.dart'
@@ -53,8 +55,14 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.factory<_i176.Resend>(() => resendModule.resend);
+    gh.lazySingleton<_i910.AiModelHeaderStore>(
+      () => _i910.AiModelHeaderStore(),
+    );
     gh.factory<_i908.LoggingInterceptor>(
       () => const _i908.LoggingInterceptor(),
+    );
+    gh.factory<_i910.AiModelHeaderInterceptor>(
+      () => _i910.AiModelHeaderInterceptor(gh<_i910.AiModelHeaderStore>()),
     );
     gh.factory<_i301.SettingsRepository>(
       () => _i731.SettingsRepositoryImpl(gh<_i460.SharedPreferences>()),
@@ -63,7 +71,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i451.LocalDataSource(gh<_i460.SharedPreferences>()),
     );
     gh.factory<_i375.RetrofitClient>(
-      () => retrofitClientModule.getRestClient(gh<_i908.LoggingInterceptor>()),
+      () => retrofitClientModule.getRestClient(
+        gh<_i908.LoggingInterceptor>(),
+        gh<_i910.AiModelHeaderInterceptor>(),
+      ),
     );
     gh.factory<_i355.SettingsBloc>(
       () => _i355.SettingsBloc(gh<_i301.SettingsRepository>()),
@@ -75,6 +86,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i848.ChatRepositoryImpl(
         gh<_i375.RetrofitClient>(),
         gh<_i451.LocalDataSource>(),
+        gh<_i910.AiModelHeaderStore>(),
       ),
     );
     gh.factory<_i776.ChatBloc>(
