@@ -5,7 +5,7 @@
 import FlutterMacOS
 import Foundation
 
-import flutter_email_sender
+import flutter_email_sender_method_channel
 import package_info_plus
 import path_provider_foundation
 import share_plus
