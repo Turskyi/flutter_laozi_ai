@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:laozi_ai/domain_services/settings_repository.dart';
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/ui/manuscript/manuscript_data.dart';
 import 'package:laozi_ai/ui/manuscript/manuscript_text_panel.dart';
@@ -8,11 +9,13 @@ import 'package:laozi_ai/ui/manuscript/zoomable_image_card.dart';
 
 class ManuscriptReader extends StatefulWidget {
   const ManuscriptReader({
+    required this.settingsRepository,
     this.initialPage = 1,
     this.highlightQuery,
     super.key,
   });
 
+  final SettingsRepository settingsRepository;
   final int initialPage;
   final String? highlightQuery;
 
@@ -25,6 +28,7 @@ class _ManuscriptReaderState extends State<ManuscriptReader> {
     kMinManuscriptPage,
     kMaxManuscriptPage,
   );
+  late List<int> _bookmarkedPages;
   String _fullscreenMode = 'none'; // 'none', 'manuscript', 'text'
   int _fullscreenPieceIndex = 0;
 
@@ -35,11 +39,27 @@ class _ManuscriptReaderState extends State<ManuscriptReader> {
       kMinManuscriptPage,
       kMaxManuscriptPage,
     );
+    widget.settingsRepository.saveLastManuscriptPage(_currentPageNumber);
+    _bookmarkedPages = widget.settingsRepository.getManuscriptBookmarks();
   }
 
   void _navigateToPage(int page) {
+    final int clampedPage = page.clamp(kMinManuscriptPage, kMaxManuscriptPage);
+    widget.settingsRepository.saveLastManuscriptPage(clampedPage);
     setState(() {
-      _currentPageNumber = page.clamp(kMinManuscriptPage, kMaxManuscriptPage);
+      _currentPageNumber = clampedPage;
+    });
+  }
+
+  void _toggleBookmark() {
+    setState(() {
+      if (_bookmarkedPages.contains(_currentPageNumber)) {
+        _bookmarkedPages.remove(_currentPageNumber);
+      } else {
+        _bookmarkedPages.add(_currentPageNumber);
+        _bookmarkedPages.sort();
+      }
+      widget.settingsRepository.saveManuscriptBookmarks(_bookmarkedPages);
     });
   }
 
@@ -92,6 +112,33 @@ class _ManuscriptReaderState extends State<ManuscriptReader> {
           ],
         ),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              _bookmarkedPages.contains(_currentPageNumber)
+                  ? Icons.bookmark
+                  : Icons.bookmark_border,
+            ),
+            tooltip: _bookmarkedPages.contains(_currentPageNumber)
+                ? translate('manuscript.remove_bookmark')
+                : translate('manuscript.bookmark'),
+            onPressed: _toggleBookmark,
+          ),
+          IconButton(
+            icon: const Icon(Icons.bookmarks_outlined),
+            tooltip: translate('manuscript.saved_pages'),
+            onPressed: () {
+              Navigator.of(
+                context,
+              ).pushNamed(AppRoute.manuscriptSaved.path).then((Object? _) {
+                if (mounted) {
+                  setState(() {
+                    _bookmarkedPages = widget.settingsRepository
+                        .getManuscriptBookmarks();
+                  });
+                }
+              });
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.search),
             tooltip: translate('manuscript.search'),

@@ -91,4 +91,52 @@ class SettingsRepositoryImpl implements SettingsRepository {
   Future<bool> saveThemeMode(ThemeMode themeMode) {
     return _preferences.setString(Settings.themeMode.key, themeMode.name);
   }
+
+  @override
+  int getLastManuscriptPage() {
+    final int? page = _preferences.getInt(Settings.lastManuscriptPage.key);
+    if (page == null) {
+      return 1;
+    } else {
+      return page;
+    }
+  }
+
+  @override
+  Future<bool> saveLastManuscriptPage(int page) {
+    return _preferences.setInt(Settings.lastManuscriptPage.key, page);
+  }
+
+  @override
+  List<int> getManuscriptBookmarks() {
+    final List<String>? savedList = _preferences.getStringList(
+      Settings.manuscriptBookmarks.key,
+    );
+    if (savedList == null) {
+      return <int>[];
+    } else {
+      final List<int> bookmarks = <int>[];
+      for (final String item in savedList) {
+        final int? parsed = int.tryParse(item);
+        if (parsed != null) {
+          bookmarks.add(parsed);
+        } else {
+          // Handle invalid item
+        }
+      }
+      bookmarks.sort();
+      return bookmarks;
+    }
+  }
+
+  @override
+  Future<bool> saveManuscriptBookmarks(List<int> bookmarks) {
+    final List<String> stringList = bookmarks
+        .map((int page) => page.toString())
+        .toList();
+    return _preferences.setStringList(
+      Settings.manuscriptBookmarks.key,
+      stringList,
+    );
+  }
 }

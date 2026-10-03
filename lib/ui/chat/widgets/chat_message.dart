@@ -6,7 +6,6 @@ import 'package:laozi_ai/entities/message.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/ui/manuscript/manuscript_data.dart';
-import 'package:laozi_ai/ui/manuscript/manuscript_reader.dart';
 
 class ChatMessage extends StatelessWidget {
   const ChatMessage({required this.message, super.key});
@@ -94,13 +93,9 @@ class ChatMessage extends StatelessWidget {
                       if (page != null &&
                           page >= kMinManuscriptPage &&
                           page <= kMaxManuscriptPage) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (BuildContext _) {
-                              return ManuscriptReader(initialPage: page);
-                            },
-                          ),
-                        );
+                        Navigator.of(
+                          context,
+                        ).pushNamed(AppRoute.manuscript.path, arguments: page);
                       } else {
                         context.read<ChatBloc>().add(
                           LaunchUrlEvent(href ?? ''),
@@ -113,14 +108,13 @@ class ChatMessage extends StatelessWidget {
                 ),
                 if (message.isAi && message.aiModel != null)
                   Padding(
-                    padding: const EdgeInsets.only(top: 8),
+                    padding: const EdgeInsets.only(top: 6.0),
                     child: Text(
-                      message.aiModel!,
-                      textAlign: TextAlign.end,
-                      style: textTheme.labelSmall?.copyWith(
-                        color: contentColor.withValues(alpha: 0.45),
+                      message.aiModel ?? '',
+                      style: textTheme.bodySmall?.copyWith(
                         fontSize: 10,
-                        letterSpacing: 0.4,
+                        fontWeight: FontWeight.w500,
+                        color: contentColor.withValues(alpha: 0.7),
                       ),
                     ),
                   ),

@@ -26,3 +26,5 @@
 ### 7. File Organization & Architecture
 - **One Class Per File:** Maintain one class per file, except for obvious exceptions such as state classes for stateful widgets, or enum-like classes such as events and states for BLoC/Cubit.
 
+### 8. Dependency Management & Architecture
+- **Dependency Injection Over Service Locator:** Prefer constructor dependency injection adhering to the dependency inversion principle (depending on abstract interfaces rather than concrete implementations) over using service locators (such as direct service locator calls inside business logic or widgets).

@@ -25,6 +25,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   final SettingsRepository _settingsRepository;
 
+  int getLastManuscriptPage() {
+    return _settingsRepository.getLastManuscriptPage();
+  }
+
   FutureOr<void> _onLoadSettingsEvent(
     LoadSettingsEvent _,
     Emitter<SettingsState> emit,

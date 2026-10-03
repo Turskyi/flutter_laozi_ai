@@ -11,4 +11,12 @@ abstract interface class SettingsRepository {
   ThemeMode getThemeMode();
 
   Future<bool> saveThemeMode(ThemeMode themeMode);
+
+  int getLastManuscriptPage();
+
+  Future<bool> saveLastManuscriptPage(int page);
+
+  List<int> getManuscriptBookmarks();
+
+  Future<bool> saveManuscriptBookmarks(List<int> bookmarks);
 }

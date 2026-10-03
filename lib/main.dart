@@ -56,6 +56,7 @@ void main() async {
   final Map<String, WidgetBuilder> routeMap = router.buildAppRoutes(
     chatBloc: chatBloc,
     supportBloc: supportBloc,
+    settingsRepository: settingsRepository,
   );
 
   runApp(

@@ -11,7 +11,6 @@ import 'package:laozi_ai/res/app_theme.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/res/resources.dart';
 import 'package:laozi_ai/router/app_route.dart';
-import 'package:laozi_ai/ui/manuscript/manuscript_reader.dart';
 import 'package:resend/resend.dart';
 
 class LaoziAiApp extends StatefulWidget {
@@ -58,11 +57,9 @@ class _LaoziAiAppState extends State<LaoziAiApp> {
             ? int.tryParse(lastSegment)
             : null;
         if (page != null && mounted) {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (BuildContext _) => ManuscriptReader(initialPage: page),
-            ),
-          );
+          Navigator.of(
+            context,
+          ).pushNamed(AppRoute.manuscript.path, arguments: page);
         } else {
           // Ignore if page is invalid or widget is unmounted.
         }
@@ -108,9 +105,10 @@ class _LaoziAiAppState extends State<LaoziAiApp> {
                   ? int.tryParse(lastSegment) ?? 1
                   : 1;
               return MaterialPageRoute<void>(
-                settings: settings,
-                builder: (BuildContext _) =>
-                    ManuscriptReader(initialPage: page),
+                settings: RouteSettings(name: settings.name, arguments: page),
+                builder: (BuildContext context) =>
+                    widget.routeMap[AppRoute.manuscript.path]?.call(context) ??
+                    const SizedBox.shrink(),
               );
             },
             themeMode: state.themeMode,

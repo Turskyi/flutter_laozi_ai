@@ -119,6 +119,11 @@ class _AIChatBoxState extends State<AIChatBox> {
                       onTap: _openManuscript,
                     ),
                     ListTile(
+                      leading: const Icon(Icons.bookmarks_outlined),
+                      title: Text(translate('manuscript.saved_pages')),
+                      onTap: _openManuscriptSaved,
+                    ),
+                    ListTile(
                       leading: const Icon(Icons.search),
                       title: Text(translate('manuscript.search_manuscript')),
                       onTap: _openManuscriptSearch,
@@ -371,7 +376,14 @@ class _AIChatBoxState extends State<AIChatBox> {
   }
 
   void _openManuscript() {
-    Navigator.of(context).pushNamed(AppRoute.manuscript.path);
+    final int lastPage = context.read<SettingsBloc>().getLastManuscriptPage();
+    Navigator.of(
+      context,
+    ).pushNamed(AppRoute.manuscript.path, arguments: lastPage);
+  }
+
+  void _openManuscriptSaved() {
+    Navigator.of(context).pushNamed(AppRoute.manuscriptSaved.path);
   }
 
   void _openManuscriptSearch() {
