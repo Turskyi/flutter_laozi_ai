@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -5,14 +8,57 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/application_services/blocs/settings/settings_bloc.dart';
 import 'package:laozi_ai/env/env.dart';
 import 'package:laozi_ai/res/app_theme.dart';
+import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/res/resources.dart';
 import 'package:laozi_ai/router/app_route.dart';
+import 'package:laozi_ai/ui/manuscript/manuscript_reader.dart';
 import 'package:resend/resend.dart';
 
-class LaoziAiApp extends StatelessWidget {
-  const LaoziAiApp({required this.routeMap, super.key});
+class LaoziAiApp extends StatefulWidget {
+  const LaoziAiApp({required this.routeMap, this.initialUri, super.key});
 
   final Map<String, WidgetBuilder> routeMap;
+  final Uri? initialUri;
+
+  @override
+  State<LaoziAiApp> createState() => _LaoziAiAppState();
+}
+
+class _LaoziAiAppState extends State<LaoziAiApp> {
+  StreamSubscription<Uri>? _linkSubscription;
+  Uri? _pendingUri;
+
+  @override
+  void initState() {
+    super.initState();
+    _pendingUri = widget.initialUri;
+    _linkSubscription = AppLinks().uriLinkStream.listen(_openLink);
+  }
+
+  @override
+  void dispose() {
+    _linkSubscription?.cancel();
+    super.dispose();
+  }
+
+  void _openLink(Uri uri) {
+    if (uri.host == constants.primaryDomain &&
+        uri.path.startsWith('${AppRoute.manuscript.path}/')) {
+      final String? lastSegment = uri.pathSegments.lastOrNull;
+      final int? page = lastSegment != null ? int.tryParse(lastSegment) : null;
+      if (page != null && mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (BuildContext _) => ManuscriptReader(initialPage: page),
+          ),
+        );
+      } else {
+        // Ignore if page is invalid or widget is unmounted.
+      }
+    } else {
+      // Ignore non-manuscript links.
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +76,30 @@ class LaoziAiApp extends StatelessWidget {
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             title: translate('title'),
-            initialRoute: AppRoute.home.path,
-            routes: routeMap,
+            initialRoute: () {
+              final Uri? pendingUri = _pendingUri;
+              if (pendingUri == null) {
+                return AppRoute.home.path;
+              }
+              final String? lastSegment = pendingUri.pathSegments.lastOrNull;
+              final int page = lastSegment != null
+                  ? int.tryParse(lastSegment) ?? 1
+                  : 1;
+              return '${AppRoute.manuscript.path}/$page';
+            }(),
+            routes: widget.routeMap,
+            onGenerateRoute: (RouteSettings settings) {
+              final Uri? uri = Uri.tryParse(settings.name ?? '');
+              final String? lastSegment = uri?.pathSegments.lastOrNull;
+              final int page = lastSegment != null
+                  ? int.tryParse(lastSegment) ?? 1
+                  : 1;
+              return MaterialPageRoute<void>(
+                settings: settings,
+                builder: (BuildContext _) =>
+                    ManuscriptReader(initialPage: page),
+              );
+            },
             themeMode: state.themeMode,
             theme: createAppTheme(Brightness.light),
             darkTheme: createAppTheme(Brightness.dark),

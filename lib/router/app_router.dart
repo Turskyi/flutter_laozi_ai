@@ -6,6 +6,7 @@ import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/ui/about/about_page.dart';
 import 'package:laozi_ai/ui/chat/ai_chatbox.dart';
 import 'package:laozi_ai/ui/faq/faq_page.dart';
+import 'package:laozi_ai/ui/manuscript/manuscript_reader.dart';
 import 'package:laozi_ai/ui/privacy/privacy_page.dart';
 import 'package:laozi_ai/ui/support/support_page.dart';
 
@@ -28,6 +29,9 @@ Map<String, WidgetBuilder> buildAppRoutes({
         create: (BuildContext _) => supportBloc,
         child: const SupportPage(),
       );
+    },
+    AppRoute.manuscript.path: (BuildContext _) {
+      return const ManuscriptReader();
     },
   };
 }

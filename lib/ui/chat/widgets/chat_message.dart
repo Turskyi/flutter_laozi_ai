@@ -4,6 +4,9 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:laozi_ai/application_services/blocs/chat/chat_bloc.dart';
 import 'package:laozi_ai/entities/message.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
+import 'package:laozi_ai/router/app_route.dart';
+import 'package:laozi_ai/ui/manuscript/manuscript_data.dart';
+import 'package:laozi_ai/ui/manuscript/manuscript_reader.dart';
 
 class ChatMessage extends StatelessWidget {
   const ChatMessage({required this.message, super.key});
@@ -71,7 +74,35 @@ class ChatMessage extends StatelessWidget {
                       ),
                   selectable: true,
                   onTapLink: (String _, String? href, String _) {
-                    context.read<ChatBloc>().add(LaunchUrlEvent(href ?? ''));
+                    final Uri? uri = Uri.tryParse(href ?? '');
+                    final bool isManuscript =
+                        uri?.host == constants.primaryDomain &&
+                        uri?.pathSegments.length == 2 &&
+                        uri?.pathSegments.firstOrNull ==
+                            AppRoute.manuscript.name;
+
+                    final String? pageSegment = uri?.pathSegments.lastOrNull;
+                    if (pageSegment != null) {
+                      final int? page = isManuscript
+                          ? int.tryParse(pageSegment)
+                          : null;
+
+                      if (page != null &&
+                          page >= kMinManuscriptPage &&
+                          page <= kMaxManuscriptPage) {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext _) {
+                              return ManuscriptReader(initialPage: page);
+                            },
+                          ),
+                        );
+                      } else {
+                        context.read<ChatBloc>().add(
+                          LaunchUrlEvent(href ?? ''),
+                        );
+                      }
+                    }
                   },
                 ),
                 if (message.isAi && message.aiModel != null)

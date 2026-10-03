@@ -3,7 +3,8 @@ enum AppRoute {
   about('/about'),
   faq('/faq'),
   privacy('/privacy'),
-  support('/support');
+  support('/support'),
+  manuscript('/manuscript');
 
   const AppRoute(this.path);
 

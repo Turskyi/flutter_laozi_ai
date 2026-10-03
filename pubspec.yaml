@@ -33,6 +33,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  app_links: ^7.2.1
   bloc: ^9.2.1
   bloc_test: ^10.0.0
   collection: ^1.19.1
@@ -107,6 +108,9 @@ flutter:
     # strings
     - assets/i18n/
     - assets/images/
+    - assets/manuscripts/pelliot-2584/
+    - assets/manuscripts/pelliot-2255/
+    - assets/data/manuscript_pages.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

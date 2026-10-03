@@ -1,3 +1,4 @@
+import 'package:app_links/app_links.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,10 +17,12 @@ import 'package:laozi_ai/router/app_router.dart' as router;
 import 'package:laozi_ai/ui/feedback/feedback_form.dart';
 import 'package:laozi_ai/ui/laozi_ai_app.dart';
 
-/// The [main] is the ultimate detail — the lowest-level policy.
+/// The [main] is the ultimate detail: the lowest-level policy.
 void main() async {
   // Ensure that the Flutter engine is initialized.
   WidgetsFlutterBinding.ensureInitialized();
+
+  final Uri? initialUri = await AppLinks().getInitialLink();
 
   // Initialize dependency injection.
   final GetIt dependencies = await di.injectDependencies();
@@ -91,7 +94,7 @@ void main() async {
               ),
               child: BlocListener<SettingsBloc, SettingsState>(
                 listener: _onSettingsStateChanged,
-                child: LaoziAiApp(routeMap: routeMap),
+                child: LaoziAiApp(routeMap: routeMap, initialUri: initialUri),
               ),
             );
           },

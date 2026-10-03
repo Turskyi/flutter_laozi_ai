@@ -36,14 +36,7 @@ class FaqPage extends StatelessWidget {
               'faq_page.why_laozi_ai_p4',
             ],
           ),
-          const FaqItem(
-            titleKey: 'faq_page.inconsistent_chapters_title',
-            paragraphKeys: <String>[
-              'faq_page.inconsistent_chapters_p1',
-              'faq_page.inconsistent_chapters_p2',
-              'faq_page.inconsistent_chapters_p3',
-            ],
-          ),
+
           const FaqItem(
             titleKey: 'faq_page.more_languages_title',
             paragraphKeys: <String>[
@@ -67,14 +60,7 @@ class FaqPage extends StatelessWidget {
               'faq_page.clarify_rephrase_p2',
             ],
           ),
-          const FaqItem(
-            titleKey: 'faq_page.different_answers_title',
-            paragraphKeys: <String>[
-              'faq_page.different_answers_p1',
-              'faq_page.different_answers_p2',
-              'faq_page.different_answers_p3',
-            ],
-          ),
+
           const FaqItem(
             titleKey: 'faq_page.gateway_timeout_title',
             paragraphKeys: <String>[
