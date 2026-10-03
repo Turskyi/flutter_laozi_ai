@@ -177,6 +177,12 @@
     "support_email_body": "New support message received"
   },
   "manuscript": {
+    "search": "Search",
+    "search_manuscript": "Search Manuscript",
+    "search_hint": "Search manuscript text...",
+    "search_results": "{count} results found",
+    "no_results": "No results found",
+    "clear_search": "Clear search",
     "page": "Page",
     "of": "of",
     "prev": "Prev",

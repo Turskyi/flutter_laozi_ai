@@ -177,6 +177,12 @@
     "support_email_body": "Jauns atbalsta ziņojums"
   },
   "manuscript": {
+    "search": "Meklēt",
+    "search_manuscript": "Meklēt manuskriptā",
+    "search_hint": "Meklēt manuskripta tekstā...",
+    "search_results": "Atrasti {count} rezultāti",
+    "no_results": "Nekas netika atrasts",
+    "clear_search": "Notīrīt meklēšanu",
     "page": "Lapa",
     "of": "no",
     "prev": "Iepriekšējā",

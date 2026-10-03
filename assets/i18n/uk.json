@@ -177,6 +177,12 @@
     "support_email_body": "Нове повідомлення підтримки"
   },
   "manuscript": {
+    "search": "Пошук",
+    "search_manuscript": "Пошук у рукописі",
+    "search_hint": "Пошук у тексті рукопису...",
+    "search_results": "Знайдено результатів: {count}",
+    "no_results": "Нічого не знайдено",
+    "clear_search": "Очистити пошук",
     "page": "Сторінка",
     "of": "з",
     "prev": "Назад",

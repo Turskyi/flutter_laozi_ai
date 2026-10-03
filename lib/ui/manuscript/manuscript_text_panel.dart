@@ -10,6 +10,7 @@ class ManuscriptTextPanel extends StatefulWidget {
     required this.onSelectPage,
     this.isFullscreen = false,
     this.onToggleFullscreen,
+    this.highlightQuery,
     super.key,
   });
 
@@ -19,6 +20,7 @@ class ManuscriptTextPanel extends StatefulWidget {
   final ValueChanged<int> onSelectPage;
   final bool isFullscreen;
   final VoidCallback? onToggleFullscreen;
+  final String? highlightQuery;
 
   @override
   State<ManuscriptTextPanel> createState() => _ManuscriptTextPanelState();
@@ -30,10 +32,68 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
   late final ScrollController _fullscreenScrollController = ScrollController();
 
   @override
+  void initState() {
+    super.initState();
+    _scrollToMatchIfNeeded();
+  }
+
+  @override
+  void didUpdateWidget(ManuscriptTextPanel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.highlightQuery != oldWidget.highlightQuery ||
+        widget.pageData != oldWidget.pageData) {
+      _scrollToMatchIfNeeded();
+    } else {
+      // No scroll needed
+    }
+  }
+
+  @override
   void dispose() {
     _scrollController.dispose();
     _fullscreenScrollController.dispose();
     super.dispose();
+  }
+
+  void _scrollToMatchIfNeeded() {
+    final String? query = widget.highlightQuery;
+    final String trimmedQuery = query?.trim() ?? '';
+
+    if (trimmedQuery.isNotEmpty) {
+      final String content = widget.pageData.content;
+      final int matchIndex = content.toLowerCase().indexOf(
+        trimmedQuery.toLowerCase(),
+      );
+
+      if (matchIndex != -1) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final ScrollController controller = widget.isFullscreen
+              ? _fullscreenScrollController
+              : _scrollController;
+
+          if (controller.hasClients) {
+            final double ratio = matchIndex / content.length;
+            final double maxScroll = controller.position.maxScrollExtent;
+            final double targetOffset = (ratio * maxScroll).clamp(
+              0.0,
+              maxScroll,
+            );
+
+            controller.animateTo(
+              targetOffset,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          } else {
+            // Controller not attached
+          }
+        });
+      } else {
+        // Query match not found in page content
+      }
+    } else {
+      // Query is empty
+    }
   }
 
   void _increaseFont() {
@@ -66,57 +126,60 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Widget bodyWidget;
 
     if (widget.isFullscreen) {
-      return _buildFullscreenOverlay(context, colorScheme);
-    }
+      bodyWidget = _buildFullscreenOverlay(context, colorScheme);
+    } else {
+      bodyWidget = Card(
+        margin: const EdgeInsets.all(6),
+        elevation: 1,
+        clipBehavior: Clip.antiAlias,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              // Header Bar
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _buildHeaderBar(context, colorScheme),
+              ),
+              const SizedBox(height: 12),
 
-    return Card(
-      margin: const EdgeInsets.all(6),
-      elevation: 1,
-      clipBehavior: Clip.antiAlias,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // Header Bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: _buildHeaderBar(context, colorScheme),
-            ),
-            const SizedBox(height: 12),
+              // Inline orientation note if applicable
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _buildInlineNote(colorScheme),
+              ),
 
-            // Inline orientation note if applicable
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: _buildInlineNote(colorScheme),
-            ),
-
-            // Main Text Content
-            Expanded(
-              child: Scrollbar(
-                controller: _scrollController,
-                interactive: true,
-                child: SingleChildScrollView(
+              // Main Text Content
+              Expanded(
+                child: Scrollbar(
                   controller: _scrollController,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: _buildFormattedText(context, colorScheme),
+                  interactive: true,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: _buildFormattedText(context, colorScheme),
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            // Footer (Continue / End)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: _buildFooter(context, colorScheme),
-            ),
-          ],
+              // Footer (Continue / End)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _buildFooter(context, colorScheme),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
+
+    return bodyWidget;
   }
 
   Widget _buildHeaderBar(BuildContext context, ColorScheme colorScheme) {
@@ -152,7 +215,6 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
             ),
           ],
         ),
-
         Row(
           children: <Widget>[
             // Font Scale Controls
@@ -278,8 +340,9 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
           caseSensitive: false,
         ).hasMatch(trimmed);
 
+        final Widget itemWidget;
         if (isChapterHeading) {
-          return Padding(
+          itemWidget = Padding(
             padding: const EdgeInsets.only(top: 20, bottom: 8),
             child: SelectableText(
               trimmed,
@@ -291,27 +354,97 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
               ),
             ),
           );
+        } else {
+          itemWidget = _buildParagraphText(
+            paragraph: paragraph,
+            baseFontSize: baseFontSize,
+            colorScheme: colorScheme,
+            highlightQuery: widget.highlightQuery,
+          );
         }
 
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Text(
-            paragraph,
-            style: TextStyle(
-              fontSize: baseFontSize,
-              height: 1.6,
-              fontFamily: 'serif',
-              color: colorScheme.onSurface,
-            ),
-          ),
-        );
+        return itemWidget;
       }).toList(),
     );
   }
 
+  Widget _buildParagraphText({
+    required String paragraph,
+    required double baseFontSize,
+    required ColorScheme colorScheme,
+    required String? highlightQuery,
+  }) {
+    final String query = highlightQuery?.trim() ?? '';
+    final Widget textWidget;
+
+    if (query.isNotEmpty) {
+      final String lowerParagraph = paragraph.toLowerCase();
+      final String lowerQuery = query.toLowerCase();
+      final List<InlineSpan> spans = <InlineSpan>[];
+      int startIndex = 0;
+
+      while (startIndex < paragraph.length) {
+        final int matchIndex = lowerParagraph.indexOf(lowerQuery, startIndex);
+
+        if (matchIndex != -1) {
+          if (matchIndex > startIndex) {
+            spans.add(
+              TextSpan(text: paragraph.substring(startIndex, matchIndex)),
+            );
+          } else {
+            // No preceding text
+          }
+
+          spans.add(
+            TextSpan(
+              text: paragraph.substring(matchIndex, matchIndex + query.length),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                backgroundColor: colorScheme.primaryContainer,
+                color: colorScheme.onPrimaryContainer,
+              ),
+            ),
+          );
+
+          startIndex = matchIndex + query.length;
+        } else {
+          spans.add(TextSpan(text: paragraph.substring(startIndex)));
+          startIndex = paragraph.length;
+        }
+      }
+
+      textWidget = SelectableText.rich(
+        TextSpan(children: spans),
+        style: TextStyle(
+          fontSize: baseFontSize,
+          height: 1.6,
+          fontFamily: 'serif',
+          color: colorScheme.onSurface,
+        ),
+      );
+    } else {
+      textWidget = SelectableText(
+        paragraph,
+        style: TextStyle(
+          fontSize: baseFontSize,
+          height: 1.6,
+          fontFamily: 'serif',
+          color: colorScheme.onSurface,
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: textWidget,
+    );
+  }
+
   Widget _buildFooter(BuildContext context, ColorScheme colorScheme) {
+    final Widget footerWidget;
+
     if (widget.pageData.isLastPage) {
-      return Container(
+      footerWidget = Container(
         margin: const EdgeInsets.only(top: 16),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
@@ -342,20 +475,22 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
           ],
         ),
       );
+    } else {
+      footerWidget = Padding(
+        padding: const EdgeInsets.only(top: 16),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
+            onPressed: widget.onNextPage,
+            iconAlignment: IconAlignment.end,
+            icon: const Icon(Icons.chevron_right, size: 16),
+            label: Text(_continueText, style: const TextStyle(fontSize: 12)),
+          ),
+        ),
+      );
     }
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: TextButton.icon(
-          onPressed: widget.onNextPage,
-          iconAlignment: IconAlignment.end,
-          icon: const Icon(Icons.chevron_right, size: 16),
-          label: Text(_continueText, style: const TextStyle(fontSize: 12)),
-        ),
-      ),
-    );
+    return footerWidget;
   }
 
   Widget _buildFullscreenOverlay(

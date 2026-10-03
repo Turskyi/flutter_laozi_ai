@@ -4,7 +4,8 @@ enum AppRoute {
   faq('/faq'),
   privacy('/privacy'),
   support('/support'),
-  manuscript('/manuscript');
+  manuscript('/manuscript'),
+  manuscriptSearch('/manuscript/search');
 
   const AppRoute(this.path);
 

@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:laozi_ai/router/app_route.dart';
 import 'package:laozi_ai/ui/manuscript/manuscript_data.dart';
 import 'package:laozi_ai/ui/manuscript/manuscript_text_panel.dart';
 import 'package:laozi_ai/ui/manuscript/reading_guide_dialog.dart';
 import 'package:laozi_ai/ui/manuscript/zoomable_image_card.dart';
 
 class ManuscriptReader extends StatefulWidget {
-  const ManuscriptReader({this.initialPage = 1, super.key});
+  const ManuscriptReader({
+    this.initialPage = 1,
+    this.highlightQuery,
+    super.key,
+  });
 
   final int initialPage;
+  final String? highlightQuery;
 
   @override
   State<ManuscriptReader> createState() => _ManuscriptReaderState();
@@ -87,6 +93,13 @@ class _ManuscriptReaderState extends State<ManuscriptReader> {
         ),
         actions: <Widget>[
           IconButton(
+            icon: const Icon(Icons.search),
+            tooltip: translate('manuscript.search'),
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRoute.manuscriptSearch.path);
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.info_outline),
             tooltip: translate('manuscript.reading_guide'),
             onPressed: () => ReadingGuideDialog.show(context),
@@ -140,6 +153,7 @@ class _ManuscriptReaderState extends State<ManuscriptReader> {
                         onSelectPage: _navigateToPage,
                         isFullscreen: false,
                         onToggleFullscreen: () => _toggleFullscreen('text'),
+                        highlightQuery: widget.highlightQuery,
                       );
 
                       if (isWide) {
@@ -191,6 +205,7 @@ class _ManuscriptReaderState extends State<ManuscriptReader> {
                   onSelectPage: _navigateToPage,
                   isFullscreen: true,
                   onToggleFullscreen: () => _toggleFullscreen('none'),
+                  highlightQuery: widget.highlightQuery,
                 ),
               ),
           ],

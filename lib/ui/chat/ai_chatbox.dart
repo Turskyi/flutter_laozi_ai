@@ -119,6 +119,11 @@ class _AIChatBoxState extends State<AIChatBox> {
                       onTap: _openManuscript,
                     ),
                     ListTile(
+                      leading: const Icon(Icons.search),
+                      title: Text(translate('manuscript.search_manuscript')),
+                      onTap: _openManuscriptSearch,
+                    ),
+                    ListTile(
                       leading: const Icon(Icons.info_outline),
                       title: Text(translate('about')),
                       onTap: _openAbout,
@@ -367,6 +372,10 @@ class _AIChatBoxState extends State<AIChatBox> {
 
   void _openManuscript() {
     Navigator.of(context).pushNamed(AppRoute.manuscript.path);
+  }
+
+  void _openManuscriptSearch() {
+    Navigator.of(context).pushNamed(AppRoute.manuscriptSearch.path);
   }
 
   void _openFaq() {
