@@ -92,122 +92,145 @@ class _ZoomableImageCardState extends State<ZoomableImageCard> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  // Zoom Controls
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.zoom_out, size: 18),
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(
-                          minWidth: 32,
-                          minHeight: 32,
-                        ),
-                        onPressed: _scale > 0.75 ? _zoomOut : null,
-                        tooltip: 'Zoom Out',
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minWidth: constraints.maxWidth,
                       ),
-                      SizedBox(
-                        width: 44,
-                        child: Text(
-                          '${(_scale * 100).round()}%',
-                          textAlign: TextAlign.center,
-                          style: textTheme.bodySmall?.copyWith(
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'monospace',
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.zoom_in, size: 18),
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(
-                          minWidth: 32,
-                          minHeight: 32,
-                        ),
-                        onPressed: _scale < 3.5 ? _zoomIn : null,
-                        tooltip: 'Zoom In',
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.refresh, size: 16),
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(
-                          minWidth: 32,
-                          minHeight: 32,
-                        ),
-                        onPressed: _scale != 1.0 ? _resetZoom : null,
-                        tooltip: 'Reset Zoom',
-                      ),
-                    ],
-                  ),
-
-                  // Hint & Actions
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      LayoutBuilder(
-                        builder:
-                            (BuildContext ctx, BoxConstraints constraints) {
-                              if (MediaQuery.of(context).size.width > 600) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(right: 8),
-                                  child: Text(
-                                    translate('manuscript.drag_to_pan'),
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      color: colorScheme.onSurfaceVariant,
-                                    ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          // Zoom Controls
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                icon: const Icon(Icons.zoom_out, size: 18),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(
+                                  minWidth: 32,
+                                  minHeight: 32,
+                                ),
+                                onPressed: _scale > 0.75 ? _zoomOut : null,
+                                tooltip: 'Zoom Out',
+                              ),
+                              SizedBox(
+                                width: 40,
+                                child: Text(
+                                  '${(_scale * 100).round()}%',
+                                  textAlign: TextAlign.center,
+                                  style: textTheme.bodySmall?.copyWith(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'monospace',
                                   ),
-                                );
-                              }
-                              return const SizedBox.shrink();
-                            },
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.zoom_in, size: 18),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(
+                                  minWidth: 32,
+                                  minHeight: 32,
+                                ),
+                                onPressed: _scale < 3.5 ? _zoomIn : null,
+                                tooltip: 'Zoom In',
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.refresh, size: 16),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(
+                                  minWidth: 32,
+                                  minHeight: 32,
+                                ),
+                                onPressed: _scale != 1.0 ? _resetZoom : null,
+                                tooltip: 'Reset Zoom',
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 4),
+
+                          // Hint & Actions
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              LayoutBuilder(
+                                builder:
+                                    (
+                                      BuildContext ctx,
+                                      BoxConstraints boxConstraints,
+                                    ) {
+                                      if (MediaQuery.of(context).size.width >
+                                          600) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                            right: 8,
+                                          ),
+                                          child: Text(
+                                            translate('manuscript.drag_to_pan'),
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color:
+                                                  colorScheme.onSurfaceVariant,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      return const SizedBox.shrink();
+                                    },
+                              ),
+                              FilledButton.tonalIcon(
+                                style: FilledButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 4,
+                                    vertical: 4,
+                                  ),
+                                  minimumSize: Size.zero,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                onPressed: () =>
+                                    ReadingGuideDialog.show(context),
+                                icon: const Icon(Icons.info_outline, size: 14),
+                                label: Text(
+                                  translate('manuscript.reading_guide'),
+                                  style: const TextStyle(fontSize: 11),
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              FilledButton.tonalIcon(
+                                style: FilledButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 4,
+                                    vertical: 4,
+                                  ),
+                                  minimumSize: Size.zero,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                onPressed: widget.onToggleFullscreen,
+                                icon: const Icon(Icons.fullscreen, size: 14),
+                                label: Text(
+                                  translate('manuscript.fullscreen'),
+                                  style: const TextStyle(fontSize: 11),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      FilledButton.tonalIcon(
-                        style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        onPressed: () => ReadingGuideDialog.show(context),
-                        icon: const Icon(Icons.info_outline, size: 14),
-                        label: Text(
-                          translate('manuscript.reading_guide'),
-                          style: const TextStyle(fontSize: 11),
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-                      FilledButton.tonalIcon(
-                        style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        onPressed: widget.onToggleFullscreen,
-                        icon: const Icon(Icons.fullscreen, size: 14),
-                        label: Text(
-                          translate('manuscript.fullscreen'),
-                          style: const TextStyle(fontSize: 11),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                  );
+                },
               ),
             ),
 
@@ -255,7 +278,7 @@ class _ZoomableImageCardState extends State<ZoomableImageCard> {
             // Caption Footer
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
               color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
               child: Text(
                 widget.caption,

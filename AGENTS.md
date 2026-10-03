@@ -16,6 +16,7 @@
 
 ### 4. Typography & Punctuation
 - **No Em Dashes (`—`):** Never use em dashes. Use standard hyphens (`-`), colons (`:`), or commas instead.
+- **No Hardcoded Font Sizes:** Never hardcode font sizes (e.g., `TextStyle(fontSize: ...)`); always use Material 3 `TextTheme` styles (e.g., `Theme.of(context).textTheme.bodySmall`, `labelMedium`, etc.).
 
 ### 5. Lint & Formatting Rules
 - Follow Flutter lint rules strictly (`always_specify_types`, `prefer_single_quotes`, `require_trailing_commas`, line length limit of 80 characters).

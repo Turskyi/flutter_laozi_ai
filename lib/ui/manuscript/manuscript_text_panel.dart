@@ -150,7 +150,7 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
               // Inline orientation note if applicable
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: _buildInlineNote(colorScheme),
+                child: _buildInlineNote(context, colorScheme),
               ),
 
               // Main Text Content
@@ -183,39 +183,46 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
   }
 
   Widget _buildHeaderBar(BuildContext context, ColorScheme colorScheme) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Text(
-              translate('manuscript.translation_and_notes').toUpperCase(),
-              style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.8,
-                color: colorScheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(
-                color: colorScheme.primaryContainer,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                'Page ${widget.pageData.pageNumber} of ${widget.totalPages}',
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.onPrimaryContainer,
+        Expanded(
+          child: Row(
+            children: <Widget>[
+              Flexible(
+                child: Text(
+                  translate('manuscript.translation_and_notes').toUpperCase(),
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.labelSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.8,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  'Page ${widget.pageData.pageNumber} of ${widget.totalPages}',
+                  style: textTheme.labelSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onPrimaryContainer,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
+        const SizedBox(width: 8),
         Row(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             // Font Scale Controls
             Container(
@@ -234,12 +241,14 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
                   InkWell(
                     onTap: _fontScale > 0.85 ? _decreaseFont : null,
                     borderRadius: BorderRadius.circular(6),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       child: Text(
                         'A-',
-                        style: TextStyle(
-                          fontSize: 12,
+                        style: textTheme.labelMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -248,12 +257,14 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
                   InkWell(
                     onTap: _fontScale < 1.45 ? _increaseFont : null,
                     borderRadius: BorderRadius.circular(6),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       child: Text(
                         'A+',
-                        style: TextStyle(
-                          fontSize: 12,
+                        style: textTheme.labelMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -281,16 +292,18 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
                 icon: const Icon(Icons.fullscreen, size: 14),
                 label: Text(
                   translate('manuscript.fullscreen'),
-                  style: const TextStyle(fontSize: 11),
+                  style: textTheme.labelSmall,
                 ),
-              ),
+              )
+            else
+              const SizedBox.shrink(),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildInlineNote(ColorScheme colorScheme) {
+  Widget _buildInlineNote(BuildContext context, ColorScheme colorScheme) {
     final String? note = widget.pageData.note;
     final Widget noteWidget;
     if (note == null) {
@@ -312,8 +325,7 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
             Expanded(
               child: Text(
                 note,
-                style: TextStyle(
-                  fontSize: 12,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   height: 1.4,
                   color: colorScheme.onSurface,
                 ),
@@ -441,6 +453,7 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
   }
 
   Widget _buildFooter(BuildContext context, ColorScheme colorScheme) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
     final Widget footerWidget;
 
     if (widget.pageData.isLastPage) {
@@ -465,8 +478,7 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
             const SizedBox(width: 8),
             Text(
               translate('manuscript.end_of_reader'),
-              style: TextStyle(
-                fontSize: 12,
+              style: textTheme.bodySmall?.copyWith(
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.w600,
                 color: colorScheme.onSurfaceVariant,
@@ -484,7 +496,7 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
             onPressed: widget.onNextPage,
             iconAlignment: IconAlignment.end,
             icon: const Icon(Icons.chevron_right, size: 16),
-            label: Text(_continueText, style: const TextStyle(fontSize: 12)),
+            label: Text(_continueText, style: textTheme.labelMedium),
           ),
         ),
       );
@@ -497,74 +509,82 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
     BuildContext context,
     ColorScheme colorScheme,
   ) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: colorScheme.surface,
         foregroundColor: colorScheme.onSurface,
         automaticallyImplyLeading: false,
         titleSpacing: 8,
-        title: Row(
-          children: <Widget>[
-            // Page Navigation (Prev)
-            IconButton(
-              icon: const Icon(Icons.chevron_left),
-              onPressed: widget.pageData.pageNumber > kMinManuscriptPage
-                  ? () => widget.onSelectPage(widget.pageData.pageNumber - 1)
-                  : null,
-              tooltip: translate('manuscript.prev'),
-            ),
-            Text(
-              '${translate('manuscript.page')} ${widget.pageData.pageNumber} '
-              '${translate('manuscript.of')} ${widget.totalPages}',
-              style: const TextStyle(fontSize: 13),
-            ),
-            // Page Navigation (Next)
-            IconButton(
-              icon: const Icon(Icons.chevron_right),
-              onPressed: widget.pageData.pageNumber < kMaxManuscriptPage
-                  ? () => widget.onSelectPage(widget.pageData.pageNumber + 1)
-                  : null,
-              tooltip: translate('manuscript.next'),
-            ),
+        title: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: <Widget>[
+              // Page Navigation (Prev)
+              IconButton(
+                icon: const Icon(Icons.chevron_left),
+                onPressed: widget.pageData.pageNumber > kMinManuscriptPage
+                    ? () => widget.onSelectPage(widget.pageData.pageNumber - 1)
+                    : null,
+                tooltip: translate('manuscript.prev'),
+              ),
+              Text(
+                '${translate('manuscript.page')} ${widget.pageData.pageNumber} '
+                '${translate('manuscript.of')} ${widget.totalPages}',
+                style: textTheme.bodyMedium,
+              ),
+              // Page Navigation (Next)
+              IconButton(
+                icon: const Icon(Icons.chevron_right),
+                onPressed: widget.pageData.pageNumber < kMaxManuscriptPage
+                    ? () => widget.onSelectPage(widget.pageData.pageNumber + 1)
+                    : null,
+                tooltip: translate('manuscript.next'),
+              ),
 
-            const Spacer(),
+              const SizedBox(width: 16),
 
-            // Font Size Controls
-            IconButton(
-              icon: const Icon(Icons.zoom_out),
-              onPressed: _fontScale > 0.85 ? _decreaseFont : null,
-            ),
-            Text(
-              '${(_fontScale * 100).round()}%',
-              style: const TextStyle(fontSize: 12, fontFamily: 'monospace'),
-            ),
-            IconButton(
-              icon: const Icon(Icons.zoom_in),
-              onPressed: _fontScale < 1.45 ? _increaseFont : null,
-            ),
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: _fontScale != 1.0 ? _resetFont : null,
-            ),
+              // Font Size Controls
+              IconButton(
+                icon: const Icon(Icons.zoom_out),
+                onPressed: _fontScale > 0.85 ? _decreaseFont : null,
+              ),
+              Text(
+                '${(_fontScale * 100).round()}%',
+                style: textTheme.bodyMedium?.copyWith(fontFamily: 'monospace'),
+              ),
+              IconButton(
+                icon: const Icon(Icons.zoom_in),
+                onPressed: _fontScale < 1.45 ? _increaseFont : null,
+              ),
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: _fontScale != 1.0 ? _resetFont : null,
+              ),
 
-            const Spacer(),
+              const SizedBox(width: 16),
 
-            // Exit Fullscreen Button
-            FilledButton.tonalIcon(
-              style: FilledButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+              // Exit Fullscreen Button
+              FilledButton.tonalIcon(
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: widget.onToggleFullscreen,
+                icon: const Icon(Icons.fullscreen_exit, size: 16),
+                label: Text(
+                  translate('manuscript.exit'),
+                  style: textTheme.labelSmall,
                 ),
               ),
-              onPressed: widget.onToggleFullscreen,
-              icon: const Icon(Icons.fullscreen_exit, size: 16),
-              label: Text(
-                translate('manuscript.exit'),
-                style: const TextStyle(fontSize: 11),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       body: Scrollbar(
@@ -580,7 +600,7 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    _buildInlineNote(colorScheme),
+                    _buildInlineNote(context, colorScheme),
                     _buildFormattedText(context, colorScheme),
                     _buildFooter(context, colorScheme),
                   ],
