@@ -17,6 +17,9 @@ const String resendEmailDomain = primaryDomain;
 const String kMailToScheme = 'mailto';
 const String subjectParameter = 'subject';
 const String bodyParameter = 'body';
+const String langParameter = 'lang';
+const String localeParameter = 'locale';
+const String hlParameter = 'hl';
 
 /// A constant for one minute in milliseconds.
 const int oneMinute = 60000;

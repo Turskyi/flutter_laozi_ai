@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:laozi_ai/domain_services/settings_repository.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
+import 'package:laozi_ai/res/constants.dart';
 import 'package:laozi_ai/res/enums/settings.dart';
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,9 +24,9 @@ class SettingsRepositoryImpl implements SettingsRepository {
       final String fragment = Uri.base.fragment.toLowerCase();
       final String path = Uri.base.path.toLowerCase();
       final String? langParam =
-          Uri.base.queryParameters['lang']?.toLowerCase() ??
-          Uri.base.queryParameters['locale']?.toLowerCase() ??
-          Uri.base.queryParameters['hl']?.toLowerCase();
+          Uri.base.queryParameters[langParameter]?.toLowerCase() ??
+          Uri.base.queryParameters[localeParameter]?.toLowerCase() ??
+          Uri.base.queryParameters[hlParameter]?.toLowerCase();
 
       for (final Language language in Language.values) {
         final String currentLanguageCode = language.isoLanguageCode;
