@@ -75,11 +75,15 @@ class ChatMessage extends StatelessWidget {
                   selectable: true,
                   onTapLink: (String _, String? href, String _) {
                     final Uri? uri = Uri.tryParse(href ?? '');
-                    final bool isManuscript =
-                        uri?.host == constants.primaryDomain &&
+                    final bool isPrimaryDomain =
+                        uri?.host == constants.primaryDomain ||
+                        uri?.host == 'www.${constants.primaryDomain}';
+                    final bool isManuscriptRoute =
                         uri?.pathSegments.length == 2 &&
                         uri?.pathSegments.firstOrNull ==
                             AppRoute.manuscript.name;
+                    final bool isManuscript =
+                        isPrimaryDomain && isManuscriptRoute;
 
                     final String? pageSegment = uri?.pathSegments.lastOrNull;
                     if (pageSegment != null) {
@@ -102,6 +106,8 @@ class ChatMessage extends StatelessWidget {
                           LaunchUrlEvent(href ?? ''),
                         );
                       }
+                    } else {
+                      context.read<ChatBloc>().add(LaunchUrlEvent(href ?? ''));
                     }
                   },
                 ),

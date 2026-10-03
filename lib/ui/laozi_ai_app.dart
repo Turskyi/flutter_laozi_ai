@@ -42,21 +42,33 @@ class _LaoziAiAppState extends State<LaoziAiApp> {
   }
 
   void _openLink(Uri uri) {
-    if (uri.host == constants.primaryDomain &&
-        uri.path.startsWith('${AppRoute.manuscript.path}/')) {
-      final String? lastSegment = uri.pathSegments.lastOrNull;
-      final int? page = lastSegment != null ? int.tryParse(lastSegment) : null;
-      if (page != null && mounted) {
-        Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (BuildContext _) => ManuscriptReader(initialPage: page),
-          ),
-        );
-      } else {
-        // Ignore if page is invalid or widget is unmounted.
-      }
+    if (uri == widget.initialUri) {
+      // Ignore initial URI emission from stream to avoid duplicate navigation.
     } else {
-      // Ignore non-manuscript links.
+      const String primaryDomain = constants.primaryDomain;
+      const String wwwDomain = 'www.$primaryDomain';
+      final bool isHostMatch = uri.host == primaryDomain;
+      final bool isWwwHostMatch = uri.host == wwwDomain;
+      final bool isPrimaryDomain = isHostMatch || isWwwHostMatch;
+      final bool isManuscriptPath = uri.path.startsWith('/manuscript/');
+
+      if (isPrimaryDomain && isManuscriptPath) {
+        final String? lastSegment = uri.pathSegments.lastOrNull;
+        final int? page = lastSegment != null
+            ? int.tryParse(lastSegment)
+            : null;
+        if (page != null && mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (BuildContext _) => ManuscriptReader(initialPage: page),
+            ),
+          );
+        } else {
+          // Ignore if page is invalid or widget is unmounted.
+        }
+      } else {
+        // Ignore non-manuscript links.
+      }
     }
   }
 
@@ -80,12 +92,13 @@ class _LaoziAiAppState extends State<LaoziAiApp> {
               final Uri? pendingUri = _pendingUri;
               if (pendingUri == null) {
                 return AppRoute.home.path;
+              } else {
+                final String? lastSegment = pendingUri.pathSegments.lastOrNull;
+                final int page = lastSegment != null
+                    ? int.tryParse(lastSegment) ?? 1
+                    : 1;
+                return '${AppRoute.manuscript.path}/$page';
               }
-              final String? lastSegment = pendingUri.pathSegments.lastOrNull;
-              final int page = lastSegment != null
-                  ? int.tryParse(lastSegment) ?? 1
-                  : 1;
-              return '${AppRoute.manuscript.path}/$page';
             }(),
             routes: widget.routeMap,
             onGenerateRoute: (RouteSettings settings) {
