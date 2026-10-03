@@ -74,15 +74,17 @@ class ChatMessage extends StatelessWidget {
                   selectable: true,
                   onTapLink: (String _, String? href, String _) {
                     final Uri? uri = Uri.tryParse(href ?? '');
-                    final bool isPrimaryDomain =
-                        uri?.host == constants.primaryDomain ||
-                        uri?.host == 'www.${constants.primaryDomain}';
+                    final String? host = uri?.host.toLowerCase();
+                    final String domain = constants.primaryDomain;
+                    final bool isAllowedDomain =
+                        host == domain ||
+                        (host != null && host.endsWith('.$domain'));
                     final bool isManuscriptRoute =
                         uri?.pathSegments.length == 2 &&
                         uri?.pathSegments.firstOrNull ==
                             AppRoute.manuscript.name;
                     final bool isManuscript =
-                        isPrimaryDomain && isManuscriptRoute;
+                        isAllowedDomain && isManuscriptRoute;
 
                     final String? pageSegment = uri?.pathSegments.lastOrNull;
                     if (pageSegment != null) {

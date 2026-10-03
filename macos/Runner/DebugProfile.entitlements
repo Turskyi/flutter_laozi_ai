@@ -14,6 +14,10 @@
 	<array>
 		<string>applinks:daoismonline.com</string>
 		<string>applinks:www.daoismonline.com</string>
+		<string>applinks:app.daoismonline.com</string>
+		<string>applinks:en.daoismonline.com</string>
+		<string>applinks:lv.daoismonline.com</string>
+		<string>applinks:uk.daoismonline.com</string>
 	</array>
 </dict>
 </plist>

@@ -45,13 +45,12 @@ class _LaoziAiAppState extends State<LaoziAiApp> {
       // Ignore initial URI emission from stream to avoid duplicate navigation.
     } else {
       const String primaryDomain = constants.primaryDomain;
-      const String wwwDomain = 'www.$primaryDomain';
-      final bool isHostMatch = uri.host == primaryDomain;
-      final bool isWwwHostMatch = uri.host == wwwDomain;
-      final bool isPrimaryDomain = isHostMatch || isWwwHostMatch;
+      final String host = uri.host.toLowerCase();
+      final bool isAllowedDomain =
+          host == primaryDomain || host.endsWith('.$primaryDomain');
       final bool isManuscriptPath = uri.path.startsWith('/manuscript/');
 
-      if (isPrimaryDomain && isManuscriptPath) {
+      if (isAllowedDomain && isManuscriptPath) {
         final String? lastSegment = uri.pathSegments.lastOrNull;
         final int? page = lastSegment != null
             ? int.tryParse(lastSegment)

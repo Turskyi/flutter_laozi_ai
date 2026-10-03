@@ -19,15 +19,27 @@ class SettingsRepositoryImpl implements SettingsRepository {
     // 1. Check for URL-based language first (priority for Web).
     Language? languageFromUrl;
     if (kIsWeb) {
-      // Retrieves the host name (e.g., "localhost" or "uk.daoismonline.com").
-      final String host = Uri.base.host;
-      // Retrieves the fragment (e.g., "/en" or "/uk").
-      final String fragment = Uri.base.fragment;
+      final String host = Uri.base.host.toLowerCase();
+      final String fragment = Uri.base.fragment.toLowerCase();
+      final String path = Uri.base.path.toLowerCase();
+      final String? langParam =
+          Uri.base.queryParameters['lang']?.toLowerCase() ??
+          Uri.base.queryParameters['locale']?.toLowerCase() ??
+          Uri.base.queryParameters['hl']?.toLowerCase();
+
       for (final Language language in Language.values) {
         final String currentLanguageCode = language.isoLanguageCode;
 
-        if (host.startsWith('$currentLanguageCode.') ||
-            fragment.contains('${AppRoute.home.path}$currentLanguageCode')) {
+        final bool matchesHost = host.startsWith('$currentLanguageCode.');
+        final bool matchesPath =
+            path.startsWith('/$currentLanguageCode') ||
+            path.contains('/$currentLanguageCode/');
+        final bool matchesFragment = fragment.contains(
+          '${AppRoute.home.path}$currentLanguageCode',
+        );
+        final bool matchesQuery = langParam == currentLanguageCode;
+
+        if (matchesHost || matchesPath || matchesFragment || matchesQuery) {
           languageFromUrl = language;
           try {
             Intl.defaultLocale = currentLanguageCode;
@@ -35,12 +47,18 @@ class SettingsRepositoryImpl implements SettingsRepository {
             // Silently ignore or log as needed.
           }
           break;
+        } else {
+          // Check next language.
         }
       }
+    } else {
+      // Not web environment.
     }
 
     if (languageFromUrl != null) {
       return languageFromUrl;
+    } else {
+      // Continue checking saved preferences.
     }
 
     // 2. Check for saved language in preferences.

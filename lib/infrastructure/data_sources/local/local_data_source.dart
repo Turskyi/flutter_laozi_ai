@@ -48,16 +48,27 @@ class LocalDataSource {
         ? systemLanguageCode
         : Language.en.isoLanguageCode;
 
-    // Retrieves the host name (e.g., "localhost" or "uk.daoismonline.com").
-    final String host = Uri.base.host;
-    // Retrieves the fragment (e.g., "/en" or "/uk").
-    final String fragment = Uri.base.fragment;
+    final String host = Uri.base.host.toLowerCase();
+    final String fragment = Uri.base.fragment.toLowerCase();
+    final String path = Uri.base.path.toLowerCase();
+    final String? langParam =
+        Uri.base.queryParameters['lang']?.toLowerCase() ??
+        Uri.base.queryParameters['locale']?.toLowerCase() ??
+        Uri.base.queryParameters['hl']?.toLowerCase();
 
     for (final Language language in Language.values) {
       final String currentLanguageCode = language.isoLanguageCode;
 
-      if (host.startsWith('$currentLanguageCode.') ||
-          fragment.contains('${AppRoute.home.path}$currentLanguageCode')) {
+      final bool matchesHost = host.startsWith('$currentLanguageCode.');
+      final bool matchesPath =
+          path.startsWith('/$currentLanguageCode') ||
+          path.contains('/$currentLanguageCode/');
+      final bool matchesFragment = fragment.contains(
+        '${AppRoute.home.path}$currentLanguageCode',
+      );
+      final bool matchesQuery = langParam == currentLanguageCode;
+
+      if (matchesHost || matchesPath || matchesFragment || matchesQuery) {
         try {
           Intl.defaultLocale = currentLanguageCode;
         } catch (e, stackTrace) {
@@ -69,8 +80,9 @@ class LocalDataSource {
           );
         }
         defaultLanguageCode = currentLanguageCode;
-        // Exit the loop once a match is found and processed.
         break;
+      } else {
+        // Check next language.
       }
     }
 
