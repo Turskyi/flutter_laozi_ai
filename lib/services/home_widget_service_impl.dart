@@ -82,4 +82,23 @@ class HomeWidgetServiceImpl implements HomeWidgetService {
       qualifiedAndroidName: constants.kQualifiedAndroidWidgetName,
     );
   }
+
+  @override
+  Future<void> requestPinWidget({
+    String? name,
+    String? androidName,
+    String? qualifiedAndroidName,
+  }) {
+    if (kIsWeb) {
+      return Future<void>.value();
+    } else if (Platform.isAndroid) {
+      return HomeWidget.requestPinWidget(
+        name: name,
+        androidName: androidName,
+        qualifiedAndroidName: qualifiedAndroidName,
+      );
+    } else {
+      return Future<void>.value();
+    }
+  }
 }

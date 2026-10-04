@@ -13,4 +13,10 @@ abstract interface class HomeWidgetService {
   });
 
   Future<void> updateHomeWidgetLanguage(String languageCode);
+
+  Future<void> requestPinWidget({
+    String? name,
+    String? androidName,
+    String? qualifiedAndroidName,
+  });
 }

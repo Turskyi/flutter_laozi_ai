@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:get_it/get_it.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
+import 'package:laozi_ai/services/home_widget_service.dart';
 import 'package:laozi_ai/ui/about/widgets/bullet_point.dart';
 import 'package:laozi_ai/ui/widgets/app_bar/wave_app_bar.dart';
 import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
@@ -125,6 +129,28 @@ class AboutPage extends StatelessWidget {
               style: theme.textTheme.bodyLarge,
             ),
             const SizedBox(height: 32),
+            if (!kIsWeb && Platform.isAndroid) ...<Widget>[
+              Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ListTile(
+                  leading: const Icon(Icons.widgets),
+                  title: Text(translate('pin_widget')),
+                  subtitle: Text(translate('pin_widget_subtitle')),
+                  trailing: const Icon(Icons.push_pin),
+                  onTap: () {
+                    GetIt.I<HomeWidgetService>().requestPinWidget(
+                      androidName: constants.kAndroidWidgetName,
+                      qualifiedAndroidName:
+                          constants.kQualifiedAndroidWidgetName,
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
             Center(
               child: Text(
                 translate('about_page.eternal_dao_quote'),
