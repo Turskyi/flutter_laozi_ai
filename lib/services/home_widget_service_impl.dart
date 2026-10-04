@@ -38,8 +38,8 @@ class HomeWidgetServiceImpl implements HomeWidgetService {
       return _widgetChannel.invokeMethod<bool>(
         constants.kSaveWidgetDataMethod,
         <String, Object?>{
-          'key': id,
-          'value': data,
+          constants.kKeyArgKey: id,
+          constants.kValueArgKey: data,
           constants.kAppGroupIdArgKey: constants.kAppleAppGroupId,
         },
       );

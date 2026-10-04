@@ -33,6 +33,8 @@ const String kSetAppGroupIdMethod = 'setAppGroupId';
 const String kSaveWidgetDataMethod = 'saveWidgetData';
 const String kUpdateWidgetMethod = 'updateWidget';
 const String kAppGroupIdArgKey = 'appGroupId';
+const String kKeyArgKey = 'key';
+const String kValueArgKey = 'value';
 
 /// A constant for one minute in milliseconds.
 const int oneMinute = 60000;
