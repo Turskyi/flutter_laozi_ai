@@ -115,7 +115,7 @@ class AppDelegate: FlutterAppDelegate {
         return
       }
 
-      lastReload = now
+      lastWidgetReloadAt = now
       WidgetCenter.shared.reloadTimelines(ofKind: widgetKind)
       result(true)
     #endif
