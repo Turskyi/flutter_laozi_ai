@@ -295,6 +295,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				77M1C00A2C12340100A1B2C3 /* LaoziAiWidgets */,
+			);
 			name = LaoziAiWidgetsExtension;
 			productName = LaoziAiWidgetsExtension;
 			productReference = 77M1C0062C12340100A1B2C3 /* LaoziAiWidgetsExtension.appex */;
@@ -311,6 +314,15 @@
 				LastUpgradeCheck = 1510;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
+					77M1C00B2C12340100A1B2C3 = {
+						CreatedOnToolsVersion = 15.1;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
 					331C80D4294CF70F00263BE5 = {
 						CreatedOnToolsVersion = 14.0;
 						TestTargetID = 33CC10EC2044A3C60003C045;
@@ -783,8 +795,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Release.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "3rd Party Mac Developer Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 26QZ8BPZFL;
@@ -796,7 +808,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 0.1.5;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "8fa364e3-aa73-4080-90aa-cd40e3e14262";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -847,8 +859,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = LaoziAiWidgets/LaoziAiWidgets.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "3rd Party Mac Developer Application";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 26QZ8BPZFL;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -863,6 +875,7 @@
 				MARKETING_VERSION = 0.1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.turskyi.laoziAi.LaoziAiWidgetsExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "1f84b802-624c-410f-9a12-9274b6f8cbbd";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
