@@ -5,10 +5,12 @@ import 'package:laozi_ai/application_services/blocs/settings/settings_bloc.dart'
 import 'package:laozi_ai/entities/enums/language.dart';
 import 'package:mocktail/mocktail.dart';
 
+import 'mock_home_widget_service.dart';
 import 'mock_settings_repository.dart';
 
 void main() {
   late MockSettingsRepository mockSettingsRepository;
+  late MockHomeWidgetService mockHomeWidgetService;
 
   setUpAll(() {
     registerFallbackValue(ThemeMode.dark);
@@ -17,6 +19,10 @@ void main() {
 
   setUp(() {
     mockSettingsRepository = MockSettingsRepository();
+    mockHomeWidgetService = MockHomeWidgetService();
+    when(
+      () => mockHomeWidgetService.updateHomeWidgetLanguage(any()),
+    ).thenAnswer((_) async {});
   });
 
   group('SettingsBloc', () {
@@ -29,7 +35,7 @@ void main() {
         when(
           () => mockSettingsRepository.getThemeMode(),
         ).thenReturn(ThemeMode.dark);
-        return SettingsBloc(mockSettingsRepository);
+        return SettingsBloc(mockSettingsRepository, mockHomeWidgetService);
       },
       verify: (SettingsBloc bloc) {
         expect(bloc.state.language, Language.en);
@@ -49,7 +55,7 @@ void main() {
         when(
           () => mockSettingsRepository.saveLanguageIsoCode(any()),
         ).thenAnswer((_) async => true);
-        return SettingsBloc(mockSettingsRepository);
+        return SettingsBloc(mockSettingsRepository, mockHomeWidgetService);
       },
       act: (SettingsBloc bloc) =>
           bloc.add(const ChangeLanguageSettingsEvent(Language.uk)),
@@ -74,7 +80,7 @@ void main() {
         when(
           () => mockSettingsRepository.saveThemeMode(any()),
         ).thenAnswer((_) async => true);
-        return SettingsBloc(mockSettingsRepository);
+        return SettingsBloc(mockSettingsRepository, mockHomeWidgetService);
       },
       act: (SettingsBloc bloc) =>
           bloc.add(const ChangeThemeModeSettingsEvent(ThemeMode.light)),

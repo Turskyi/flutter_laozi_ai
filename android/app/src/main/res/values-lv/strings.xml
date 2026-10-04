@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label">Daoisms • Laozi AI</string>
+    <string name="app_title_short">Dao De Czing</string>
+    <string name="daily_verse_widget_title">Dienas pants</string>
+    <string name="daily_verse_widget_description">Rāda dienas pantu no Dao De Czing.</string>
+
+    <string name="verse_1_chapter">1. nodaļa</string>
+    <string name="verse_1_text">Dao, ko var izteikt vārdos, nav pastāvīgais Dao;\nvārds, ko var nosaukt, nav pastāvīgais vārds.</string>
+
+    <string name="verse_2_chapter">8. nodaļa</string>
+    <string name="verse_2_text">Visaugstākais labums ir kā ūdens.\nŪdens izceļas, dodot labumu visām lietām bez sacensības.</string>
+
+    <string name="verse_3_chapter">11. nodaļa</string>
+    <string name="verse_3_text">Trīsdesmit spieķi dalās ar vienu rumbu;\ntās tukšumā slēpjas ratu derīgums.</string>
+
+    <string name="verse_4_chapter">16. nodaļa</string>
+    <string name="verse_4_text">Sasniedz vislielāko tukšumu;\nauzturi nelokāmu mieru.</string>
+
+    <string name="verse_5_chapter">22. nodaļa</string>
+    <string name="verse_5_text">Piekāpies un paliec vesels;\nliecies un iztaisnojies;\niztukšojies un piepildies.</string>
+
+    <string name="verse_6_chapter">23. nodaļa</string>
+    <string name="verse_6_text">Runāt taupīgi ir dabiski.\nViesuļvētra neilgst visu rītu;\npēkšņa lietusgāze neilgst visu dienu.</string>
+
+    <string name="verse_7_chapter">26. nodaļa</string>
+    <string name="verse_7_text">Smagais ir vieglā sakne;\nklusais ir steidzīgā kungs.</string>
+
+    <string name="verse_8_chapter">33. nodaļa</string>
+    <string name="verse_8_text">Zināt citus ir prāts;\nzināt sevi ir apgaismība.\nUzvarēt citus prasa spēku;\nuzvarēt sevi prasa varenību.</string>
+
+    <string name="verse_9_chapter">40. nodaļa</string>
+    <string name="verse_9_text">Atgriešanās ir Dao kustība.\nVājums ir Dao izmantošana.</string>
+
+    <string name="verse_10_chapter">41. nodaļa</string>
+    <string name="verse_10_text">Kad pārāks cilvēks dzird par Dao, viņš to cītīgi praktizē.</string>
+
+    <string name="verse_11_chapter">44. nodaļa</string>
+    <string name="verse_11_text">Tas, kurš zina, kad ir pietiekami, ir bagāts.\nTas, kurš zina, kad apstāties, ir brīvs no briesmām.</string>
+
+    <string name="verse_12_chapter">56. nodaļa</string>
+    <string name="verse_12_text">Tie, kas zina, nerunā;\ntie, kas runā, nezina.</string>
+
+    <string name="verse_13_chapter">63. nodaļa</string>
+    <string name="verse_13_text">Rīkojies bez darbības;\nstrādā bez strādāšanas;\nizbaudi bez garšas.</string>
+
+    <string name="verse_14_chapter">64. nodaļa</string>
+    <string name="verse_14_text">Tūkstoš jūdžu ceļojums sākas ar vienu soli.</string>
+
+    <string name="verse_15_chapter">67. nodaļa</string>
+    <string name="verse_15_text">Man ir trīs dārgumi:\nlaipnība, taupība un pieticība.</string>
+
+    <string name="verse_16_chapter">81. nodaļa</string>
+    <string name="verse_16_text">Patiesi vārdi nav skaisti;\nskaisti vārdi nav patiesi.</string>
+</resources>

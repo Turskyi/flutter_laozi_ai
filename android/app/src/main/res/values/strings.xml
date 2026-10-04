@@ -1,4 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="label">Daoism • Laozi AI</string>
+    <string name="app_title_short">Tao Te Ching</string>
+    <string name="daily_verse_widget_title">Daily Verse</string>
+    <string name="daily_verse_widget_description">Shows a daily verse from the Tao Te Ching.</string>
+
+    <string name="verse_1_chapter">Chapter 1</string>
+    <string name="verse_1_text">The Dao that can be spoken is not the constant Dao;\nthe name that can be named is not the constant name.</string>
+
+    <string name="verse_2_chapter">Chapter 8</string>
+    <string name="verse_2_text">Highest goodness is like water.\nWater excels in benefiting all things without striving.</string>
+
+    <string name="verse_3_chapter">Chapter 11</string>
+    <string name="verse_3_text">Thirty spokes share one hub;\nit is in its emptiness that the usefulness of the cart lies.</string>
+
+    <string name="verse_4_chapter">Chapter 16</string>
+    <string name="verse_4_text">Attain utmost emptiness;\nmaintain steadfast tranquility.</string>
+
+    <string name="verse_5_chapter">Chapter 22</string>
+    <string name="verse_5_text">Yield and remain whole;\nbend and be straightened;\nempty and be filled.</string>
+
+    <string name="verse_6_chapter">Chapter 23</string>
+    <string name="verse_6_text">To speak sparingly is natural.\nA whirlwind does not last all morning;\na sudden downpour does not last all day.</string>
+
+    <string name="verse_7_chapter">Chapter 26</string>
+    <string name="verse_7_text">The heavy is the root of the light;\nthe calm is the master of the hasty.</string>
+
+    <string name="verse_8_chapter">Chapter 33</string>
+    <string name="verse_8_text">Knowing others is intelligence;\nknowing yourself is true wisdom.\nMastering others is strength;\nmastering yourself is true power.</string>
+
+    <string name="verse_9_chapter">Chapter 40</string>
+    <string name="verse_9_text">Return is the movement of the Dao.\nYielding is the way of the Dao.</string>
+
+    <string name="verse_10_chapter">Chapter 41</string>
+    <string name="verse_10_text">When a wise person hears of the Dao, they practice it diligently.</string>
+
+    <string name="verse_11_chapter">Chapter 44</string>
+    <string name="verse_11_text">He who knows when he has enough is rich.\nHe who knows when to stop is free from danger.</string>
+
+    <string name="verse_12_chapter">Chapter 56</string>
+    <string name="verse_12_text">Those who know do not speak;\nthose who speak do not know.</string>
+
+    <string name="verse_13_chapter">Chapter 63</string>
+    <string name="verse_13_text">Act without acting;\nwork without working;\ntaste without tasting.</string>
+
+    <string name="verse_14_chapter">Chapter 64</string>
+    <string name="verse_14_text">A journey of a thousand miles begins with a single step.</string>
+
+    <string name="verse_15_chapter">Chapter 67</string>
+    <string name="verse_15_text">I have three treasures:\ncompassion, frugality, and humility.</string>
+
+    <string name="verse_16_chapter">Chapter 81</string>
+    <string name="verse_16_text">True words are not beautiful;\nbeautiful words are not true.</string>
 </resources>

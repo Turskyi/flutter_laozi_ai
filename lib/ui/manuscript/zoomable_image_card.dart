@@ -83,14 +83,14 @@ class _ZoomableImageCardState extends State<ZoomableImageCard> {
       );
     } else {
       return Card(
-        margin: const EdgeInsets.all(6),
+        margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         clipBehavior: Clip.antiAlias,
         elevation: 1,
         child: Column(
           children: <Widget>[
             // Header Controls Bar
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
               child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
@@ -289,7 +289,7 @@ class _ZoomableImageCardState extends State<ZoomableImageCard> {
             // Caption Footer
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
               child: Text(
                 widget.caption,
