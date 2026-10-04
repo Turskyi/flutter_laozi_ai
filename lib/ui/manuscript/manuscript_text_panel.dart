@@ -278,6 +278,8 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
             if (widget.onToggleFullscreen != null)
               FilledButton.tonalIcon(
                 style: FilledButton.styleFrom(
+                  foregroundColor: colorScheme.onSecondaryContainer,
+                  backgroundColor: colorScheme.secondaryContainer,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,
                     vertical: 4,
@@ -292,7 +294,9 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
                 icon: const Icon(Icons.fullscreen, size: 14),
                 label: Text(
                   translate('manuscript.fullscreen'),
-                  style: textTheme.labelSmall,
+                  style: textTheme.labelSmall?.copyWith(
+                    color: colorScheme.onSecondaryContainer,
+                  ),
                 ),
               )
             else
@@ -568,6 +572,8 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
               // Exit Fullscreen Button
               FilledButton.tonalIcon(
                 style: FilledButton.styleFrom(
+                  foregroundColor: colorScheme.onSecondaryContainer,
+                  backgroundColor: colorScheme.secondaryContainer,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,
                     vertical: 4,
@@ -580,7 +586,9 @@ class _ManuscriptTextPanelState extends State<ManuscriptTextPanel> {
                 icon: const Icon(Icons.fullscreen_exit, size: 16),
                 label: Text(
                   translate('manuscript.exit'),
-                  style: textTheme.labelSmall,
+                  style: textTheme.labelSmall?.copyWith(
+                    color: colorScheme.onSecondaryContainer,
+                  ),
                 ),
               ),
             ],

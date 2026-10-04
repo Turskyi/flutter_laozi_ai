@@ -123,7 +123,6 @@ class _ZoomableImageCardState extends State<ZoomableImageCard> {
                                   '${(_scale * 100).round()}%',
                                   textAlign: TextAlign.center,
                                   style: textTheme.bodySmall?.copyWith(
-                                    fontSize: 11,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'monospace',
                                   ),
@@ -171,11 +170,11 @@ class _ZoomableImageCardState extends State<ZoomableImageCard> {
                                           ),
                                           child: Text(
                                             translate('manuscript.drag_to_pan'),
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                              color:
-                                                  colorScheme.onSurfaceVariant,
-                                            ),
+                                            style: textTheme.labelSmall
+                                                ?.copyWith(
+                                                  color: colorScheme
+                                                      .onSurfaceVariant,
+                                                ),
                                           ),
                                         );
                                       }
@@ -184,6 +183,10 @@ class _ZoomableImageCardState extends State<ZoomableImageCard> {
                               ),
                               FilledButton.tonalIcon(
                                 style: FilledButton.styleFrom(
+                                  foregroundColor:
+                                      colorScheme.onSecondaryContainer,
+                                  backgroundColor:
+                                      colorScheme.secondaryContainer,
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 4,
                                     vertical: 4,
@@ -200,12 +203,18 @@ class _ZoomableImageCardState extends State<ZoomableImageCard> {
                                 icon: const Icon(Icons.info_outline, size: 14),
                                 label: Text(
                                   translate('manuscript.reading_guide'),
-                                  style: const TextStyle(fontSize: 11),
+                                  style: textTheme.labelSmall?.copyWith(
+                                    color: colorScheme.onSecondaryContainer,
+                                  ),
                                 ),
                               ),
                               const SizedBox(width: 4),
                               FilledButton.tonalIcon(
                                 style: FilledButton.styleFrom(
+                                  foregroundColor:
+                                      colorScheme.onSecondaryContainer,
+                                  backgroundColor:
+                                      colorScheme.secondaryContainer,
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 4,
                                     vertical: 4,
@@ -221,7 +230,9 @@ class _ZoomableImageCardState extends State<ZoomableImageCard> {
                                 icon: const Icon(Icons.fullscreen, size: 14),
                                 label: Text(
                                   translate('manuscript.fullscreen'),
-                                  style: const TextStyle(fontSize: 11),
+                                  style: textTheme.labelSmall?.copyWith(
+                                    color: colorScheme.onSecondaryContainer,
+                                  ),
                                 ),
                               ),
                             ],
@@ -283,8 +294,7 @@ class _ZoomableImageCardState extends State<ZoomableImageCard> {
               child: Text(
                 widget.caption,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 11,
+                style: textTheme.labelSmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
               ),

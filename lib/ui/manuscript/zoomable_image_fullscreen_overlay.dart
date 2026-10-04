@@ -78,83 +78,97 @@ class _ZoomableImageFullscreenOverlayState
         backgroundColor: colorScheme.surface,
         foregroundColor: colorScheme.onSurface,
         automaticallyImplyLeading: false,
-        titleSpacing: 8,
-        title: Row(
-          children: <Widget>[
-            // Navigation
-            IconButton(
-              icon: const Icon(Icons.chevron_left),
-              onPressed: widget.pageNumber > kMinManuscriptPage
-                  ? () => widget.onPageSelected(widget.pageNumber - 1)
-                  : null,
-            ),
-            Text(
-              '${translate('manuscript.page')} ${widget.pageNumber} '
-              '${translate('manuscript.of')} ${widget.totalPages}',
-              style: textTheme.bodyMedium?.copyWith(fontSize: 13),
-            ),
-            IconButton(
-              icon: const Icon(Icons.chevron_right),
-              onPressed: widget.pageNumber < kMaxManuscriptPage
-                  ? () => widget.onPageSelected(widget.pageNumber + 1)
-                  : null,
-            ),
-
-            const Spacer(),
-
-            // Zoom Controls
-            IconButton(
-              icon: const Icon(Icons.zoom_out, size: 18),
-              onPressed: _scale > 0.75 ? _zoomOut : null,
-            ),
-            Text(
-              '${(_scale * 100).round()}%',
-              style: textTheme.bodySmall?.copyWith(
-                fontSize: 11,
-                fontFamily: 'monospace',
+        titleSpacing: 4,
+        title: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: <Widget>[
+              // Navigation
+              IconButton(
+                icon: const Icon(Icons.chevron_left),
+                onPressed: widget.pageNumber > kMinManuscriptPage
+                    ? () => widget.onPageSelected(widget.pageNumber - 1)
+                    : null,
               ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.zoom_in, size: 18),
-              onPressed: _scale < 3.5 ? _zoomIn : null,
-            ),
-            IconButton(
-              icon: const Icon(Icons.refresh, size: 16),
-              onPressed: _scale != 1.0 ? _resetZoom : null,
-            ),
+              Text(
+                '${translate('manuscript.page')} ${widget.pageNumber} '
+                '${translate('manuscript.of')} ${widget.totalPages}',
+                style: textTheme.bodyMedium,
+              ),
+              IconButton(
+                icon: const Icon(Icons.chevron_right),
+                onPressed: widget.pageNumber < kMaxManuscriptPage
+                    ? () => widget.onPageSelected(widget.pageNumber + 1)
+                    : null,
+              ),
 
-            const Spacer(),
+              const SizedBox(width: 4),
 
-            FilledButton.tonalIcon(
-              style: FilledButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+              // Zoom Controls
+              IconButton(
+                icon: const Icon(Icons.zoom_out, size: 18),
+                onPressed: _scale > 0.75 ? _zoomOut : null,
+              ),
+              Text(
+                '${(_scale * 100).round()}%',
+                style: textTheme.bodySmall?.copyWith(fontFamily: 'monospace'),
+              ),
+              IconButton(
+                icon: const Icon(Icons.zoom_in, size: 18),
+                onPressed: _scale < 3.5 ? _zoomIn : null,
+              ),
+              IconButton(
+                icon: const Icon(Icons.refresh, size: 16),
+                onPressed: _scale != 1.0 ? _resetZoom : null,
+              ),
+
+              const SizedBox(width: 4),
+
+              FilledButton.tonalIcon(
+                style: FilledButton.styleFrom(
+                  foregroundColor: colorScheme.onSecondaryContainer,
+                  backgroundColor: colorScheme.secondaryContainer,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 4,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () => ReadingGuideDialog.show(context),
+                icon: const Icon(Icons.info_outline, size: 14),
+                label: Text(
+                  translate('manuscript.reading_guide'),
+                  style: textTheme.labelSmall?.copyWith(
+                    color: colorScheme.onSecondaryContainer,
+                  ),
                 ),
               ),
-              onPressed: () => ReadingGuideDialog.show(context),
-              icon: const Icon(Icons.info_outline, size: 14),
-              label: Text(
-                translate('manuscript.reading_guide'),
-                style: const TextStyle(fontSize: 11),
-              ),
-            ),
-            const SizedBox(width: 8),
-            FilledButton.tonalIcon(
-              style: FilledButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+              const SizedBox(width: 8),
+              FilledButton.tonalIcon(
+                style: FilledButton.styleFrom(
+                  foregroundColor: colorScheme.onSecondaryContainer,
+                  backgroundColor: colorScheme.secondaryContainer,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 4,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: widget.onToggleFullscreen,
+                icon: const Icon(Icons.fullscreen_exit, size: 16),
+                label: Text(
+                  translate('manuscript.exit'),
+                  style: textTheme.labelSmall?.copyWith(
+                    color: colorScheme.onSecondaryContainer,
+                  ),
                 ),
               ),
-              onPressed: widget.onToggleFullscreen,
-              icon: const Icon(Icons.fullscreen_exit, size: 16),
-              label: Text(
-                translate('manuscript.exit'),
-                style: const TextStyle(fontSize: 11),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       body: Column(
@@ -184,7 +198,7 @@ class _ZoomableImageFullscreenOverlayState
             child: Text(
               widget.caption,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 11, color: Colors.white70),
+              style: textTheme.bodySmall?.copyWith(color: Colors.white70),
             ),
           ),
         ],
