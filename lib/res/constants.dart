@@ -21,5 +21,18 @@ const String langParameter = 'lang';
 const String localeParameter = 'locale';
 const String hlParameter = 'hl';
 
+/// Home widget constants.
+const String kAppleAppGroupId = 'group.dmytrowidget';
+const String kIosWidgetName = 'LaoziAiWidgets';
+const String kAndroidWidgetName = 'DailyVerseWidget';
+const String kAndroidPackageName = 'com.turskyi.laozi_ai';
+const String kQualifiedAndroidWidgetName =
+    '$kAndroidPackageName.$kAndroidWidgetName';
+const String kHomeWidgetMethodChannel = 'com.laoziai.home_widget';
+const String kSetAppGroupIdMethod = 'setAppGroupId';
+const String kSaveWidgetDataMethod = 'saveWidgetData';
+const String kUpdateWidgetMethod = 'updateWidget';
+const String kAppGroupIdArgKey = 'appGroupId';
+
 /// A constant for one minute in milliseconds.
 const int oneMinute = 60000;

@@ -37,6 +37,8 @@ import 'package:laozi_ai/infrastructure/data_sources/remote/rest/logging_interce
     as _i908;
 import 'package:laozi_ai/infrastructure/data_sources/remote/rest/retrofit_client/retrofit_client.dart'
     as _i375;
+import 'package:laozi_ai/services/home_widget_service.dart' as _i650;
+import 'package:laozi_ai/services/home_widget_service_impl.dart' as _i1053;
 import 'package:resend/resend.dart' as _i176;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
@@ -70,8 +72,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i451.LocalDataSource>(
       () => _i451.LocalDataSource(gh<_i460.SharedPreferences>()),
     );
+    gh.factory<_i650.HomeWidgetService>(
+      () => const _i1053.HomeWidgetServiceImpl(),
+    );
     gh.factory<_i355.SettingsBloc>(
-      () => _i355.SettingsBloc(gh<_i301.SettingsRepository>()),
+      () => _i355.SettingsBloc(
+        gh<_i301.SettingsRepository>(),
+        gh<_i650.HomeWidgetService>(),
+      ),
     );
     gh.factory<_i375.RetrofitClient>(
       () => retrofitClientModule.getRestClient(

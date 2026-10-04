@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label">Даосизм • Лао-цзи AI</string>
+    <string name="app_title_short">Дао Де Цзін</string>
+    <string name="daily_verse_widget_title">Вірш дня</string>
+    <string name="daily_verse_widget_description">Відображає вірш дня з Дао Де Цзін.</string>
+
+    <string name="verse_1_chapter">Розділ 1</string>
+    <string name="verse_1_text">Дао, про яке можна висловитись, не є постійне Дао;\nім\'я, яке можна назвати, не є постійне ім\'я.</string>
+
+    <string name="verse_2_chapter">Розділ 8</string>
+    <string name="verse_2_text">Найвища доброчесність подібна до води.\nВода чудово сприяє всім речам без прагнення до суперництва.</string>
+
+    <string name="verse_3_chapter">Розділ 11</string>
+    <string name="verse_3_text">Тридцять спиць ділять одну маточину;\nсаме в її порожнечі полягає користь колісниці.</string>
+
+    <string name="verse_4_chapter">Розділ 16</string>
+    <string name="verse_4_text">Досягни найбільшої порожнечі;\nзберігай непохитний спокій.</string>
+
+    <string name="verse_5_chapter">Розділ 22</string>
+    <string name="verse_5_text">Поступайся й залишайся цілим;\nзгинайся і випрямляйся;\nочищуйся і наповнюйся.</string>
+
+    <string name="verse_6_chapter">Розділ 23</string>
+    <string name="verse_6_text">Говорити ощадливо — природно.\nВихор не триває весь ранок;\nраптова злива не триває весь день.</string>
+
+    <string name="verse_7_chapter">Розділ 26</string>
+    <string name="verse_7_text">Важке є коренем легкого;\nспокійне є володарем поспішного.</string>
+
+    <string name="verse_8_chapter">Розділ 33</string>
+    <string name="verse_8_text">Знання інших — це розум;\nзнання себе — це справжня мудрість.\nПеремога над іншими вимагає сили;\nперемога над собою — це справжня могутність.</string>
+
+    <string name="verse_9_chapter">Розділ 40</string>
+    <string name="verse_9_text">Повернення — це рух Дао.\nМ\'якість — це дія Дао.</string>
+
+    <string name="verse_10_chapter">Розділ 41</string>
+    <string name="verse_10_text">Коли мудра людина чує про Дао, вона старанно слідує йому.</string>
+
+    <string name="verse_11_chapter">Розділ 44</string>
+    <string name="verse_11_text">Хто знає достатність, той багатий.\nХто знає, коли зупинитися, той не зазнає небезпеки.</string>
+
+    <string name="verse_12_chapter">Розділ 56</string>
+    <string name="verse_12_text">Ті, хто знає, не говорять;\nті, хто говорять, не знають.</string>
+
+    <string name="verse_13_chapter">Розділ 63</string>
+    <string name="verse_13_text">Дій через недіяння;\nроби справи без метушні;\nвідчувай смак безсмакового.</string>
+
+    <string name="verse_14_chapter">Розділ 64</string>
+    <string name="verse_14_text">Подорож у тисячу лі починається з одного кроку.</string>
+
+    <string name="verse_15_chapter">Розділ 67</string>
+    <string name="verse_15_text">Я маю три скарби:\nлюдяність, бережливість та лагідність.</string>
+
+    <string name="verse_16_chapter">Розділ 81</string>
+    <string name="verse_16_text">Правдиві слова не красиві;\nкрасиві слова не правдиві.</string>
+</resources>

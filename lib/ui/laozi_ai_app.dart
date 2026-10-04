@@ -24,6 +24,7 @@ class LaoziAiApp extends StatefulWidget {
 }
 
 class _LaoziAiAppState extends State<LaoziAiApp> {
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   StreamSubscription<Uri>? _linkSubscription;
   Uri? _pendingUri;
 
@@ -56,9 +57,10 @@ class _LaoziAiAppState extends State<LaoziAiApp> {
             ? int.tryParse(lastSegment)
             : null;
         if (page != null && mounted) {
-          Navigator.of(
-            context,
-          ).pushNamed(AppRoute.manuscript.path, arguments: page);
+          _navigatorKey.currentState?.pushNamed(
+            AppRoute.manuscript.path,
+            arguments: page,
+          );
         } else {
           // Ignore if page is invalid or widget is unmounted.
         }
@@ -82,6 +84,7 @@ class _LaoziAiAppState extends State<LaoziAiApp> {
       builder: (BuildContext context, SettingsState state) {
         return Resources(
           child: MaterialApp(
+            navigatorKey: _navigatorKey,
             debugShowCheckedModeBanner: false,
             title: translate('title'),
             initialRoute: () {
