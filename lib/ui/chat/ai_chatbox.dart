@@ -107,26 +107,50 @@ class _AIChatBoxState extends State<AIChatBox> {
                     ),
                     if (chatState.messages.isNotEmpty) ...<Widget>[
                       ListTile(
+                        leading: const Icon(Icons.add_outlined),
                         title: Text(translate('chat.startNewConversation')),
                         onTap: _onDrawerStartNewConversation,
                       ),
                       const Divider(),
                     ],
                     ListTile(
+                      leading: const Icon(Icons.menu_book_outlined),
+                      title: Text(translate('manuscript_menu')),
+                      onTap: _openManuscript,
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.bookmarks_outlined),
+                      title: Text(translate('manuscript.saved_pages')),
+                      onTap: _openManuscriptSaved,
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.search),
+                      title: Text(translate('manuscript.search_manuscript')),
+                      onTap: _openManuscriptSearch,
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.info_outline),
                       title: Text(translate('about')),
                       onTap: _openAbout,
                     ),
-                    ListTile(title: Text(translate('faq')), onTap: _openFaq),
                     ListTile(
+                      leading: const Icon(Icons.help_outline),
+                      title: Text(translate('faq')),
+                      onTap: _openFaq,
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.privacy_tip_outlined),
                       title: Text(translate('privacy')),
                       onTap: _openPrivacy,
                     ),
                     ListTile(
+                      leading: const Icon(Icons.contact_support_outlined),
                       title: Text(translate('support')),
                       onTap: _openSupport,
                     ),
                     const Divider(),
                     ListTile(
+                      leading: const Icon(Icons.bug_report_outlined),
                       title: Text(translate('report_bug')),
                       onTap: _onBugReportPressed,
                     ),
@@ -349,6 +373,21 @@ class _AIChatBoxState extends State<AIChatBox> {
 
   void _openAbout() {
     Navigator.of(context).pushNamed(AppRoute.about.path);
+  }
+
+  void _openManuscript() {
+    final int lastPage = context.read<SettingsBloc>().getLastManuscriptPage();
+    Navigator.of(
+      context,
+    ).pushNamed(AppRoute.manuscript.path, arguments: lastPage);
+  }
+
+  void _openManuscriptSaved() {
+    Navigator.of(context).pushNamed(AppRoute.manuscriptSaved.path);
+  }
+
+  void _openManuscriptSearch() {
+    Navigator.of(context).pushNamed(AppRoute.manuscriptSearch.path);
   }
 
   void _openFaq() {

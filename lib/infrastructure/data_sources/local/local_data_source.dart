@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
+import 'package:laozi_ai/res/constants.dart';
 import 'package:laozi_ai/res/enums/settings.dart';
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,16 +49,27 @@ class LocalDataSource {
         ? systemLanguageCode
         : Language.en.isoLanguageCode;
 
-    // Retrieves the host name (e.g., "localhost" or "uk.daoismonline.com").
-    final String host = Uri.base.host;
-    // Retrieves the fragment (e.g., "/en" or "/uk").
-    final String fragment = Uri.base.fragment;
+    final String host = Uri.base.host.toLowerCase();
+    final String fragment = Uri.base.fragment.toLowerCase();
+    final String path = Uri.base.path.toLowerCase();
+    final String? langParam =
+        Uri.base.queryParameters[langParameter]?.toLowerCase() ??
+        Uri.base.queryParameters[localeParameter]?.toLowerCase() ??
+        Uri.base.queryParameters[hlParameter]?.toLowerCase();
 
     for (final Language language in Language.values) {
       final String currentLanguageCode = language.isoLanguageCode;
 
-      if (host.startsWith('$currentLanguageCode.') ||
-          fragment.contains('${AppRoute.home.path}$currentLanguageCode')) {
+      final bool matchesHost = host.startsWith('$currentLanguageCode.');
+      final bool matchesPath =
+          path.startsWith('/$currentLanguageCode') ||
+          path.contains('/$currentLanguageCode/');
+      final bool matchesFragment = fragment.contains(
+        '${AppRoute.home.path}$currentLanguageCode',
+      );
+      final bool matchesQuery = langParam == currentLanguageCode;
+
+      if (matchesHost || matchesPath || matchesFragment || matchesQuery) {
         try {
           Intl.defaultLocale = currentLanguageCode;
         } catch (e, stackTrace) {
@@ -69,8 +81,9 @@ class LocalDataSource {
           );
         }
         defaultLanguageCode = currentLanguageCode;
-        // Exit the loop once a match is found and processed.
         break;
+      } else {
+        // Check next language.
       }
     }
 

@@ -17,7 +17,7 @@ class FaqItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return ExpansionTile(
-      title: Text(
+      title: SelectableText(
         translate(titleKey),
         style: theme.textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.bold,

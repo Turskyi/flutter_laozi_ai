@@ -21,6 +21,7 @@ class WaveAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(title, maxLines: 2),
       scrolledUnderElevation: 0.0,
       backgroundColor: Colors.transparent,
+      foregroundColor: Colors.white,
       flexibleSpace: const AnimatedWave(),
       actions: actions,
       leading: leading,

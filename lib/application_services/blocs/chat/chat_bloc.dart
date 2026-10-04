@@ -471,6 +471,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           Message(
             role: Role.assistant,
             content: StringBuffer(event.pieceOfMessage),
+            aiModel: _chatRepository.latestAiModel,
           ),
         );
       emit(AiMessageUpdated(messages: updatedMessages));

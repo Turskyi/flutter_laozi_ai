@@ -8,6 +8,7 @@ part of 'retrofit_client.dart';
 // RetrofitGenerator
 // **************************************************************************
 
+// ignore_for_file: type=lint
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter,avoid_unused_constructor_parameters,unreachable_from_main,avoid_redundant_argument_values
 
 class _RetrofitClient implements RetrofitClient {
@@ -41,8 +42,10 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<ResponseBody>(_options);
-    final _value = _result.data!.stream.map(utf8.decode);
+    final _result = _dio.fetch<ResponseBody>(_options);
+    final _value = _result.asStream().asyncExpand(
+      (response) => utf8.decoder.bind(response.data!.stream),
+    );
     yield* _value;
   }
 
@@ -70,8 +73,10 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<ResponseBody>(_options);
-    final _value = _result.data!.stream.map(utf8.decode);
+    final _result = _dio.fetch<ResponseBody>(_options);
+    final _value = _result.asStream().asyncExpand(
+      (response) => utf8.decoder.bind(response.data!.stream),
+    );
     yield* _value;
   }
 
@@ -97,8 +102,10 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<ResponseBody>(_options);
-    final _value = _result.data!.stream.map(utf8.decode);
+    final _result = _dio.fetch<ResponseBody>(_options);
+    final _value = _result.asStream().asyncExpand(
+      (response) => utf8.decoder.bind(response.data!.stream),
+    );
     yield* _value;
   }
 
@@ -124,8 +131,10 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<ResponseBody>(_options);
-    final _value = _result.data!.stream.map(utf8.decode);
+    final _result = _dio.fetch<ResponseBody>(_options);
+    final _value = _result.asStream().asyncExpand(
+      (response) => utf8.decoder.bind(response.data!.stream),
+    );
     yield* _value;
   }
 
@@ -151,8 +160,10 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<ResponseBody>(_options);
-    final _value = _result.data!.stream.map(utf8.decode);
+    final _result = _dio.fetch<ResponseBody>(_options);
+    final _value = _result.asStream().asyncExpand(
+      (response) => utf8.decoder.bind(response.data!.stream),
+    );
     yield* _value;
   }
 
@@ -178,8 +189,10 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<ResponseBody>(_options);
-    final _value = _result.data!.stream.map(utf8.decode);
+    final _result = _dio.fetch<ResponseBody>(_options);
+    final _value = _result.asStream().asyncExpand(
+      (response) => utf8.decoder.bind(response.data!.stream),
+    );
     yield* _value;
   }
 
@@ -205,8 +218,10 @@ class _RetrofitClient implements RetrofitClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<ResponseBody>(_options);
-    final _value = _result.data!.stream.map(utf8.decode);
+    final _result = _dio.fetch<ResponseBody>(_options);
+    final _value = _result.asStream().asyncExpand(
+      (response) => utf8.decoder.bind(response.data!.stream),
+    );
     yield* _value;
   }
 

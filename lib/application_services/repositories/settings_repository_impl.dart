@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:laozi_ai/domain_services/settings_repository.dart';
 import 'package:laozi_ai/entities/enums/language.dart';
+import 'package:laozi_ai/res/constants.dart';
 import 'package:laozi_ai/res/enums/settings.dart';
 import 'package:laozi_ai/router/app_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,15 +20,27 @@ class SettingsRepositoryImpl implements SettingsRepository {
     // 1. Check for URL-based language first (priority for Web).
     Language? languageFromUrl;
     if (kIsWeb) {
-      // Retrieves the host name (e.g., "localhost" or "uk.daoismonline.com").
-      final String host = Uri.base.host;
-      // Retrieves the fragment (e.g., "/en" or "/uk").
-      final String fragment = Uri.base.fragment;
+      final String host = Uri.base.host.toLowerCase();
+      final String fragment = Uri.base.fragment.toLowerCase();
+      final String path = Uri.base.path.toLowerCase();
+      final String? langParam =
+          Uri.base.queryParameters[langParameter]?.toLowerCase() ??
+          Uri.base.queryParameters[localeParameter]?.toLowerCase() ??
+          Uri.base.queryParameters[hlParameter]?.toLowerCase();
+
       for (final Language language in Language.values) {
         final String currentLanguageCode = language.isoLanguageCode;
 
-        if (host.startsWith('$currentLanguageCode.') ||
-            fragment.contains('${AppRoute.home.path}$currentLanguageCode')) {
+        final bool matchesHost = host.startsWith('$currentLanguageCode.');
+        final bool matchesPath =
+            path.startsWith('/$currentLanguageCode') ||
+            path.contains('/$currentLanguageCode/');
+        final bool matchesFragment = fragment.contains(
+          '${AppRoute.home.path}$currentLanguageCode',
+        );
+        final bool matchesQuery = langParam == currentLanguageCode;
+
+        if (matchesHost || matchesPath || matchesFragment || matchesQuery) {
           languageFromUrl = language;
           try {
             Intl.defaultLocale = currentLanguageCode;
@@ -35,12 +48,18 @@ class SettingsRepositoryImpl implements SettingsRepository {
             // Silently ignore or log as needed.
           }
           break;
+        } else {
+          // Check next language.
         }
       }
+    } else {
+      // Not web environment.
     }
 
     if (languageFromUrl != null) {
       return languageFromUrl;
+    } else {
+      // Continue checking saved preferences.
     }
 
     // 2. Check for saved language in preferences.
@@ -90,5 +109,53 @@ class SettingsRepositoryImpl implements SettingsRepository {
   @override
   Future<bool> saveThemeMode(ThemeMode themeMode) {
     return _preferences.setString(Settings.themeMode.key, themeMode.name);
+  }
+
+  @override
+  int getLastManuscriptPage() {
+    final int? page = _preferences.getInt(Settings.lastManuscriptPage.key);
+    if (page == null) {
+      return 1;
+    } else {
+      return page;
+    }
+  }
+
+  @override
+  Future<bool> saveLastManuscriptPage(int page) {
+    return _preferences.setInt(Settings.lastManuscriptPage.key, page);
+  }
+
+  @override
+  List<int> getManuscriptBookmarks() {
+    final List<String>? savedList = _preferences.getStringList(
+      Settings.manuscriptBookmarks.key,
+    );
+    if (savedList == null) {
+      return <int>[];
+    } else {
+      final List<int> bookmarks = <int>[];
+      for (final String item in savedList) {
+        final int? parsed = int.tryParse(item);
+        if (parsed != null) {
+          bookmarks.add(parsed);
+        } else {
+          // Handle invalid item
+        }
+      }
+      bookmarks.sort();
+      return bookmarks;
+    }
+  }
+
+  @override
+  Future<bool> saveManuscriptBookmarks(List<int> bookmarks) {
+    final List<String> stringList = bookmarks
+        .map((int page) => page.toString())
+        .toList();
+    return _preferences.setStringList(
+      Settings.manuscriptBookmarks.key,
+      stringList,
+    );
   }
 }

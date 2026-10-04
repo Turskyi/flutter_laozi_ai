@@ -4,6 +4,8 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:laozi_ai/application_services/blocs/chat/chat_bloc.dart';
 import 'package:laozi_ai/entities/message.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
+import 'package:laozi_ai/router/app_route.dart';
+import 'package:laozi_ai/ui/manuscript/manuscript_data.dart';
 
 class ChatMessage extends StatelessWidget {
   const ChatMessage({required this.message, super.key});
@@ -46,29 +48,79 @@ class ChatMessage extends StatelessWidget {
                   : colorScheme.primary,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: MarkdownBody(
-              data: message.content
-                  .toString()
-                  // Replace escaped newlines with actual newlines.
-                  .replaceAll(r'\n', '\n')
-                  // Replace escaped quotes with actual quotes.
-                  .replaceAll(r'\"', '"'),
-              styleSheet:
-                  MarkdownStyleSheet.fromTheme(
-                    Theme.of(context).copyWith(textTheme: textTheme),
-                  ).copyWith(
-                    strong: textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                MarkdownBody(
+                  data: message.content
+                      .toString()
+                      // Replace escaped newlines with actual newlines.
+                      .replaceAll(r'\n', '\n')
+                      // Replace escaped quotes with actual quotes.
+                      .replaceAll(r'\"', '"'),
+                  styleSheet:
+                      MarkdownStyleSheet.fromTheme(
+                        Theme.of(context).copyWith(textTheme: textTheme),
+                      ).copyWith(
+                        strong: textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        em: textTheme.bodyMedium?.copyWith(
+                          fontStyle: FontStyle.italic,
+                        ),
+                        listBullet: textTheme.bodyMedium,
+                      ),
+                  selectable: true,
+                  onTapLink: (String _, String? href, String _) {
+                    final Uri? uri = Uri.tryParse(href ?? '');
+                    final String? host = uri?.host.toLowerCase();
+                    final String domain = constants.primaryDomain;
+                    final bool isAllowedDomain =
+                        host == domain ||
+                        (host != null && host.endsWith('.$domain'));
+                    final bool isManuscriptRoute =
+                        uri?.pathSegments.length == 2 &&
+                        uri?.pathSegments.firstOrNull ==
+                            AppRoute.manuscript.name;
+                    final bool isManuscript =
+                        isAllowedDomain && isManuscriptRoute;
+
+                    final String? pageSegment = uri?.pathSegments.lastOrNull;
+                    if (pageSegment != null) {
+                      final int? page = isManuscript
+                          ? int.tryParse(pageSegment)
+                          : null;
+
+                      if (page != null &&
+                          page >= kMinManuscriptPage &&
+                          page <= kMaxManuscriptPage) {
+                        Navigator.of(
+                          context,
+                        ).pushNamed(AppRoute.manuscript.path, arguments: page);
+                      } else {
+                        context.read<ChatBloc>().add(
+                          LaunchUrlEvent(href ?? ''),
+                        );
+                      }
+                    } else {
+                      context.read<ChatBloc>().add(LaunchUrlEvent(href ?? ''));
+                    }
+                  },
+                ),
+                if (message.isAi && message.aiModel != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6.0),
+                    child: Text(
+                      message.aiModel ?? '',
+                      style: textTheme.bodySmall?.copyWith(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                        color: contentColor.withValues(alpha: 0.7),
+                      ),
                     ),
-                    em: textTheme.bodyMedium?.copyWith(
-                      fontStyle: FontStyle.italic,
-                    ),
-                    listBullet: textTheme.bodyMedium,
                   ),
-              selectable: true,
-              onTapLink: (String _, String? href, String _) {
-                context.read<ChatBloc>().add(LaunchUrlEvent(href ?? ''));
-              },
+              ],
             ),
           ),
         ),

@@ -9,14 +9,23 @@ import 'package:laozi_ai/entities/message.dart';
 import 'package:laozi_ai/infrastructure/data_sources/local/local_data_source.dart';
 import 'package:laozi_ai/infrastructure/data_sources/remote/models/chat_request/chat_request.dart';
 import 'package:laozi_ai/infrastructure/data_sources/remote/models/chat_request/message_request.dart';
+import 'package:laozi_ai/infrastructure/data_sources/remote/rest/ai_model_header.dart';
 import 'package:laozi_ai/infrastructure/data_sources/remote/rest/retrofit_client/retrofit_client.dart';
 
 @Injectable(as: ChatRepository)
 class ChatRepositoryImpl implements ChatRepository {
-  const ChatRepositoryImpl(this._restClient, this._localDataSource);
+  const ChatRepositoryImpl(
+    this._restClient,
+    this._localDataSource,
+    this._aiModelHeaderStore,
+  );
 
   final RetrofitClient _restClient;
   final LocalDataSource _localDataSource;
+  final AiModelHeaderStore _aiModelHeaderStore;
+
+  @override
+  String? get latestAiModel => _aiModelHeaderStore.latest;
 
   @override
   Stream<String> sendChat(Chat chat) {
@@ -29,6 +38,8 @@ class ChatRepositoryImpl implements ChatRepository {
       }).toList(),
       locale: _localDataSource.getLanguageIsoCode(),
     );
+
+    _aiModelHeaderStore.latest = null;
 
     if (chat.language.isNotLatvian) {
       if (kIsWeb) {

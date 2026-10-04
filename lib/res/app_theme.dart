@@ -31,9 +31,13 @@ ThemeData createAppTheme(Brightness brightness) {
       labelMedium: TextStyle(fontSize: 12),
       labelSmall: TextStyle(fontSize: 10),
     ),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFF6750A4),
-      foregroundColor: Color(0xFFFFFFFF),
+    appBarTheme: AppBarTheme(
+      backgroundColor: isDark
+          ? const Color(0xFF1C1B1F)
+          : const Color(0xFF6750A4),
+      foregroundColor: isDark
+          ? const Color(0xFFE6E1E5)
+          : const Color(0xFFFFFFFF),
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: Color(0xFF6750A4),
