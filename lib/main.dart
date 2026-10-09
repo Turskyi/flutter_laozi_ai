@@ -23,6 +23,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final Uri? initialUri = await AppLinks().getInitialLink();
+  print('Deb: main initialUri: $initialUri');
 
   // Initialize dependency injection.
   final GetIt dependencies = await di.injectDependencies();
