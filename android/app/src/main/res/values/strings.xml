@@ -4,6 +4,7 @@
     <string name="app_title_short">Tao Te Ching</string>
     <string name="daily_verse_widget_title">Daily Verse</string>
     <string name="daily_verse_widget_description">Shows a daily verse from the Tao Te Ching.</string>
+    <string name="widget_decorative_characters">道\n德\n經</string>
 
     <string name="verse_1_chapter">Chapter 1</string>
     <string name="verse_1_text">The Dao that can be spoken is not the constant Dao;\nthe name that can be named is not the constant name.</string>

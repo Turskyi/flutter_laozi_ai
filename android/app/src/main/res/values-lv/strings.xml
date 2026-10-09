@@ -4,6 +4,7 @@
     <string name="app_title_short">Dao De Czing</string>
     <string name="daily_verse_widget_title">Dienas pants</string>
     <string name="daily_verse_widget_description">Rāda dienas pantu no Dao De Czing.</string>
+    <string name="widget_decorative_characters">道\n德\n經</string>
 
     <string name="verse_1_chapter">1. nodaļa</string>
     <string name="verse_1_text">Dao, ko var izteikt vārdos, nav pastāvīgais Dao;\nvārds, ko var nosaukt, nav pastāvīgais vārds.</string>

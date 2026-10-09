@@ -197,36 +197,82 @@ struct Provider: TimelineProvider {
     }
 }
 
+struct ParchmentBackgroundView: View {
+    @Environment(\.colorScheme) var colorScheme
+
+    var body: some View {
+        let isLight = colorScheme == .light
+        let centerColor = isLight ? Color(red: 250/255, green: 246/255, blue: 237/255) : Color(red: 34/255, green: 30/255, blue: 26/255)
+        let edgeColor = isLight ? Color(red: 242/255, green: 234/255, blue: 214/255) : Color(red: 23/255, green: 20/255, blue: 17/255)
+        let borderColor = isLight ? Color(red: 223/255, green: 211/255, blue: 188/255) : Color(red: 61/255, green: 53/255, blue: 46/255)
+
+        ZStack {
+            RadialGradient(
+                gradient: Gradient(colors: [centerColor, edgeColor]),
+                center: .center,
+                startRadius: 10,
+                endRadius: 200
+            )
+            RoundedRectangle(cornerRadius: 16)
+                .strokeBorder(borderColor, lineWidth: 1)
+        }
+    }
+}
+
 struct LaoziAiWidgetsEntryView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.widgetFamily) var family
+
     var entry: SimpleEntry
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
-                Text(entry.verse.appTitle(for: entry.languageCode))
-                    .font(.caption2)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.secondary)
-                Spacer()
-                Text(entry.verse.chapterTitle(for: entry.languageCode))
-                    .font(.caption2)
-                    .fontWeight(.bold)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(Color.accentColor.opacity(0.15))
-                    .cornerRadius(4)
+        let isLight = colorScheme == .light
+        let titleColor = isLight ? Color(red: 44/255, green: 34/255, blue: 30/255) : Color(red: 236/255, green: 228/255, blue: 216/255)
+        let verseColor = isLight ? Color(red: 28/255, green: 22/255, blue: 19/255) : Color(red: 236/255, green: 228/255, blue: 216/255)
+        let sealBgColor = Color(red: 192/255, green: 53/255, blue: 43/255)
+        let decorativeColor = isLight ? Color(red: 140/255, green: 123/255, blue: 107/255).opacity(0.18) : Color(red: 216/255, green: 200/255, blue: 184/255).opacity(0.15)
+
+        HStack(spacing: 8) {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(alignment: .center) {
+                    Text(entry.verse.appTitle(for: entry.languageCode))
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundColor(titleColor)
+
+                    Spacer()
+
+                    Text(entry.verse.chapterTitle(for: entry.languageCode))
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 2)
+                        .background(sealBgColor)
+                        .cornerRadius(2)
+                }
+
+                Spacer(minLength: 2)
+
+                Text("“\(entry.verse.text(for: entry.languageCode))”")
+                    .font(.system(size: 13, weight: .regular, design: .serif))
+                    .italic()
+                    .foregroundColor(verseColor)
+                    .lineSpacing(3)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(5)
+                    .minimumScaleFactor(0.75)
+
+                Spacer(minLength: 2)
             }
 
-            Spacer(minLength: 2)
-
-            Text("“\(entry.verse.text(for: entry.languageCode))”")
-                .font(.footnote)
-                .italic()
-                .multilineTextAlignment(.leading)
-                .lineLimit(5)
-                .minimumScaleFactor(0.8)
-
-            Spacer(minLength: 2)
+            if family != .systemSmall {
+                VStack(spacing: 2) {
+                    Text("道\n德\n經")
+                        .font(.system(size: 12, weight: .bold, design: .serif))
+                        .foregroundColor(decorativeColor)
+                        .multilineTextAlignment(.center)
+                }
+                .padding(.leading, 2)
+            }
         }
         .padding(12)
         .widgetURL(URL(string: "https://daoismonline.com/manuscript/\(entry.verse.pageNumber)"))
@@ -240,9 +286,12 @@ struct LaoziAiWidgets: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             if #available(iOS 17.0, macOS 14.0, *) {
                 LaoziAiWidgetsEntryView(entry: entry)
-                    .containerBackground(.background, for: .widget)
+                    .containerBackground(for: .widget) {
+                        ParchmentBackgroundView()
+                    }
             } else {
                 LaoziAiWidgetsEntryView(entry: entry)
+                    .background(ParchmentBackgroundView())
             }
         }
         .configurationDisplayName("Daily Verse")

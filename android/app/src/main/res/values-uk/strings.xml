@@ -4,6 +4,7 @@
     <string name="app_title_short">Дао Де Цзін</string>
     <string name="daily_verse_widget_title">Вірш дня</string>
     <string name="daily_verse_widget_description">Відображає вірш дня з Дао Де Цзін.</string>
+    <string name="widget_decorative_characters">道\n德\n經</string>
 
     <string name="verse_1_chapter">Розділ 1</string>
     <string name="verse_1_text">Дао, про яке можна висловитись, не є постійне Дао;\nім\'я, яке можна назвати, не є постійне ім\'я.</string>
@@ -27,7 +28,7 @@
     <string name="verse_7_text">Важке є коренем легкого;\nспокійне є володарем поспішного.</string>
 
     <string name="verse_8_chapter">Розділ 33</string>
-    <string name="verse_8_text">Знання інших — це розум;\nзнання себе — це справжня мудрість.\nПеремога над іншими вимагає сили;\nперемога над собою — це справжня могутність.</string>
+    <string name="verse_8_text">Знання інших — це розум;\nзнання себе — це справжня мудрість.\nПеремога над іншими вимагає сили;\nперемога над собою — це справжня молитва.</string>
 
     <string name="verse_9_chapter">Розділ 40</string>
     <string name="verse_9_text">Повернення — це рух Дао.\nМ\'якість — це дія Дао.</string>
