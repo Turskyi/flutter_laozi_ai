@@ -11,14 +11,19 @@ import 'package:laozi_ai/res/app_theme.dart';
 import 'package:laozi_ai/res/constants.dart' as constants;
 import 'package:laozi_ai/res/resources.dart';
 import 'package:laozi_ai/router/app_route.dart';
-import 'package:laozi_ai/ui/debug_navigation_observer.dart';
 import 'package:resend/resend.dart';
 
 class LaoziAiApp extends StatefulWidget {
-  const LaoziAiApp({required this.routeMap, this.initialUri, super.key});
+  const LaoziAiApp({
+    required this.routeMap,
+    this.initialUri,
+    this.uriLinkStream,
+    super.key,
+  });
 
   final Map<String, WidgetBuilder> routeMap;
   final Uri? initialUri;
+  final Stream<Uri>? uriLinkStream;
 
   @override
   State<LaoziAiApp> createState() => _LaoziAiAppState();
@@ -28,14 +33,14 @@ class _LaoziAiAppState extends State<LaoziAiApp> {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   StreamSubscription<Uri>? _linkSubscription;
   Uri? _pendingUri;
-  int _linkEventCount = 0;
 
   @override
   void initState() {
     super.initState();
     _pendingUri = widget.initialUri;
-    print('Deb: LaoziAiApp.initState initialUri: ${widget.initialUri}');
-    _linkSubscription = AppLinks().uriLinkStream.listen(_openLink);
+    final Stream<Uri> uriLinkStream =
+        widget.uriLinkStream ?? AppLinks().uriLinkStream;
+    _linkSubscription = uriLinkStream.listen(_openLink);
   }
 
   @override
@@ -45,13 +50,7 @@ class _LaoziAiAppState extends State<LaoziAiApp> {
   }
 
   void _openLink(Uri uri) {
-    _linkEventCount++;
-    print(
-      'Deb: _openLink event #$_linkEventCount received uri: $uri, '
-      'widget.initialUri: ${widget.initialUri}',
-    );
     if (uri == widget.initialUri) {
-      print('Deb: _openLink ignoring URI equal to initialUri: $uri');
       // Ignore initial URI emission from stream to avoid duplicate navigation.
     } else {
       const String primaryDomain = constants.primaryDomain;
@@ -59,10 +58,6 @@ class _LaoziAiAppState extends State<LaoziAiApp> {
       final bool isAllowedDomain =
           host == primaryDomain || host.endsWith('.$primaryDomain');
       final bool isManuscriptPath = uri.path.startsWith('/manuscript/');
-      print(
-        'Deb: _openLink host: $host, allowed: $isAllowedDomain, '
-        'manuscriptPath: $isManuscriptPath',
-      );
 
       if (isAllowedDomain && isManuscriptPath) {
         final String? lastSegment = uri.pathSegments.lastOrNull;
@@ -70,22 +65,14 @@ class _LaoziAiAppState extends State<LaoziAiApp> {
             ? int.tryParse(lastSegment)
             : null;
         if (page != null && mounted) {
-          print(
-            'Deb: _openLink pushing manuscript route '
-            '${AppRoute.manuscript.path} with page: $page',
-          );
           _navigatorKey.currentState?.pushNamed(
             AppRoute.manuscript.path,
             arguments: page,
           );
         } else {
-          print(
-            'Deb: _openLink not navigating, page: $page, mounted: $mounted',
-          );
           // Ignore if page is invalid or widget is unmounted.
         }
       } else {
-        print('Deb: _openLink ignoring unsupported URI: $uri');
         // Ignore non-manuscript links.
       }
     }
@@ -106,45 +93,27 @@ class _LaoziAiAppState extends State<LaoziAiApp> {
         return Resources(
           child: MaterialApp(
             navigatorKey: _navigatorKey,
-            navigatorObservers: <NavigatorObserver>[
-              DebugNavigationObserver(),
-            ],
             debugShowCheckedModeBanner: false,
             title: translate('title'),
             initialRoute: () {
               final Uri? pendingUri = _pendingUri;
               if (pendingUri == null) {
-                print(
-                  'Deb: MaterialApp initialRoute: ${AppRoute.home.path} '
-                  '(pendingUri is null)',
-                );
                 return AppRoute.home.path;
               } else {
                 final String? lastSegment = pendingUri.pathSegments.lastOrNull;
                 final int page = lastSegment != null
                     ? int.tryParse(lastSegment) ?? 1
                     : 1;
-                final String route = '${AppRoute.manuscript.path}/$page';
-                print(
-                  'Deb: MaterialApp initialRoute: $route '
-                  '(pendingUri: $pendingUri)',
-                );
-                return route;
+                return '${AppRoute.manuscript.path}/$page';
               }
             }(),
             routes: widget.routeMap,
             onGenerateRoute: (RouteSettings settings) {
-              print(
-                'Deb: onGenerateRoute called with name: ${settings.name}, '
-                'arguments: ${settings.arguments}\n'
-                'Deb: onGenerateRoute call stack:\n${StackTrace.current}',
-              );
               final Uri? uri = Uri.tryParse(settings.name ?? '');
               final String? lastSegment = uri?.pathSegments.lastOrNull;
               final int page = lastSegment != null
                   ? int.tryParse(lastSegment) ?? 1
                   : 1;
-              print('Deb: onGenerateRoute manuscript page: $page');
               return MaterialPageRoute<void>(
                 settings: RouteSettings(name: settings.name, arguments: page),
                 builder: (BuildContext context) =>
