@@ -3,6 +3,13 @@ import 'package:laozi_ai/ui/manuscript/manuscript_data.dart';
 
 const int kSnippetRadius = 40;
 
+/// An infrastructure service providing in-memory manuscript search.
+///
+/// In the project's Monolithic Onion Architecture, this class resides in the
+/// infrastructure layer because it performs technical string parsing,
+/// regular expression matching, and snippet extraction over local static data.
+/// It is not a domain UseCase as it encapsulates technical data indexing
+/// rather than application business workflow orchestration.
 class ManuscriptSearchService {
   const ManuscriptSearchService();
 

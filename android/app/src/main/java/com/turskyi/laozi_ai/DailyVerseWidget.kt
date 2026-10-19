@@ -67,7 +67,10 @@ class DailyVerseWidget : AppWidgetProvider() {
             VerseRes(15, R.string.verse_13_chapter, R.string.verse_13_text),
             VerseRes(15, R.string.verse_14_chapter, R.string.verse_14_text),
             VerseRes(15, R.string.verse_15_chapter, R.string.verse_15_text),
-            VerseRes(18, R.string.verse_16_chapter, R.string.verse_16_text)
+            VerseRes(18, R.string.verse_16_chapter, R.string.verse_16_text),
+            VerseRes(6, R.string.verse_17_chapter, R.string.verse_17_text),
+            VerseRes(8, R.string.verse_18_chapter, R.string.verse_18_text),
+            VerseRes(17, R.string.verse_19_chapter, R.string.verse_19_text)
         )
 
         fun updateAppWidget(

@@ -154,6 +154,27 @@ let verses: [Verse] = [
         textEn: "True words are not beautiful;\nbeautiful words are not true.",
         textUk: "Правдиві слова не красиві;\nкрасиві слова не правдиві.",
         textLv: "Patiesi vārdi nav skaisti;\nskaisti vārdi nav patiesi."
+    ),
+    Verse(
+        chapter: 15,
+        pageNumber: 6,
+        textEn: "The ancient masters were subtle and profound,\nso deep that they could not be understood.\nBecause they could not be understood,\nwe can only describe their appearance:\nHesitant, like crossing a frozen stream;\nCautious, like one who fears neighbors on all sides.",
+        textUk: "Стародавні майстри були витончені й глибокі,\nнастільки глибокі, що їх неможливо збагнути.\nОскільки їх неможливо збагнути,\nможна лише описувати їхній вигляд:\nОбережні, наче переходять замерзлу річку;\nОбачні, наче побоюються сусідів з усіх боків.",
+        textLv: "Senie meistari bija smalki un dziļi,\ntik dziļi, ka viņus nevarēja saprast.\nTā kā viņus nevarēja saprast,\nmēs varam aprakstīt tikai viņu izskatu:\nPiesardzīgi, kā šķērsojot sasalušu upi;\nApmanīgi, kā tāds, kas no visām pusēm baidās no kaimiņiem."
+    ),
+    Verse(
+        chapter: 25,
+        pageNumber: 8,
+        textEn: "There was something formless and perfect,\nexisting before heaven and earth.\nSoundless and void,\nit stands alone and does not change.\nIt moves everywhere without failing.\nIt may be regarded as the mother of the world.",
+        textUk: "Існувало щось безформне й досконале,\nщо виникло ще до неба й землі.\nБеззвучне й порожнє,\nвоно стоїть самотньо й не змінюється.\nВоно рухається всюди без утоми.\nЙого можна вважати матір'ю світу.",
+        textLv: "Bija kaut kas bezzīmīgs un pilnīgs,\nkas pastāvēja pirms debess un zemes.\nBezskaņas un tukšums,\ntas stāv viens un nemainās.\nTas kustas visur bez noguruma.\nTo var uzskatīt par pasaules māti."
+    ),
+    Verse(
+        chapter: 76,
+        pageNumber: 17,
+        textEn: "Man is soft and supple in life,\nbut hard and rigid at death.\nPlants and trees are tender and fragile in life,\nbut dry and withered at death.\nTherefore the hard and rigid are companions of death,\nand the soft and supple are companions of life.",
+        textUk: "Людина при народженні м'яка й гнучка,\nа при смерті - тверда й заклякла.\nРослини й дерева при житті ніжні й крихкі,\nа при смерті - сухі й зів'ялі.\nТому тверде й заклякле - супутники смерті,\nа м'яке й гнучке - супутники життя.",
+        textLv: "Cilvēks dzimstot ir mīksts un lokans,\nbet mirstot - ciets un stīvs.\nAugi un koki dzīvībā ir maigi un trausli,\nbet mirstot - sausi un sakaltuši.\nTāpēc cietais un stīvais ir nāves pavadoņi,\nbet mīkstais un lokans - dzīvības pavadoņi."
     )
 ]
 
@@ -232,20 +253,30 @@ struct LaoziAiWidgetsEntryView: View {
         let sealBgColor = Color(red: 192/255, green: 53/255, blue: 43/255)
         let decorativeColor = isLight ? Color(red: 140/255, green: 123/255, blue: 107/255).opacity(0.18) : Color(red: 216/255, green: 200/255, blue: 184/255).opacity(0.15)
 
-        HStack(spacing: 8) {
-            VStack(alignment: .leading, spacing: 6) {
+        let isLarge = family == .systemLarge
+        let isSmall = family == .systemSmall
+
+        let appTitleFontSize: CGFloat = isLarge ? 13 : 11
+        let chapterTitleFontSize: CGFloat = isLarge ? 11 : 10
+        let verseFontSize: CGFloat = isLarge ? 15 : 13
+        let lineSpacing: CGFloat = isLarge ? 4 : 3
+        let lineLimitCount: Int = isLarge ? 12 : 5
+        let decorativeFontSize: CGFloat = isLarge ? 18 : 12
+
+        HStack(spacing: isLarge ? 12 : 8) {
+            VStack(alignment: .leading, spacing: isLarge ? 10 : 6) {
                 HStack(alignment: .center) {
                     Text(entry.verse.appTitle(for: entry.languageCode))
-                        .font(.system(size: 11, weight: .bold))
+                        .font(.system(size: appTitleFontSize, weight: .bold))
                         .foregroundColor(titleColor)
 
                     Spacer()
 
                     Text(entry.verse.chapterTitle(for: entry.languageCode))
-                        .font(.system(size: 10, weight: .bold))
+                        .font(.system(size: chapterTitleFontSize, weight: .bold))
                         .foregroundColor(.white)
-                        .padding(.horizontal, 5)
-                        .padding(.vertical, 2)
+                        .padding(.horizontal, isLarge ? 7 : 5)
+                        .padding(.vertical, isLarge ? 3 : 2)
                         .background(sealBgColor)
                         .cornerRadius(2)
                 }
@@ -253,28 +284,28 @@ struct LaoziAiWidgetsEntryView: View {
                 Spacer(minLength: 2)
 
                 Text("“\(entry.verse.text(for: entry.languageCode))”")
-                    .font(.system(size: 13, weight: .regular, design: .serif))
+                    .font(.system(size: verseFontSize, weight: .regular, design: .serif))
                     .italic()
                     .foregroundColor(verseColor)
-                    .lineSpacing(3)
+                    .lineSpacing(lineSpacing)
                     .multilineTextAlignment(.leading)
-                    .lineLimit(5)
+                    .lineLimit(lineLimitCount)
                     .minimumScaleFactor(0.75)
 
                 Spacer(minLength: 2)
             }
 
-            if family != .systemSmall {
+            if !isSmall {
                 VStack(spacing: 2) {
                     Text("道\n德\n經")
-                        .font(.system(size: 12, weight: .bold, design: .serif))
+                        .font(.system(size: decorativeFontSize, weight: .bold, design: .serif))
                         .foregroundColor(decorativeColor)
                         .multilineTextAlignment(.center)
                 }
                 .padding(.leading, 2)
             }
         }
-        .padding(12)
+        .padding(isLarge ? 16 : 12)
         .widgetURL(URL(string: "https://daoismonline.com/manuscript/\(entry.verse.pageNumber)"))
     }
 }
@@ -296,6 +327,6 @@ struct LaoziAiWidgets: Widget {
         }
         .configurationDisplayName("Daily Verse")
         .description("Shows a daily verse from the Tao Te Ching.")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
