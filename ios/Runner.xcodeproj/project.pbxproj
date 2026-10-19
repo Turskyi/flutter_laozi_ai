@@ -608,7 +608,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = LaoziAiWidgets/LaoziAiWidgetsExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 26QZ8BPZFL;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LaoziAiWidgets/Info.plist;
@@ -634,7 +634,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = LaoziAiWidgets/LaoziAiWidgetsExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 26QZ8BPZFL;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LaoziAiWidgets/Info.plist;
@@ -660,7 +660,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = LaoziAiWidgets/LaoziAiWidgetsExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 26QZ8BPZFL;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LaoziAiWidgets/Info.plist;
