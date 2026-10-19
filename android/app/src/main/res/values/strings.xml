@@ -4,6 +4,7 @@
     <string name="app_title_short">Tao Te Ching</string>
     <string name="daily_verse_widget_title">Daily Verse</string>
     <string name="daily_verse_widget_description">Shows a daily verse from the Tao Te Ching.</string>
+    <string name="widget_decorative_characters">道\n德\n經</string>
 
     <string name="verse_1_chapter">Chapter 1</string>
     <string name="verse_1_text">The Dao that can be spoken is not the constant Dao;\nthe name that can be named is not the constant name.</string>
@@ -52,4 +53,13 @@
 
     <string name="verse_16_chapter">Chapter 81</string>
     <string name="verse_16_text">True words are not beautiful;\nbeautiful words are not true.</string>
+
+    <string name="verse_17_chapter">Chapter 15</string>
+    <string name="verse_17_text">The ancient masters were subtle and profound,\nso deep that they could not be understood.\nBecause they could not be understood,\nwe can only describe their appearance:\nHesitant, like crossing a frozen stream;\nCautious, like one who fears neighbors on all sides.</string>
+
+    <string name="verse_18_chapter">Chapter 25</string>
+    <string name="verse_18_text">There was something formless and perfect,\nexisting before heaven and earth.\nSoundless and void,\nit stands alone and does not change.\nIt moves everywhere without failing.\nIt may be regarded as the mother of the world.</string>
+
+    <string name="verse_19_chapter">Chapter 76</string>
+    <string name="verse_19_text">Man is soft and supple in life,\nbut hard and rigid at death.\nPlants and trees are tender and fragile in life,\nbut dry and withered at death.\nTherefore the hard and rigid are companions of death,\nand the soft and supple are companions of life.</string>
 </resources>

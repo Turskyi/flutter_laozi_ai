@@ -6,11 +6,13 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Bundle
+import android.view.View
 import android.widget.RemoteViews
+import androidx.core.net.toUri
 import es.antonborri.home_widget.HomeWidgetPlugin
 import java.util.Locale
 import java.util.TimeZone
-import androidx.core.net.toUri
 import kotlin.math.abs
 
 class DailyVerseWidget : AppWidgetProvider() {
@@ -25,8 +27,23 @@ class DailyVerseWidget : AppWidgetProvider() {
         }
     }
 
+    override fun onAppWidgetOptionsChanged(
+        context: Context?,
+        appWidgetManager: AppWidgetManager?,
+        appWidgetId: Int,
+        newOptions: Bundle?
+    ) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+        if (context != null && appWidgetManager != null) {
+            updateAppWidget(context, appWidgetManager, appWidgetId)
+        } else {
+            // Context or AppWidgetManager was null
+        }
+    }
+
     companion object {
         private const val KEY_SELECTED_LANGUAGE = "selected_language"
+        private const val MIN_WIDTH_FOR_DECORATION_DP = 180
 
         private data class VerseRes(
             val pageNumber: Int,
@@ -50,7 +67,10 @@ class DailyVerseWidget : AppWidgetProvider() {
             VerseRes(15, R.string.verse_13_chapter, R.string.verse_13_text),
             VerseRes(15, R.string.verse_14_chapter, R.string.verse_14_text),
             VerseRes(15, R.string.verse_15_chapter, R.string.verse_15_text),
-            VerseRes(18, R.string.verse_16_chapter, R.string.verse_16_text)
+            VerseRes(18, R.string.verse_16_chapter, R.string.verse_16_text),
+            VerseRes(6, R.string.verse_17_chapter, R.string.verse_17_text),
+            VerseRes(8, R.string.verse_18_chapter, R.string.verse_18_text),
+            VerseRes(17, R.string.verse_19_chapter, R.string.verse_19_text)
         )
 
         fun updateAppWidget(
@@ -59,7 +79,12 @@ class DailyVerseWidget : AppWidgetProvider() {
             appWidgetId: Int
         ) {
             val widgetData: SharedPreferences = HomeWidgetPlugin.getData(context)
-            val languageCode = widgetData.getString(KEY_SELECTED_LANGUAGE, "en") ?: "en"
+            val storedLanguage: String? = widgetData.getString(KEY_SELECTED_LANGUAGE, "en")
+            val languageCode: String = if (storedLanguage != null) {
+                storedLanguage
+            } else {
+                "en"
+            }
 
             val localizedContext = getLocalizedContext(context, languageCode)
 
@@ -67,10 +92,20 @@ class DailyVerseWidget : AppWidgetProvider() {
             val index = (abs(daysSinceEpoch) % verses.size).toInt()
             val verse = verses[index]
 
+            val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
+            val minWidth = options?.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0) ?: 0
+
+            val decorativeVisibility = if (minWidth == 0 || minWidth >= MIN_WIDTH_FOR_DECORATION_DP) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
             val views = RemoteViews(context.packageName, R.layout.daily_verse_widget).apply {
                 setTextViewText(R.id.text_app_title, localizedContext.getString(R.string.app_title_short))
                 setTextViewText(R.id.text_chapter_title, localizedContext.getString(verse.chapterTitleResId))
                 setTextViewText(R.id.text_verse, "“" + localizedContext.getString(verse.textResId) + "”")
+                setViewVisibility(R.id.text_decorative_column, decorativeVisibility)
 
                 val intent = Intent(context, MainActivity::class.java).apply {
                     action = "es.antonborri.home_widget.action.LAUNCH"

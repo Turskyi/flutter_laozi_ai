@@ -14,10 +14,16 @@ import 'package:laozi_ai/router/app_route.dart';
 import 'package:resend/resend.dart';
 
 class LaoziAiApp extends StatefulWidget {
-  const LaoziAiApp({required this.routeMap, this.initialUri, super.key});
+  const LaoziAiApp({
+    required this.routeMap,
+    this.initialUri,
+    this.uriLinkStream,
+    super.key,
+  });
 
   final Map<String, WidgetBuilder> routeMap;
   final Uri? initialUri;
+  final Stream<Uri>? uriLinkStream;
 
   @override
   State<LaoziAiApp> createState() => _LaoziAiAppState();
@@ -32,7 +38,9 @@ class _LaoziAiAppState extends State<LaoziAiApp> {
   void initState() {
     super.initState();
     _pendingUri = widget.initialUri;
-    _linkSubscription = AppLinks().uriLinkStream.listen(_openLink);
+    final Stream<Uri> uriLinkStream =
+        widget.uriLinkStream ?? AppLinks().uriLinkStream;
+    _linkSubscription = uriLinkStream.listen(_openLink);
   }
 
   @override
