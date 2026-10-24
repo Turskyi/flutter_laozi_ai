@@ -11,6 +11,7 @@ import 'package:laozi_ai/ui/widgets/app_bar/wave_app_bar.dart';
 import 'package:laozi_ai/ui/widgets/home_app_bar_button.dart';
 
 const double _kYinYangImageSize = 180.0;
+const double _kPagePadding = 16.0;
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -25,11 +26,17 @@ class AboutPage extends StatelessWidget {
         title: translate('about_page.title'),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.fromLTRB(
+          _kPagePadding,
+          const WaveAppBar().preferredSize.height +
+              MediaQuery.of(context).padding.top +
+              _kPagePadding,
+          _kPagePadding,
+          _kPagePadding,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const SizedBox(height: kToolbarHeight * 1.5),
             Text(
               translate(
                 'about_page.welcome',
