@@ -22,7 +22,7 @@
 - Follow Flutter lint rules strictly (`always_specify_types`, `prefer_single_quotes`, `require_trailing_commas`, line length limit of 80 characters).
 
 ### 6. Flutter Style & Architecture (Widgets vs Helper Methods)
-- **Widgets Over Helper Methods:** Follow Flutter styling conventions by extracting UI sub-components into standalone `Widget` classes (`StatelessWidget` or `StatefulWidget`) rather than using helper methods returning widgets (e.g., `_build...()`). This ensures correct `BuildContext` scoping, optimal rebuild performance, clean widget lifecycle management, and readability in the Flutter Widget Inspector.
+- **Widgets Over Helper Methods:** Follow Flutter styling conventions by extracting UI subcomponents into standalone `Widget` classes (`StatelessWidget` or `StatefulWidget`) rather than using helper methods returning widgets (e.g., `_build...()`). This ensures correct `BuildContext` scoping, optimal rebuild performance, clean widget lifecycle management, and readability in the Flutter Widget Inspector.
 
 ### 7. File Organization & Architecture
 - **One Class Per File:** Maintain one class per file, except for obvious exceptions such as state classes for stateful widgets, or enum-like classes such as events and states for BLoC/Cubit.
