@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
-const double _kColumnBoxWidth = 64.0;
-const double _kColumnBoxRadius = 10.0;
-const double _kColumnBoxVerticalPadding = 10.0;
-const double _kColumnBoxHorizontalPadding = 6.0;
-const double _kColumnNumberBoxSize = 22.0;
-const double _kColumnSpacingSmall = 2.0;
-const double _kColumnSpacingMedium = 6.0;
-const double _kDownArrowIconSize = 14.0;
-const String _kGuideColKey = 'manuscript.guide.col';
-const String _kVerticalLineSymbol = '│';
-
 class ReadingGuideColumnBox extends StatelessWidget {
   const ReadingGuideColumnBox({
     required this.number,
@@ -99,3 +88,14 @@ class ReadingGuideColumnBox extends StatelessWidget {
     );
   }
 }
+
+const double _kColumnBoxWidth = 64.0;
+const double _kColumnBoxRadius = 10.0;
+const double _kColumnBoxVerticalPadding = 10.0;
+const double _kColumnBoxHorizontalPadding = 6.0;
+const double _kColumnNumberBoxSize = 22.0;
+const double _kColumnSpacingSmall = 2.0;
+const double _kColumnSpacingMedium = 6.0;
+const double _kDownArrowIconSize = 14.0;
+const String _kGuideColKey = 'manuscript.guide.col';
+const String _kVerticalLineSymbol = '│';

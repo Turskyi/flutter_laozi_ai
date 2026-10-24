@@ -2,33 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:laozi_ai/ui/manuscript/widgets/reading_guide_column_box.dart';
 
-const double _kDialogBorderRadius = 20.0;
-const double _kDialogMaxWidth = 500.0;
-const double _kDialogPadding = 24.0;
-const double _kHeaderIconPadding = 8.0;
-const double _kHeaderIconRadius = 12.0;
-const double _kHeaderTitleSpacing = 12.0;
-const double _kSectionSpacing = 20.0;
-const double _kDiagramPadding = 16.0;
-const double _kDiagramRadius = 16.0;
-const double _kDiagramOpacity = 0.5;
-const double _kDiagramBorderOpacity = 0.5;
-const double _kDirectionSpacing = 16.0;
-const double _kDirectionLetterSpacing = 0.8;
-const double _kArrowIconSize = 18.0;
-const double _kArrowPaddingHorizontal = 8.0;
-const double _kParagraphSpacing = 12.0;
-const double _kTextLineHeight = 1.5;
-
-const String _kGuideTitleKey = 'manuscript.guide.title';
-const String _kGuideDirectionKey = 'manuscript.guide.direction';
-const String _kGuideP1Key = 'manuscript.guide.p1';
-const String _kGuideP2Key = 'manuscript.guide.p2';
-const String _kGuideGotItKey = 'manuscript.guide.got_it';
-const String _kColumnNumber3 = '3';
-const String _kColumnNumber2 = '2';
-const String _kColumnNumber1 = '1';
-
 class ReadingGuideDialog extends StatelessWidget {
   const ReadingGuideDialog({super.key});
 
@@ -185,3 +158,30 @@ class ReadingGuideDialog extends StatelessWidget {
     );
   }
 }
+
+const double _kDialogBorderRadius = 20.0;
+const double _kDialogMaxWidth = 500.0;
+const double _kDialogPadding = 24.0;
+const double _kHeaderIconPadding = 8.0;
+const double _kHeaderIconRadius = 12.0;
+const double _kHeaderTitleSpacing = 12.0;
+const double _kSectionSpacing = 20.0;
+const double _kDiagramPadding = 16.0;
+const double _kDiagramRadius = 16.0;
+const double _kDiagramOpacity = 0.5;
+const double _kDiagramBorderOpacity = 0.5;
+const double _kDirectionSpacing = 16.0;
+const double _kDirectionLetterSpacing = 0.8;
+const double _kArrowIconSize = 18.0;
+const double _kArrowPaddingHorizontal = 8.0;
+const double _kParagraphSpacing = 12.0;
+const double _kTextLineHeight = 1.5;
+
+const String _kGuideTitleKey = 'manuscript.guide.title';
+const String _kGuideDirectionKey = 'manuscript.guide.direction';
+const String _kGuideP1Key = 'manuscript.guide.p1';
+const String _kGuideP2Key = 'manuscript.guide.p2';
+const String _kGuideGotItKey = 'manuscript.guide.got_it';
+const String _kColumnNumber3 = '3';
+const String _kColumnNumber2 = '2';
+const String _kColumnNumber1 = '1';
